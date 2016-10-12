@@ -1,0 +1,5 @@
+#Compiled Source#
+*.o
+*.exe
+#Temp files#
+*~
