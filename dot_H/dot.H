@@ -6,7 +6,8 @@
 using namespace std;
 
 /**
- * @brief The dot class.
+ * @file dot.H
+ * @brief C++ Definition of dot class.
  *
  * The dot class is the implementation of a dot in a map. 
  	 The map is a matrix.
