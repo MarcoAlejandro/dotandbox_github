@@ -1,94 +1,108 @@
-#ifndef PLAYER_H
-#define PLAYER_H
+# ifndef PLAYER_H
+# define PLAYER_H
+
+# include <string> 
+# include <iostream>
+# include <utility>
+
+using namespace std;
 /**
-@file player.H
-
-@brief Declarations on C++ of class player, for application in 
-game dot and boxes.
-
-@author CODEMAKERS
-
-@date 03/11/2016
+ *@file player.H
+ *@brief Declarations on C++ of class player, game dot and boxes.
+ *@author CODEMAKERS
+ *@date 03/11/2016
 */
-
 class player
 {
 private:
 
-	std::string id; //name of player
-	uint score;		//score of player
-	uint record;	//record of player
+	string id;   //name of player
+	uint score;	 //points on current game
+	uint record; //number of games won
 
 public:
 
 	/**
-		@brief constructor funtion of class player.
+	 *@brief Constructor, sets values of player attributes.
 	*/
-	player()
+	player() : id(""),score(0),record(0){/*empty*/}
+
+	/**
+	 *@brief Copy constructor, sets values of player attributes with values of a player.
+	*/
+	player(const player & player_) : id(player_.id),score(player_.score),record(player_.record)
 	{
-		this->id = "";
-		this->score = 0;
-		this->record = 0;
+		/*empty*/
+	}
+
+	player(player && player_)
+	{
+		std::swap(id,player_.id);
+		std::swap(score,player_.score);
+		std::swap(record,player_.record);
 	}
 
 	/**
-		@brief see the id attribute
-		@return player id
+	 *@brief Basic destructor.
 	*/
-	std::string get_id()
+	~player(){/*empty*/}
+
+	/**
+	 *@brief to see player id.
+	 *@return player id.
+	*/
+	const string & get_id() const
 	{
-		return(this->id);
+		return id;
 	}
 
 	/**
-		@brief see the id attribute Player
-		@return player id
+	 *@brief to see player score.
+     *@return player score.
 	*/
 	uint get_score()
 	{
-		return(this->score);
+		return score;
 	}
 
 	/**
-		@brief see the record attribute Player
-		@return player record
+	 *@brief to see player record.
+     *@return player record.
 	*/
 	uint get_record()
 	{
-		return(this->record);
+		return record;
 	}
 
 	/**
-		@brief set the player name
-		@param id = name of player
+	 *@brief sets player id.
+	 *@param name of player.
 	*/
-	void set_id(std::string id)
+	void set_id(string id_)
 	{
-		this->id = id;
+		id = id_;
+		return;
 	}
 
 	/**
-		@brief set the player score
-		@param scr = score of player
+	 *@brief sets player score
+	 *@param score of player
 	*/
 	void set_score(uint scr)
 	{
-		this->score = scr;
+		score = scr;
+		return;
 	}
 
 	/**
-		@brief set the player record
-		@param scr = record of player
+	 *@brief sets player record
+	 *@param record of player
 	*/
 	void set_record(uint rec)
 	{
-		this->record = rec;
+		record = rec;
+		return;
 	}
-
-	/**
-		@brief class destroyer player
-	*/
-	~player(){}
 };
 
 #endif

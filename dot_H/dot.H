@@ -34,12 +34,16 @@ private:
 	pair< size_t, size_t> position;
 
 public:
-	dot(){};
+
+	/**
+	*@brief Basic constructor.
+	*/
+	dot(){/*empty*/};
 
 	/**
 	*@brief Constructor by position
 	*
-	*This constructors receives the position values of the dot
+	*This constructor receives the position values of the dot
 	 in the map, and makes sure that they are not out of range. 
 	 By the end, the flags asociated to that position are marked.
 	 Important: The map is C style matrix.
@@ -406,6 +410,5 @@ public:
 	}
 
 };
-
 
 #endif
