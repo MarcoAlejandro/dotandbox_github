@@ -463,6 +463,43 @@ public:
 		p1_score = 0;
 		p2_score = 0;
 	}
+	
+	/**
+	*@brief prints the map on the terminal.
+	*/
+	void print_map_terminal()
+	{
+		for (size_t i = 0; i < R - 1; ++i)
+		{
+			for (size_t j = 0; j < C - 1; ++j)
+			{
+				cout << '*';
+				if(boxes[i][j]->has_right())
+					cout << "--";
+				else
+					cout << "  ";
+			}
+			cout << "*\n"; //Last point in the row.
+			for (size_t j = 0; j < C ; ++j)
+			{
+				if(boxes[i][j]->has_down())
+					cout << "|  ";
+				else
+					cout << "   ";
+			}
+			cout << '\n';
+		}
+		
+		for(size_t j = 0; j < C - 1; ++j)//last row
+		{
+			cout << "*";
+				if(boxes[R-1][j]->has_right())
+					cout << "--";
+				else
+					cout << "  ";
+		}
+		cout << "*\n"; //Last point in the row.
+	}
 };
 
 #endif 
