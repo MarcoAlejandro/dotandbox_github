@@ -26,6 +26,7 @@ public:
 	 *@brief Constructor, sets values of player attributes.
 	*/
 	player() : id(""),score(0),record(0){/*empty*/}
+	 
 
 	/**
 	 *@brief Copy constructor, sets values of player attributes with values of a player.
