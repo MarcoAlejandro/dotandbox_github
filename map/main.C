@@ -10,11 +10,11 @@ int main()
 
 	MOVE mv;
 
-	get<0>(get<0>(mv)) = 0;
-	get<1>(get<0>(mv)) = 1;
+	get<0>(get<0>(mv)) = 1;
+	get<1>(get<0>(mv)) = 2;
 
-	get<0>(get<1>(mv)) = 1;
-	get<1>(get<1>(mv)) = 1;
+	get<0>(get<1>(mv)) = 2;
+	get<1>(get<1>(mv)) = 2;
 
 	if(map_.play(mv,1))
 		cout << "valid move" << "\n";
@@ -25,7 +25,7 @@ int main()
 	get<1>(get<0>(mv)) = 1;
 
 	get<0>(get<1>(mv)) = 1;
-	get<1>(get<1>(mv)) = 0;
+	get<1>(get<1>(mv)) = 2;
 
 	if(map_.play(mv,1))
 		cout << "valid move" << "\n";
@@ -33,10 +33,10 @@ int main()
 		cout << "invalid move" << "\n";
 
 	get<0>(get<0>(mv)) = 1;
-	get<1>(get<0>(mv)) = 0;
+	get<1>(get<0>(mv)) = 1;
 
-	get<0>(get<1>(mv)) = 0;
-	get<1>(get<1>(mv)) = 0;
+	get<0>(get<1>(mv)) = 2;
+	get<1>(get<1>(mv)) = 1;
 
 	if(map_.play(mv,1))
 		cout << "valid move" << "\n";
@@ -45,11 +45,11 @@ int main()
 
 
 
-	get<0>(get<0>(mv)) = 0;
-	get<1>(get<0>(mv)) = 0;
+	get<0>(get<0>(mv)) = 2;
+	get<1>(get<0>(mv)) = 1;
 
-	get<0>(get<1>(mv)) = 0;
-	get<1>(get<1>(mv)) = 1;
+	get<0>(get<1>(mv)) = 2;
+	get<1>(get<1>(mv)) = 2;
 
 	if(map_.play(mv,1))
 		cout << "valid move" << "\n";
@@ -61,7 +61,7 @@ int main()
 	cout << "score player 1: " << map_.get_p1_score() << "\n";
 
 
-	get<0>(get<0>(mv)) = 0;
+	/*get<0>(get<0>(mv)) = 0;
 	get<1>(get<0>(mv)) = 1;
 
 	get<0>(get<1>(mv)) = 0;
@@ -178,5 +178,5 @@ int main()
 
 	map_.reset();
 
-	cout << "after reset map_full : " << map_.is_full() << "\n";
+	cout << "after reset map_full : " << map_.is_full() << "\n";*/
 }

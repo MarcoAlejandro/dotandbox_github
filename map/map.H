@@ -300,6 +300,18 @@ public:
 			
 			if(case_ == 3)
 			{
+				if (not dot_1->has_right())
+				{
+					MOVE_DOWN_LEFT;
+					return;
+				}
+
+				if (not dot_1->has_left())
+				{
+					MOVE_DOWN_RIGTH;
+					return;
+				}
+
 				MOVE_DOWN_LEFT;
 				MOVE_DOWN_RIGTH;
 				return;
@@ -325,6 +337,17 @@ public:
 		
 			if (case_ == 4)
 			{
+				if (not dot_1->has_right())
+				{
+					MOVE_UP_LEFT;
+					return;
+				}
+
+				if (not dot_1->has_left())
+				{
+					MOVE_UP_RIGTH;
+					return;
+				}
 				MOVE_UP_RIGTH;
 				MOVE_UP_LEFT;
 				return;
@@ -350,6 +373,17 @@ public:
 			
 			if (case_ == 2)
 			{
+				if (not dot_1->has_up())
+				{
+					MOVE_DOWN_RIGTH;
+					return;
+				}
+
+				if (not dot_1->has_down())
+				{
+					MOVE_UP_RIGTH;
+					return;
+				}
 				MOVE_UP_RIGTH;
 				MOVE_DOWN_RIGTH;
 				return;
@@ -375,6 +409,18 @@ public:
 		
 			if (case_ == 1)
 			{
+				if (not dot_1->has_up())
+				{
+					MOVE_DOWN_LEFT;
+					return;
+				}
+
+				if (not dot_1->has_down())
+				{
+					MOVE_UP_LEFT;
+					return;
+				}
+
 				MOVE_UP_LEFT;
 				MOVE_DOWN_LEFT;
 				return;
@@ -386,6 +432,18 @@ public:
 			if (not dot_1->has_left() and not dot_1->has_right())
 				return;
 
+			if (not dot_1->has_right())
+			{
+				MOVE_UP_LEFT;
+				return;
+			}
+
+			if (not dot_1->has_left())
+			{
+				MOVE_UP_RIGTH;
+				return;
+			}
+
 			MOVE_UP_RIGTH;
 			MOVE_UP_LEFT;
 			return;
@@ -396,6 +454,18 @@ public:
 			if (not dot_1->has_left() and not dot_1->has_right())
 				return;
 
+			if (not dot_1->has_right())
+			{
+				MOVE_DOWN_LEFT;
+				return;
+			}
+
+			if (not dot_1->has_left())
+			{
+				MOVE_DOWN_RIGTH;
+				return;
+			}
+
 			MOVE_DOWN_LEFT;
 			MOVE_DOWN_RIGTH;
 			return;
@@ -403,8 +473,20 @@ public:
 
 		if(case_ == 2)
 		{
-			if(not dot_1->has_up() or not dot_1->has_down())
+			if(not dot_1->has_up() and not dot_1->has_down())
 				return;
+
+			if (not dot_1->has_up())
+			{
+				MOVE_DOWN_RIGTH;
+				return;
+			}
+
+			if (not dot_1->has_down())
+			{
+				MOVE_UP_RIGTH;
+				return;
+			}
 
 			MOVE_UP_RIGTH;
 			MOVE_DOWN_RIGTH;
@@ -413,8 +495,20 @@ public:
 
 		if(case_ == 1)
 		{
-			if(not dot_1->has_up() or not dot_1->has_down())
+			if(not dot_1->has_up() and not dot_1->has_down())
 				return;
+
+			if (not dot_1->has_up())
+			{
+				MOVE_DOWN_LEFT;
+				return;
+			}
+
+			if (not dot_1->has_down())
+			{
+				MOVE_UP_LEFT;
+				return;
+			}
 
 			MOVE_UP_LEFT;
 			MOVE_DOWN_LEFT;

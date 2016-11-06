@@ -1,0 +1,10 @@
+Hi everyone!... bugs marcos saw was solve.
+It was found on class "dot" one case into constructor did not have
+return, now it does.
+Also some bugs were fixed on class map, there were some missing cases, it
+would be great if you still proving it!.
+I was thinking about uploading it to facebook page "semillero de desarrollo
+de videojuegos ULA", with that people will try the game and we will get feed 
+back. please tell me what you think about it.
+
+"We all need people to give us feed back that is how we inprove". Bill Gates.

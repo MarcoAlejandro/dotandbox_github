@@ -133,6 +133,7 @@ public:
 			d_border = true;
 			r_border = false;
 			l_border = false;
+			return;
 		}
 
 		if(get<1>(pos) == C - 1)
