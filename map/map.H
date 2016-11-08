@@ -96,6 +96,45 @@ public:
 	}
 
 	/**
+	 *@brief constructor of copy for class map
+	*/
+	map(const map & map_) : p1_score(map_.p1_score), p2_score(map_.p2_score)
+	{
+		for (size_t i = 0; i < R ; ++i)
+			for (size_t j = 0; j < C; ++j)
+				boxes[i][j] = map_.boxes[i][j];
+	}
+
+	/**
+	 *@brief Assignment operator of class map
+	  @return map copied
+	*/
+	map & operator = (const map & map_)
+	{
+		p1_score = map_.p1_score;
+		p2_score = map_.p2_score;
+
+		for (size_t i = 0; i < R ; ++i)
+			for (size_t j = 0; j < C; ++j)
+				boxes[i][j] = map_.boxes[i][j];
+
+		return *this;
+	}
+	
+	/**
+	 *@brief Copy function for class map
+	*/
+	void copy_map(const map & map_)
+	{
+		p1_score = map_.p1_score;
+		p2_score = map_.p2_score;
+
+		for (size_t i = 0; i < R ; ++i)
+			for (size_t j = 0; j < C; ++j)
+				boxes[i][j] = map_.boxes[i][j];
+	}
+
+	/**
 	 *@brief destructor of class map, unsets entire map by deleting memory 
 		of every single dot into the map.
 	*/
