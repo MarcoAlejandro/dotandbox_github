@@ -175,6 +175,33 @@ public:
 
 	}
 
+	dot(const dot<R,C> &dot_to_copy)
+	{
+		copy_dot(dot_to_copy);
+	}
+
+	void copy_dot(const dot<R,C> &dot_to_copy)
+	{
+		_has_left  = dot_to_copy._has_left;
+		_has_right = dot_to_copy._has_right;
+		_has_up    = dot_to_copy._has_up;
+		_has_down  = dot_to_copy._has_down;
+		ur_corner  = dot_to_copy.ur_corner;
+		ul_corner  = dot_to_copy.ul_corner;
+		dr_corner  = dot_to_copy.dr_corner;
+		dl_corner  = dot_to_copy.dl_corner;
+		u_border   = dot_to_copy.u_border;
+		d_border   = dot_to_copy.d_border;
+		r_border   = dot_to_copy.r_border;
+		l_border   = dot_to_copy.l_border;
+		position   = dot_to_copy.position;
+	}
+
+	const dot<R,C>& operator = (const dot<R,C> &dot_to_copy)
+	{
+		copy_dot(dot_to_copy);
+	}
+
 	/**
 	*@brief has_left() return true if there's a dot on left. 
 	*/
