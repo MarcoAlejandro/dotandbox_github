@@ -175,11 +175,24 @@ public:
 
 	}
 
+	/**
+	*@brief Copy Constructor.
+	*
+	*This constructor receives a dot to be copied, this 
+	 constructor calls function "copy_dot()", to make copy
+	 by copying every attribute.
+	*/
 	dot(const dot<R,C> &dot_to_copy)
 	{
 		copy_dot(dot_to_copy);
 	}
 
+	/**
+	*@brief Copy a dot.
+	*
+	*This function receives a dot to be copied, function makes
+	 copy by copying every attribute.
+	*/
 	void copy_dot(const dot<R,C> &dot_to_copy)
 	{
 		_has_left  = dot_to_copy._has_left;
@@ -197,9 +210,17 @@ public:
 		position   = dot_to_copy.position;
 	}
 
+	/**
+	*@brief operator =.
+	*
+	*This operator receives a dot to be copied, this 
+	 operator calls function "copy_dot()", to make copy
+	 by copying every attribute.
+	*/
 	const dot<R,C>& operator = (const dot<R,C> &dot_to_copy)
 	{
 		copy_dot(dot_to_copy);
+		return *this;
 	}
 
 	/**

@@ -39,7 +39,7 @@ void printl(auto & m)
 int main()
 {	
 	
-	map<4,4> _map;
+	map<3,3> _map;
 	MOVE cur_mv;
 	uint p1_last_score = 0;
 	uint p2_last_score = 0;

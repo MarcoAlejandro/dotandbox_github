@@ -96,45 +96,6 @@ public:
 	}
 
 	/**
-	 *@brief constructor of copy for class map
-	*/
-	map(const map & map_) : p1_score(map_.p1_score), p2_score(map_.p2_score)
-	{
-		for (size_t i = 0; i < R ; ++i)
-			for (size_t j = 0; j < C; ++j)
-				boxes[i][j] = map_.boxes[i][j];
-	}
-
-	/**
-	 *@brief Assignment operator of class map
-	  @return map copied
-	*/
-	map & operator = (const map & map_)
-	{
-		p1_score = map_.p1_score;
-		p2_score = map_.p2_score;
-
-		for (size_t i = 0; i < R ; ++i)
-			for (size_t j = 0; j < C; ++j)
-				boxes[i][j] = map_.boxes[i][j];
-
-		return *this;
-	}
-	
-	/**
-	 *@brief Copy function for class map
-	*/
-	void copy_map(const map & map_)
-	{
-		p1_score = map_.p1_score;
-		p2_score = map_.p2_score;
-
-		for (size_t i = 0; i < R ; ++i)
-			for (size_t j = 0; j < C; ++j)
-				boxes[i][j] = map_.boxes[i][j];
-	}
-
-	/**
 	 *@brief destructor of class map, unsets entire map by deleting memory 
 		of every single dot into the map.
 	*/
@@ -143,6 +104,28 @@ public:
 		for (size_t i = 0; i < R ; ++i)
 			for (size_t j = 0; j < C; ++j)
 				delete boxes[i][j];
+	}
+
+
+	map(const map & map_)
+	{
+		copy_map(map_);
+	}
+
+	const map & operator = (const map & map_)
+	{
+		copy_map(map_);
+		return *this;
+	}
+
+	void copy_map(const map & map_)
+	{
+		p1_score = map_.p1_score;
+		p2_score = map_.p2_score;
+
+		for (size_t i = 0; i < R ; ++i)
+			for (size_t j = 0; j < C; ++j)
+				*boxes[i][j] = *map_.boxes[i][j];
 	}
 
 	/**
@@ -195,7 +178,7 @@ public:
 	  "p1_score + p2_score" is equal to maximiun number of boxes.
 	 *@return bool telling if map is full.
 	*/
-	bool is_full()
+	bool is_full() const
 	{
 		return p1_score + p2_score == (R - 1) * (C - 1);
 	}
@@ -600,7 +583,7 @@ public:
 	/**
 	*@brief prints the map on the terminal.
 	*/
-	void print_map_terminal()
+	void print_map_terminal() const
 	{
 		for (size_t i = 0; i < R - 1; ++i)
 		{
@@ -633,6 +616,80 @@ public:
 		}
 		cout << "*\n"; //Last point in the row.
 	}
+
+
+	unsigned short try_(dot<R,C>* dot_1,dot<R,C>* dot_2) const
+	{
+		if (dot_1->is_full())
+			return 0;
+
+		if (dot_2->is_full())
+			return 0;
+
+		if (*dot_1 == *dot_2)
+			return 0;
+
+		//dot_2 is left side
+		if (get<0>(dot_1->get_pos()) - get<0>(dot_2->get_pos()) == 0 and 
+			get<1>(dot_1->get_pos()) - get<1>(dot_2->get_pos()) == 1)
+		{
+			if (dot_1->is_ul_corner() or dot_1->is_l_border() or 
+				dot_1->has_left() or dot_1->is_dl_corner())
+				return 0;
+
+			return 1;
+		}
+
+		//dot_2 is right side
+		if (get<0>(dot_1->get_pos()) - get<0>(dot_2->get_pos()) == 0 and 
+			get<1>(dot_1->get_pos()) - get<1>(dot_2->get_pos()) == -1)
+		{
+			if (dot_1->is_ur_corner() or dot_1->is_r_border() or 
+				dot_1->has_right() or dot_1->is_dr_corner())
+				return 0;
+
+			return 2;
+		}
+
+		//dot_2 is down side
+		if ( get<0>(dot_1->get_pos()) - get<0>(dot_2->get_pos()) == -1 and
+			 get<1>(dot_1->get_pos()) - get<1>(dot_2->get_pos()) == 0)
+		{
+			if (dot_1->is_dl_corner() or dot_1->is_dr_corner() or 
+				dot_1->is_d_border() or dot_1->has_down())
+				return 0;
+
+			return 3;
+		}
+
+		//dot_2 is up side
+		if ( get<0>(dot_1->get_pos()) - get<0>(dot_2->get_pos()) == 1 and
+			 get<1>(dot_1->get_pos()) - get<1>(dot_2->get_pos()) == 0)
+		{
+			if (dot_1->is_ul_corner() or dot_1->is_ur_corner() or 
+				dot_1->is_u_border() or dot_1->has_up())
+				return 0;
+
+			return 4;
+		}
+		else
+			return 0;
+		//dot_2 is off side;
+	}
+
+	bool try_move(move cur_move) const
+	{
+			
+		if (  get<0>(get<0>(cur_move)) >= R or get<0>(get<1>(cur_move)) >= C or 
+		 	  get<1>(get<0>(cur_move)) >= R or get<1>(get<1>(cur_move)) >= C   ) 
+			throw out_of_range("move out of range");
+
+		if (try_(DOT1,DOT2) and not is_full())
+			return true;
+		else
+			return false;
+	}
+
 };
 
 #endif 

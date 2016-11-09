@@ -6,6 +6,9 @@ using namespace std;
 
 int main()
 {
+
+	dot<3,3> dot_1;
+	dot<3,3> dot_2 = dot_1;
 	map<3,3> map_;
 
 	MOVE mv;
