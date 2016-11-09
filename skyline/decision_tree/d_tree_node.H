@@ -1,17 +1,7 @@
 # include <map.H>
-# include <tpl_tree_node.H>
 
+#include <iostream>
 # define POS pair<size_t,size_t>
-
-bool are_equal_moves(MOVE m1, MOVE m2)
-{
-	if (get<0>(m1) == get<0>(m2) and get<1>(m1) == get<1>(m2))
-		return true;
-	if (get<0>(m1) == get<1>(m2) and get<1>(m1) == get<0>(m2))
-		return true;
-
-	return false;
-}
 
 template <size_t R = 4, size_t C = 4> 
 class move_bucket
@@ -22,41 +12,44 @@ private:
 	MOVE actual_move;
 	map<R,C> actual_map;
 	long utility  = 0;
+	move_bucket<R,C> * children;
 
 public:
 	
-	move_bucket() : actual_move(), actual_map() 
+	move_bucket() : actual_move(), actual_map(), children(nullptr) 
 	{
 		/*empty*/
 	}
 
-	move_bucket(const map<R,C> & new_map, const MOVE & new_move)
+	move_bucket(const map<R,C> & new_map, const MOVE & new_move,move_bucket<R,C> *children_)
 	{
 		actual_move = new_move;
 		actual_map = new_map;
+		children = children_;
 	}
 
 	~move_bucket(){/*empty*/}
 
-	void set_bucket(const map<R,C> & new_map, const MOVE & new_move)
+	void set_bucket(const map<R,C> & new_map, const MOVE & new_move,move_bucket<R,C> *children_)
 	{
 		actual_move = new_move;
 		actual_map = new_map;
+		children = children_;
 		return;
 	}
 
 	const move_bucket & operator = (const move_bucket & bucket)
 	{
-		set_bucket(bucket.actual_map,bucket.actual_move);
+		set_bucket(bucket.actual_map,bucket.actual_move,bucket.children);
 
 	}
 
-	MOVE& get_move() 
+	MOVE & get_move() 
 	{
 		return actual_move;
 	}
 
-	map<R,C>& get_map()
+	map<R,C> & get_map()
 	{
 		return actual_map;
 	}
@@ -81,6 +74,12 @@ public:
 	void set_utility(const long & utility_)
 	{
 		utility = utility_;
+		return;
+	}
+
+	move_bucket<R,C> *& get_children()
+	{
+		return children;
 	}
 
 	void reset()
@@ -90,49 +89,73 @@ public:
 		get<1>(get<0>(actual_move)) = 0;
 		get<0>(get<1>(actual_move)) = 0;
 		get<1>(get<1>(actual_move)) = 0;
+		children = nullptr;
 	}
+
 };
 
 template <size_t R = 4, size_t C = 4, size_t lvl = 3> 
-class decision_node : public Tree_Node<move_bucket<R,C> >
+class dotandbox_tree
 {
+
+private:
+
+	move_bucket<R,C> * root;
+	size_t a_moves;
 
 public:
 
-	decision_node()
+	dotandbox_tree() : a_moves((R - 1) * (C - 1) * C), root(nullptr){/*empty*/}
+
+	dotandbox_tree(const map<R,C> & new_map, const MOVE & new_move)
 	{
-		/*empty*/
-	}
-
-	decision_node(const map<R,C> & new_map, const MOVE & new_move)
-	{
-		this->get_data().set_bucket(new_map,new_move);
-	}
-
-	~decision_node()
-	{
-		//delete_tree(this);
-	}
-
-	/*void delete_tree(decision_node * root)
-	{
-		if(root == nullptr)
-			return;
-
-		 for (auto itor = root->get_left_child(); itor != nullptr; itor = itor->get_right_sibling())
-		 	delete_tree((static_cast<decision_node*> (itor)));
-
-		 delete root;
-	}*/
-
-	void set(const map<R,C> & new_map, const MOVE & new_move)
-	{
-		this->get_data().set_bucket(new_map,new_move);
+		root = new move_bucket<R,C>(new_map,new_move,nullptr);
+		a_moves = (R - 1) * (C - 1) * C;
 		return;
 	}
 
-	void gen_children(decision_node * root,const map<R,C> & new_map, unsigned short player)
+	~dotandbox_tree(){/*empty*/}
+
+	void reset(move_bucket<R,C> *root_,size_t a_moves_)
 	{
+		if (root_->get_children() == nullptr)
+			return;
+
+		for (size_t i = 0; i < a_moves_; ++i)
+		{
+			reset(&root_->get_children()[i],a_moves_ - 1);
+			delete [] root_->get_children()[i].get_children();
+		}
+	
+		return;
+	}
+
+	void reset_tree()
+	{
+		reset(root,a_moves);
+		root->reset();
+		return;
+	}
+
+	void set(const map<R,C> & new_map, const MOVE & new_move)
+	{
+		root->set_bucket(new_map,new_move,nullptr);
+		a_moves -= 1;
+		return;
+	}
+
+	move_bucket<R,C> *& get_root()
+	{
+		return root;
+	}
+
+	move_bucket<R,C> * gen_children(const map<R,C> & new_map, unsigned short player, size_t a_moves_)
+	{
+
+		cout << "FLAG: "<< a_moves_ << "\n";
+
+		move_bucket<R,C> * children_ = new move_bucket<R,C>[a_moves_];
+		size_t pos = 0;
 		MOVE mv;
 		POS pos_aux;
 		get<0>(pos_aux) = 0;
@@ -142,7 +165,6 @@ public:
 		{	
 			for (size_t j = 1; j < C; ++j)
 			{
-
 				if (i != 0)
 				{
 					get<0>(get<0>(mv)) = get<0>(pos_aux);
@@ -151,9 +173,10 @@ public:
 					get<1>(get<1>(mv)) = j - 1;
 
 					if(new_map.try_move(mv))
-					{
-						root->insert_leftmost_child(new decision_node<R,C,lvl>(new_map,mv));
-						root->get_left_child()->get_data().get_map().play(mv,player);
+					{ 
+						children_[pos].set_bucket(new_map,mv,nullptr); 
+						children_[pos].get_map().play(mv,player);
+						pos ++;
 					}
 				}					
 
@@ -164,8 +187,9 @@ public:
 
 				if(new_map.try_move(mv))
 				{
-					root->insert_leftmost_child(new decision_node<R,C,lvl>(new_map,mv));
-					root->get_left_child()->get_data().get_map().play(mv,player);
+					children_[pos].set_bucket(new_map,mv,nullptr); 
+					children_[pos].get_map().play(mv,player);
+					pos ++;
 				}
 			}
 
@@ -178,55 +202,40 @@ public:
 				
 				if(new_map.try_move(mv))
 				{
-					root->insert_leftmost_child(new decision_node<R,C,lvl>(new_map,mv));
-					root->get_left_child()->get_data().get_map().play(mv,player);
+					children_[pos].set_bucket(new_map,mv,nullptr); 
+					children_[pos].get_map().play(mv,player);
+					pos ++;
 				}
 			}					
 
 			get<0>(pos_aux) = i + 1;
 			get<1>(pos_aux) = 0;
-		}	
+		}
+
+		return children_;	
 	}
 
-	void make_tree(decision_node *root,const map<R,C> & new_map, size_t cur_lvl)
+	void make_tree(move_bucket<R,C> *root_,const map<R,C> & new_map, size_t cur_lvl, size_t a_moves_)
 	{
-		if (cur_lvl >= lvl)	
+		if (cur_lvl >= lvl or a_moves_ == 0)	
 			return;
 
 		if (cur_lvl % 2 == 0)
-		 	gen_children(root,new_map,1);
+			root_->get_children() = gen_children(new_map,1,a_moves_);
 		else
-			gen_children(root,new_map,2);
+			root_->get_children() = gen_children(new_map,2,a_moves_);
 
-	    for (auto itor = root->get_left_child(); itor != nullptr; itor = itor->get_right_sibling())
-			make_tree(static_cast<decision_node*>(itor),itor->get_data().get_map(),cur_lvl + 1);
+	    for (size_t i = 0; i < a_moves_; i++)
+			make_tree(&root_->get_children()[i],root_->get_children()[i].get_map(),cur_lvl + 1,a_moves_ - 1);
 
 		return;
 	}
 
 	void make_decision_tree(const map<R,C> & new_map, const MOVE & new_move)
 	{
-		this->get_data().set_bucket(new_map,new_move);
-
-		make_tree(this,new_map,0);
+		set(new_map,new_move);
+		make_tree(root,new_map,0,a_moves);
 
 		return;
 	}
-
-	long get_utility()
-	{
-		if (this->is_leaf())
-			return	this->get_data().get_map().get_p1_score() - this->get_data().get_map().get_p2_score() ;
-		else
-			return this->get_data().get_utility();
-	} 
-
-	/*void reset()
-	{
-		  for (auto itor = this->get_left_child(); itor != nullptr; itor = itor->get_right_sibling())
-		  	destroy_tree(itor);
-
-		this->get_data().reset();
-	}*/
-
 };

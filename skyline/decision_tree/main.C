@@ -2,7 +2,7 @@
 
 int main()
 {
-	map<3,3> map_;
+	map<2,2> map_;
 
 	MOVE mv;
 
@@ -14,55 +14,47 @@ int main()
 
 	map_.play(mv,1);
 
-	get<0>(get<0>(mv)) = 1;
-	get<1>(get<0>(mv)) = 1;
+	//map_.print_map_terminal();
+
+	
+	dotandbox_tree<2,2,3>  d_t(map_,mv);
+
+	d_t.make_decision_tree(map_,mv);
+
+	/*d_t.reset_tree();
+
+	get<0>(get<0>(mv)) = 0;
+	get<1>(get<0>(mv)) = 0;
 
 	get<0>(get<1>(mv)) = 1;
 	get<1>(get<1>(mv)) = 0;
 
 	map_.play(mv,1);
 
-	get<0>(get<0>(mv)) = 1;
-	get<1>(get<0>(mv)) = 0;
+	d_t.make_decision_tree(map_,mv);*/
 
-	get<0>(get<1>(mv)) = 0;
-	get<1>(get<1>(mv)) = 0;
+	//cout << (d_t.get_root()->get_children() == nullptr);
 
-	map_.play(mv,1);
+	/*d_t.make_decision_tree(map_,mv);
 
-	map_.print_map_terminal();
+	d_t.reset_tree();*/
 
-	
-	decision_node<3,3,3> d_t(map_,mv);
 
-	d_t.make_decision_tree(map_,mv);
+	/*cout << "\n";
+	d_t.get_root()->get_map().print_map_terminal();
+	cout << "\n\n";
+
+	auto lvl = d_t.get_root()->get_children();
 
 	int counter_child = 1;
 
-	cout << "LVL1" << "\n\n";
+	cout << "LVL3" << "\n\n";
 
-	for (auto I = d_t.get_left_child(); I != nullptr; I = I->get_right_sibling())
+	for (int i = 0; i < 10; ++i)
 	{
 		cout << "CHILD [" << counter_child << "] " << "\n";
 
-		I->get_data().get_map().print_map_terminal();
-		
-		counter_child ++;
-	}
-
-	cout << d_t.get_right_child()->get_data().get_map().get_p1_score() << "\n";
-
-
-	counter_child = 1;
-
-	/*counter_child = 1;
-	cout << "LVL2" << "\n\n";
-
-	for (auto I = d_t.get_left_child()->get_right_sibling()->get_left_child(); I != nullptr; I = I->get_right_sibling())
-	{
-		cout << "CHILD [" << counter_child << "] " << "\n";
-
-		I->get_data().get_map().print_map_terminal();
+		lvl[i].get_map().print_map_terminal();
 		
 		counter_child ++;
 	}*/

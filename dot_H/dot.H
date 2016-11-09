@@ -40,6 +40,8 @@ public:
 	*/
 	dot(){/*empty*/};
 
+	~dot(){/*empty*/};
+
 	/**
 	*@brief Constructor by position
 	*
