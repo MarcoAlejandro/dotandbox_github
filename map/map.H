@@ -310,12 +310,18 @@ public:
 
 			if (case_ == 1)
 			{	
+				if (not dot_1->has_down())
+					return;
+
 				MOVE_DOWN_LEFT;
 				return;
 			}
 	
 			if (case_ == 2)
 			{
+				if (not dot_1->has_down())
+					return;
+
 				MOVE_DOWN_RIGTH;
 				return;
 			}
@@ -347,12 +353,18 @@ public:
 
 			if (case_ == 1)
 			{
+				if (not dot_1->has_up())
+					return;
+
 				MOVE_UP_LEFT;
 				return;
 			}
 
 			if (case_ == 2)
 			{
+				if (not dot_1->has_up())
+					return;
+
 				MOVE_UP_RIGTH;
 				return;
 			}
@@ -383,12 +395,18 @@ public:
 
 			if (case_ == 4)
 			{
+				if(not dot_1->has_right())
+					return;
+
 				MOVE_UP_RIGTH;
 				return;
 			}
 
 			if (case_ == 3)
 			{
+				if(not dot_1->has_right())
+					return;
+
 				MOVE_DOWN_RIGTH;
 				return;
 			}
@@ -419,12 +437,18 @@ public:
 
 			if (case_ == 4)
 			{
+				if(not dot_1->has_left())
+					return;
+
 				MOVE_UP_LEFT;
 				return;
 			}
 
 			if (case_ == 3)
 			{	
+				if(not dot_1->has_left())
+					return;
+
 				MOVE_DOWN_LEFT;
 				return;
 			}
@@ -684,7 +708,7 @@ public:
 		 	  get<1>(get<0>(cur_move)) >= R or get<1>(get<1>(cur_move)) >= C   ) 
 			throw out_of_range("move out of range");
 
-		if (try_(DOT1,DOT2))
+		if (try_(DOT1,DOT2)  and not is_full())
 			return true;
 		else
 			return false;

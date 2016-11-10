@@ -30,7 +30,8 @@ template<size_t R,size_t C> class dot
 	
 private:
 	bool _has_left, _has_right, _has_up, _has_down;
-	bool ur_corner,ul_corner,dr_corner, dl_corner, u_border, d_border, r_border, l_border;
+	bool ur_corner,ul_corner,dr_corner, dl_corner, u_border, d_border, 
+		 r_border, l_border;
 	pair< size_t, size_t> position;
 
 public:

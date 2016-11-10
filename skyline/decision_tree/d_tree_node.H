@@ -136,6 +136,7 @@ public:
 	{
 		reset(root,a_moves);
 		root->reset();
+		//a_moves = 2 * (C - 1) * C;
 		return;
 	}
 
@@ -219,7 +220,6 @@ public:
 	void make_tree(move_bucket<R,C> *root_,const map<R,C> & new_map, 
 				   size_t cur_lvl, size_t a_moves_)
 	{
-		
 		if (cur_lvl >= lvl or a_moves_ == 0)	
 			return;
 
