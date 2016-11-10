@@ -567,7 +567,8 @@ public:
 	}
 
 	/**
-	 *@brief resets entire map by reseting each dot after reset is done both players
+	 *@brief resets entire map by reseting each dot after reset is done both 
+	 players
 	 have "0" as score. 
 	*/
 	void reset()
@@ -678,13 +679,12 @@ public:
 	}
 
 	bool try_move(move cur_move) const
-	{
-			
+	{	
 		if (  get<0>(get<0>(cur_move)) >= R or get<0>(get<1>(cur_move)) >= C or 
 		 	  get<1>(get<0>(cur_move)) >= R or get<1>(get<1>(cur_move)) >= C   ) 
 			throw out_of_range("move out of range");
 
-		if (try_(DOT1,DOT2) and not is_full())
+		if (try_(DOT1,DOT2))
 			return true;
 		else
 			return false;

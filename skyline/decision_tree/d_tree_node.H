@@ -21,7 +21,8 @@ public:
 		/*empty*/
 	}
 
-	move_bucket(const map<R,C> & new_map, const MOVE & new_move,move_bucket<R,C> *children_)
+	move_bucket(const map<R,C> & new_map, const MOVE & new_move,
+				move_bucket<R,C> *children_)
 	{
 		actual_move = new_move;
 		actual_map = new_map;
@@ -30,7 +31,8 @@ public:
 
 	~move_bucket(){/*empty*/}
 
-	void set_bucket(const map<R,C> & new_map, const MOVE & new_move,move_bucket<R,C> *children_)
+	void set_bucket(const map<R,C> & new_map, const MOVE & new_move,
+					move_bucket<R,C> *children_)
 	{
 		actual_move = new_move;
 		actual_map = new_map;
@@ -149,7 +151,8 @@ public:
 		return root;
 	}
 
-	move_bucket<R,C> * gen_children(const map<R,C> & new_map, unsigned short player, size_t a_moves_)
+	move_bucket<R,C> * gen_children(const map<R,C> & new_map, unsigned short 
+									player, size_t a_moves_)
 	{
 		move_bucket<R,C> * children_ = new move_bucket<R,C>[a_moves_];
 		size_t pos = 0;
@@ -162,6 +165,7 @@ public:
 		{	
 			for (size_t j = 1; j < C; ++j)
 			{
+				
 				if (i != 0)
 				{
 					get<0>(get<0>(mv)) = get<0>(pos_aux);
@@ -171,13 +175,9 @@ public:
 
 					if(new_map.try_move(mv))
 					{ 
-
-						new_map.print_map_terminal();
-						cout << "pos: " << pos << "moves: " << a_moves_ << endl;
 						children_[pos].set_bucket(new_map,mv,nullptr); 
 						children_[pos].get_map().play(mv,player);
 						pos ++;
-						cout << "FLAG2" << endl;
 					}
 				}					
 
@@ -187,7 +187,7 @@ public:
 				get<1>(pos_aux) = get<1>(get<1>(mv)) = j;
 
 				if(new_map.try_move(mv))
-				{
+				{	
 					children_[pos].set_bucket(new_map,mv,nullptr); 
 					children_[pos].get_map().play(mv,player);
 					pos ++;
@@ -216,8 +216,10 @@ public:
 		return children_;	
 	}
 
-	void make_tree(move_bucket<R,C> *root_,const map<R,C> & new_map, size_t cur_lvl, size_t a_moves_)
+	void make_tree(move_bucket<R,C> *root_,const map<R,C> & new_map, 
+				   size_t cur_lvl, size_t a_moves_)
 	{
+		
 		if (cur_lvl >= lvl or a_moves_ == 0)	
 			return;
 
@@ -227,7 +229,8 @@ public:
 			root_->get_children() = gen_children(new_map,2,a_moves_);
 
 	    for (size_t i = 0; i < a_moves_; i++)
-			make_tree(&root_->get_children()[i],root_->get_children()[i].get_map(),cur_lvl + 1,a_moves_ - 1);
+			make_tree(&root_->get_children()[i],
+			root_->get_children()[i].get_map(),cur_lvl + 1,a_moves_ - 1);
 
 		return;
 	}

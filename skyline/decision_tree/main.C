@@ -17,9 +17,28 @@ int main()
 	//map_.print_map_terminal();
 
 	
-	dotandbox_tree<3,3,8>  d_t(map_,mv);
+	dotandbox_tree<3,3,11>  d_t(map_,mv);
 
 	d_t.make_decision_tree(map_,mv);
+
+	/*cout << "\n";
+	d_t.get_root()->get_map().print_map_terminal();
+	cout << "\n\n";
+
+	auto lvl = d_t.get_root()->get_children();
+
+	int counter_child = 1;
+
+	cout << "LVL3" << "\n\n";
+
+	for (int i = 0; i < 3; ++i)
+	{
+		cout << "CHILD [" << counter_child << "] " << "\n";
+
+		lvl[i].get_map().print_map_terminal();
+		
+		counter_child ++;
+	}*/
 
 	/*d_t.reset_tree();
 
