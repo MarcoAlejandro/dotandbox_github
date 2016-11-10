@@ -64,6 +64,34 @@ if (boxes[get<0>(dot_1->get_pos()) - 1][get<1>(dot_1->get_pos()) + 1]->has_down(
 	increase_score(player); 	     													\
 }
 
+# define MOVE_DOWN_RIGTH_CHECK 																\
+if (boxes[get<0>(dot_1->get_pos()) + 1][get<1>(dot_1->get_pos()) + 1]->has_up() and 	\
+	boxes[get<0>(dot_1->get_pos()) + 1][get<1>(dot_1->get_pos()) + 1]->has_left()) 		\
+{																						\
+	return true; 	     													\
+}
+
+# define MOVE_DOWN_LEFT_CHECK																\
+if (boxes[get<0>(dot_1->get_pos()) + 1][get<1>(dot_1->get_pos()) - 1]->has_up() and 	\
+	boxes[get<0>(dot_1->get_pos()) + 1][get<1>(dot_1->get_pos()) - 1]->has_right()) 	\
+{																						\
+	return true;      														\
+}
+
+# define MOVE_UP_LEFT_CHECK 																	\
+if (boxes[get<0>(dot_1->get_pos()) - 1][get<1>(dot_1->get_pos()) - 1]->has_down() and 	\
+	boxes[get<0>(dot_1->get_pos()) - 1][get<1>(dot_1->get_pos()) - 1]->has_right()) 	\
+{																						\
+	return true; 	     													\
+}
+
+# define MOVE_UP_RIGTH_CHECK 																	\
+if (boxes[get<0>(dot_1->get_pos()) - 1][get<1>(dot_1->get_pos()) + 1]->has_down() and	\
+	boxes[get<0>(dot_1->get_pos()) - 1][get<1>(dot_1->get_pos()) + 1]->has_left()) 	    \
+{																						\
+	return true; 	     													\
+}
+
 using namespace std;
 
 /**
@@ -575,6 +603,369 @@ public:
 		return;
 	}
 
+
+	/**
+	*@brief wich_case() is used by was_point()
+	*
+	*This function is to obtain de case that play_() 
+	 will return for a certain pair of dots.
+	*@return size_t representing the case.
+	*/
+	size_t wich_case(dot<R,C>& dot_1, dot<R,C>& dot_2) 
+	{
+		//dot_2 is left side
+		if (get<0>(dot_1.get_pos()) - get<0>(dot_2.get_pos()) == 0 and 
+			get<1>(dot_1.get_pos()) - get<1>(dot_2.get_pos()) == 1)
+		{
+			if (dot_1.is_ul_corner() or dot_1.is_l_border() or 
+				  dot_1.is_dl_corner())
+				return 0;
+
+			return 1;
+		}
+		
+		//dot_2 is right side
+		if (get<0>(dot_1.get_pos()) - get<0>(dot_2.get_pos()) == 0 and 
+			get<1>(dot_1.get_pos()) - get<1>(dot_2.get_pos()) == -1)
+		{
+			if (dot_1.is_ur_corner() or dot_1.is_r_border() or 
+				 dot_1.is_dr_corner())
+				return 0;
+				
+			return 2;
+		}
+		
+		//dot_2 is down side
+		if ( get<0>(dot_1.get_pos()) - get<0>(dot_2.get_pos()) == -1 and
+			 get<1>(dot_1.get_pos()) - get<1>(dot_2.get_pos()) == 0)
+		{
+			if (dot_1.is_dl_corner() or dot_1.is_dr_corner() or 
+				dot_1.is_d_border())
+				return 0;
+
+			return 3;
+		}
+		
+		//dot_2 is up side
+		if ( get<0>(dot_1.get_pos()) - get<0>(dot_2.get_pos()) == 1 and
+			 get<1>(dot_1.get_pos()) - get<1>(dot_2.get_pos()) == 0)
+		{
+			if (dot_1.is_ul_corner() or dot_1.is_ur_corner() or 
+				dot_1.is_u_border())
+				return 0;
+
+			return 4;
+		}
+		
+		return 0;
+	}
+
+  /**
+  *@brief was_point() return true if the dot is a corner of a marked box.
+  */
+  bool was_point(MOVE m ) 
+  {
+  	dot<R,C> * dot_1 = new dot<R,C>(get<0>(m));
+  	dot<R,C> * dot_2 = new dot<R,C>(get<1>(m));
+  	size_t case_ = wich_case(*dot_1,*dot_2);
+  
+  	if (dot_1->is_ul_corner())
+		{
+			if(not dot_1->has_right() or not dot_1->has_down())
+				return false;
+
+			MOVE_DOWN_RIGTH_CHECK;
+			return false;
+		}
+
+		if (dot_1->is_ur_corner())
+		{
+			if(not dot_1->has_left() or not dot_1->has_down())
+				return false;
+
+			MOVE_DOWN_LEFT_CHECK;
+			return false;
+		}
+
+		if (dot_1->is_dr_corner())
+		{
+			if(not dot_1->has_left() or not dot_1->has_up())
+				return false;
+
+			MOVE_UP_LEFT_CHECK;
+			return false;
+		}
+		
+		if (dot_1->is_dl_corner())
+		{
+			if(not dot_1->has_right() or not dot_1->has_up())
+				return false;
+
+			MOVE_UP_RIGTH_CHECK;
+			return false;
+		}
+
+		if(dot_1->is_u_border())
+		{
+			if(not dot_1->has_right() and not dot_1->has_left())
+				return false;
+
+			if (case_ == 1)
+			{	
+				if (not dot_1->has_down())
+					return false;
+
+				MOVE_DOWN_LEFT_CHECK;
+				return false;
+			}
+	
+			if (case_ == 2)
+			{
+				if (not dot_1->has_down())
+					return false;
+
+				MOVE_DOWN_RIGTH_CHECK;
+				return false;
+			}
+			
+			if(case_ == 3)
+			{
+				if (not dot_1->has_right())
+				{
+					MOVE_DOWN_LEFT_CHECK;
+					return false;
+				}
+
+				if (not dot_1->has_left())
+				{
+					MOVE_DOWN_RIGTH_CHECK;
+					return false;
+				}
+
+				MOVE_DOWN_LEFT_CHECK;
+				MOVE_DOWN_RIGTH_CHECK;
+				return false;
+			}
+		}
+
+		if(dot_1->is_d_border())
+		{
+			if(not dot_1->has_right() and not dot_1->has_left())
+				return false;
+
+			if (case_ == 1)
+			{
+				if (not dot_1->has_up())
+					return false;
+
+				MOVE_UP_LEFT_CHECK;
+				return false;
+			}
+
+			if (case_ == 2)
+			{
+				if (not dot_1->has_up())
+					return false;
+
+				MOVE_UP_RIGTH_CHECK;
+				return false;
+			}
+		
+			if (case_ == 4)
+			{
+				if (not dot_1->has_right())
+				{
+					MOVE_UP_LEFT_CHECK;
+					return false;
+				}
+
+				if (not dot_1->has_left())
+				{
+					MOVE_UP_RIGTH_CHECK;
+					return false;
+				}
+				MOVE_UP_RIGTH_CHECK;
+				MOVE_UP_LEFT_CHECK;
+				return false;
+			}
+		}
+
+		if(dot_1->is_l_border())
+		{
+			if(not dot_1->has_up() and not dot_1->has_down())
+				return false;
+
+			if (case_ == 4)
+			{
+				if(not dot_1->has_right())
+					return false;
+
+				MOVE_UP_RIGTH_CHECK;
+				return false;
+			}
+
+			if (case_ == 3)
+			{
+				if(not dot_1->has_right())
+					return false;
+
+				MOVE_DOWN_RIGTH_CHECK;
+				return false;
+			}
+			
+			if (case_ == 2)
+			{
+				if (not dot_1->has_up())
+				{
+					MOVE_DOWN_RIGTH_CHECK;
+					return false;
+				}
+
+				if (not dot_1->has_down())
+				{
+					MOVE_UP_RIGTH_CHECK;
+					return false;
+				}
+				MOVE_UP_RIGTH_CHECK;
+				MOVE_DOWN_RIGTH_CHECK;
+				return false;
+			}
+		}
+
+		if(dot_1->is_r_border())
+		{
+			if(not dot_1->has_up() and not dot_1->has_down())
+				return false;
+
+			if (case_ == 4)
+			{
+				if(not dot_1->has_left())
+					return false;
+
+				MOVE_UP_LEFT_CHECK;
+				return false;
+			}
+
+			if (case_ == 3)
+			{	
+				if(not dot_1->has_left())
+					return false;
+
+				MOVE_DOWN_LEFT_CHECK;
+				return false;
+			}
+		
+			if (case_ == 1)
+			{
+				if (not dot_1->has_up())
+				{
+					MOVE_DOWN_LEFT_CHECK;
+					return false;
+				}
+
+				if (not dot_1->has_down())
+				{
+					MOVE_UP_LEFT_CHECK;
+					return false;
+				}
+
+				MOVE_UP_LEFT_CHECK;
+				MOVE_DOWN_LEFT_CHECK;
+				return false;
+			}
+		}
+
+		if (case_ == 4)
+		{
+			if (not dot_1->has_left() and not dot_1->has_right())
+				return false;
+
+			if (not dot_1->has_right())
+			{
+				MOVE_UP_LEFT_CHECK;
+				return false;
+			}
+
+			if (not dot_1->has_left())
+			{
+				MOVE_UP_RIGTH_CHECK;
+				return false;
+			}
+
+			MOVE_UP_RIGTH_CHECK;
+			MOVE_UP_LEFT_CHECK;
+			return false;
+		}
+
+		if (case_ == 3)
+		{
+			if (not dot_1->has_left() and not dot_1->has_right())
+				return false;
+
+			if (not dot_1->has_right())
+			{
+				MOVE_DOWN_LEFT_CHECK;
+				return false;
+			}
+
+			if (not dot_1->has_left())
+			{
+				MOVE_DOWN_RIGTH_CHECK;
+				return false;
+			}
+
+			MOVE_DOWN_LEFT_CHECK;
+			MOVE_DOWN_RIGTH_CHECK;
+			return false;
+		}
+
+		if(case_ == 2)
+		{
+			if(not dot_1->has_up() and not dot_1->has_down())
+				return false;
+
+			if (not dot_1->has_up())
+			{
+				MOVE_DOWN_RIGTH_CHECK;
+				return false;
+			}
+
+			if (not dot_1->has_down())
+			{
+				MOVE_UP_RIGTH_CHECK;
+				return false;
+			}
+
+			MOVE_UP_RIGTH_CHECK;
+			MOVE_DOWN_RIGTH_CHECK;
+			return false;
+		}
+
+		if(case_ == 1)
+		{
+			if(not dot_1->has_up() and not dot_1->has_down())
+				return false;
+
+			if (not dot_1->has_up())
+			{
+				MOVE_DOWN_LEFT_CHECK;
+				return false;
+			}
+
+			if (not dot_1->has_down())
+			{
+				MOVE_UP_LEFT_CHECK;
+				return false;
+			}
+
+			MOVE_UP_LEFT_CHECK;
+			MOVE_DOWN_LEFT_CHECK;
+			return false;
+		}
+
+		return false;
+  }
+  
 	/**
 	 *@brief makes sure move is into range and also works as interface of 
 	 	function play_, first evaluates if move can be done and then gives point

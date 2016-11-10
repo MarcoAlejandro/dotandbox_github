@@ -357,10 +357,21 @@ public:
 			return;
 
 		if (cur_lvl % 2 == 0)
-			root_->get_children() = gen_children(new_map,1,a_moves_);
+		{
+			if(root_->get_map().was_point(root_->get_move()))
+				root_->get_children() = gen_children(new_map,2,a_moves_);
+			
+			else	
+				root_->get_children() = gen_children(new_map,1,a_moves_);
+		}
 		else
-			root_->get_children() = gen_children(new_map,2,a_moves_);
-
+		{
+			if(root_->get_map().was_point(root_->get_move()))
+				root_->get_children() = gen_children(new_map,1,a_moves_);	
+			
+			else
+				root_->get_children() = gen_children(new_map,2,a_moves_);
+		}
 	    for (size_t i = 0; i < a_moves_; i++)
 			make_tree(&root_->get_children()[i],
 			root_->get_children()[i].get_map(),cur_lvl + 1,a_moves_ - 1);
@@ -380,3 +391,5 @@ public:
 		return;
 	}
 };
+
+# endif D_TREE_NODE_H
