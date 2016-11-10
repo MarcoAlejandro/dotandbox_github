@@ -2,7 +2,7 @@
 
 int main()
 {
-	map<2,2> map_;
+	map<3,3> map_;
 
 	MOVE mv;
 
@@ -17,7 +17,7 @@ int main()
 	//map_.print_map_terminal();
 
 	
-	dotandbox_tree<2,2,3>  d_t(map_,mv);
+	dotandbox_tree<3,3,8>  d_t(map_,mv);
 
 	d_t.make_decision_tree(map_,mv);
 

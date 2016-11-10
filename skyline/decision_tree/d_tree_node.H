@@ -105,12 +105,12 @@ private:
 
 public:
 
-	dotandbox_tree() : a_moves((R - 1) * (C - 1) * C), root(nullptr){/*empty*/}
+	dotandbox_tree() : a_moves(2 * (C - 1) * C), root(nullptr){/*empty*/}
 
 	dotandbox_tree(const map<R,C> & new_map, const MOVE & new_move)
 	{
 		root = new move_bucket<R,C>(new_map,new_move,nullptr);
-		a_moves = (R - 1) * (C - 1) * C;
+		a_moves = 2 * (C - 1) * C;
 		return;
 	}
 
@@ -151,9 +151,6 @@ public:
 
 	move_bucket<R,C> * gen_children(const map<R,C> & new_map, unsigned short player, size_t a_moves_)
 	{
-
-		cout << "FLAG: "<< a_moves_ << "\n";
-
 		move_bucket<R,C> * children_ = new move_bucket<R,C>[a_moves_];
 		size_t pos = 0;
 		MOVE mv;
@@ -174,9 +171,13 @@ public:
 
 					if(new_map.try_move(mv))
 					{ 
+
+						new_map.print_map_terminal();
+						cout << "pos: " << pos << "moves: " << a_moves_ << endl;
 						children_[pos].set_bucket(new_map,mv,nullptr); 
 						children_[pos].get_map().play(mv,player);
 						pos ++;
+						cout << "FLAG2" << endl;
 					}
 				}					
 

@@ -5,4 +5,4 @@ main.exe: d_tree_node.H main.C
 	$(CXX) -I. -I../../map/ -I../../dot_H/ main.C -o main.exe
 
 clean:
-	$(RM) *~ *.o main 
+	$(RM) *~ *.o main.exe 
