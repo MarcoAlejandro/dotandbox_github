@@ -2,7 +2,7 @@
 
 int main()
 {
-	map<2,2> map_;
+	map<3,3> map_;
 
 	MOVE mv;
 
@@ -18,11 +18,14 @@ int main()
 	//map_.print_map_terminal();
 
 	
-	dotandbox_tree<2,2,3> * d_t = new dotandbox_tree<2,2,3>(map_,mv);
+	dotandbox_tree<3,3,5> * d_t = new dotandbox_tree<3,3,5>(map_,mv);
 
 	d_t->make_decision_tree(map_,mv,2);
 	
-	delete d_t;
+	for (size_t i = 0; i < 11 ; ++i)
+	{
+		cout << "utility: " <<d_t->get_root()->get_children()[i].get_utility() << endl;
+	}
 
 	/*cout << "\n";
 	d_t.get_root()->get_map().print_map_terminal();

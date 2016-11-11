@@ -369,10 +369,23 @@ public:
 			root_->get_children() = gen_children(new_map,player,a_moves_);
 		}
 		
+		long biggest_utility = root_->get_children()[0].get_utility();
+
 	    for (size_t i = 0; i < a_moves_; i++)
+		{
 			make_tree(&root_->get_children()[i],
 			root_->get_children()[i].get_map(),cur_lvl + 1,a_moves_ - 1,player);
 
+			if (root_->get_children()[i].get_children() == nullptr)
+				root_->get_children()[i].set_utility(
+					root_->get_children()[i].get_map().get_p1_score() - 
+					root_->get_children()[i].get_map().get_p2_score() );
+
+			if (root_->get_children()[i].get_utility() >= biggest_utility)
+				biggest_utility = root_->get_children()[i].get_utility();
+		}
+		
+		root_->set_utility(biggest_utility);		
 		return;
 	}
 
