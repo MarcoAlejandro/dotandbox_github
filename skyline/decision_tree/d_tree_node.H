@@ -351,30 +351,27 @@ public:
 	 *@brief creates entire children generation of root.
 	*/
 	void make_tree(move_bucket<R,C> *root_,const map<R,C> & new_map, 
-				   size_t cur_lvl, size_t a_moves_)
+				   size_t cur_lvl, size_t a_moves_, unsigned short player)
 	{
 		if (cur_lvl >= lvl or a_moves_ == 0)	
 			return;
 
-		if (cur_lvl % 2 == 0)
-		{
-			if(root_->get_map().was_point(root_->get_move()))
-				root_->get_children() = gen_children(new_map,2,a_moves_);
-			
-			else	
-				root_->get_children() = gen_children(new_map,1,a_moves_);
-		}
+		if(root_->get_map().was_point(root_->get_move()))
+			root_->get_children() = gen_children(new_map,player,a_moves_);
+		
 		else
-		{
-			if(root_->get_map().was_point(root_->get_move()))
-				root_->get_children() = gen_children(new_map,1,a_moves_);	
-			
+		{	
+			if (player == 1)
+				player = 2;
 			else
-				root_->get_children() = gen_children(new_map,2,a_moves_);
+				player = 1;
+
+			root_->get_children() = gen_children(new_map,player,a_moves_);
 		}
+		
 	    for (size_t i = 0; i < a_moves_; i++)
 			make_tree(&root_->get_children()[i],
-			root_->get_children()[i].get_map(),cur_lvl + 1,a_moves_ - 1);
+			root_->get_children()[i].get_map(),cur_lvl + 1,a_moves_ - 1,player);
 
 		return;
 	}
@@ -383,13 +380,14 @@ public:
 	 *@brief creates entire children generation of root and sets root with a new
 	 		 move.
 	*/
-	void make_decision_tree(const map<R,C> & new_map, const MOVE & new_move)
+	void make_decision_tree(const map<R,C> & new_map, const MOVE & new_move,
+							unsigned short player)
 	{
 		set(new_map,new_move);
-		make_tree(root,new_map,0,a_moves);
+		make_tree(root,new_map,0,a_moves, player);
 
 		return;
 	}
 };
 
-# endif D_TREE_NODE_H
+# endif

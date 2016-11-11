@@ -20,7 +20,7 @@ int main()
 	
 	dotandbox_tree<2,2,3> * d_t = new dotandbox_tree<2,2,3>(map_,mv);
 
-	d_t->make_decision_tree(map_,mv);
+	d_t->make_decision_tree(map_,mv,2);
 	
 	delete d_t;
 
