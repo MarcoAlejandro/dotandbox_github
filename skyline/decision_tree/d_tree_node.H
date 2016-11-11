@@ -1,8 +1,35 @@
-# include <map.H>
+# ifndef D_TREE_NODE_H
+# define D_TREE_NODE_H
 
-#include <iostream>
+# include <map.H>
+# include <iostream>
+/**
+ *@file d_tree_node.H
+ *
+ *@brief implementation on C++ of a decision tree for game dot and boxes, it is
+ 	a dimensioned tree, because moves into a map are a finite number depending
+ 	on the map, that number of moves is going to increase exponentially 
+ 	depending on map. that is why this tree is implemented with arrays on each
+ 	level.  
+*
+*@author CodeMakers.
+*@version 1.0.
+*@date 11/10/2016
+*/
+
+/**
+ *@brief macro to have a better code readability.
+   POS = represents position into map.
+*/
 # define POS pair<size_t,size_t>
 
+/**
+ *@brief move_bucket class
+ *
+ *move_bucket class is a template. 
+ *@param R is the number of rows in the map.
+ *@param C is the number of columns in the map.
+ */
 template <size_t R = 4, size_t C = 4> 
 class move_bucket
 {
@@ -16,21 +43,39 @@ private:
 
 public:
 	
+	/**
+	 *@brief default constructor of class move_bucket, sets move_bucket with
+	  default values.
+	*/
 	move_bucket() : actual_move(), actual_map(), children(nullptr) 
 	{
 		/*empty*/
 	}
 
+	/**
+	 *@brief constructor of class move_bucket, sets move_bucket with values
+	 		 given by user.
+	 		 map move_bucket is going to be set with has got to have move passed
+	 		 by parameter into its current moves.
+	*/
 	move_bucket(const map<R,C> & new_map, const MOVE & new_move,
 				move_bucket<R,C> *children_)
 	{
 		actual_move = new_move;
 		actual_map = new_map;
 		children = children_;
+		return;
 	}
 
+	/**
+	 *@brief destructor of class move_bucket, it is empty because memory is 
+	 		 manage by decision tree.
+	*/
 	~move_bucket(){/*empty*/}
 
+	/**
+	 *@brief sets bucket with parameter values after being instanciated.
+	*/
 	void set_bucket(const map<R,C> & new_map, const MOVE & new_move,
 					move_bucket<R,C> *children_)
 	{
@@ -40,50 +85,81 @@ public:
 		return;
 	}
 
+	/**
+	 *@brief definition of operator = for class move_bucket that allows 
+	 		 move_bucket to be copied.
+	*/
 	const move_bucket & operator = (const move_bucket & bucket)
 	{
 		set_bucket(bucket.actual_map,bucket.actual_move,bucket.children);
 
 	}
 
+	/**
+	 *@brief returns current move into move_bucket.
+	*/
 	MOVE & get_move() 
 	{
 		return actual_move;
 	}
 
+	/**
+	 *@brief returns current map into move_bucket.
+	*/
 	map<R,C> & get_map()
 	{
 		return actual_map;
 	}
 
+	/**
+	 *@brief sets move into move_bucket.
+	*/
 	void set_move(const MOVE &move_)
 	{
 		actual_move = move_;
 		return;
 	}
 
+	/**
+	 *@brief sets map into move_bucket.
+	*/
 	void set_map(const map<R,C> &map_)
 	{
 		actual_map = map_;
 		return;
 	}
 
+	/**
+	 *@brief returns utility of move_bucket, utility is used for skyline to
+	 		 select best move for next movement.
+	*/
 	long get_utility()
 	{
 		return utility;
 	}
 
+	/**
+	 *@brief sets utility of move_bucket, utility is used for skyline to
+	 		 select best move for next movement.
+	*/
 	void set_utility(const long & utility_)
 	{
 		utility = utility_;
 		return;
 	}
 
+	/**
+	 *@brief returns reference pointer to children, with this pointer every 
+	 	     single child can be used.
+	*/
 	move_bucket<R,C> *& get_children()
 	{
 		return children;
 	}
 
+	/**
+	 *@brief resets move_bucket to default values.
+	*/
 	void reset()
 	{
 		actual_map.reset();
@@ -96,6 +172,14 @@ public:
 
 };
 
+/**
+ *@brief dotandbox_tree class.
+ *
+ *move_bucket class is a template. 
+ *@param R is the number of rows in the map.
+ *@param C is the number of columns in the map.
+ *@param lvl number of generations tree will have.
+ */
 template <size_t R = 4, size_t C = 4, size_t lvl = 3> 
 class dotandbox_tree
 {
@@ -107,8 +191,17 @@ private:
 
 public:
 
+	/**
+	 *@brief default constructor of class dotandbox_tree, sets dotandbox_tree
+	  		 with default values.
+	*/
 	dotandbox_tree() : a_moves(2 * (C - 1) * C), root(nullptr){/*empty*/}
 
+	/**
+	 *@brief constructor of class dotandbox_tree, it is used to set 
+	 	     dotandbox_tree with first move, giving parameters to root, also
+	 	     seting max number of moves.
+	*/	
 	dotandbox_tree(const map<R,C> & new_map, const MOVE & new_move)
 	{
 		root = new move_bucket<R,C>(new_map,new_move,nullptr);
@@ -116,8 +209,19 @@ public:
 		return;
 	}
 
-	~dotandbox_tree(){/*empty*/}
+	/**
+	 *@brief destructor of class dotandbox_tree, function deletes level by level
+	 		 starting form the botton.
+	*/
+	~dotandbox_tree()
+	{
+		reset(root,a_moves);
+		delete root;
+	}
 
+	/**
+	 *@brief resets dotandbox_tree by deleting each level except for root.
+	*/
 	void reset(move_bucket<R,C> *root_,size_t a_moves_)
 	{
 		if (root_->get_children() == nullptr)
@@ -132,14 +236,33 @@ public:
 		return;
 	}
 
+	/**
+	 *@brief resets dotandbox_tree by deleting each level except for root, root 
+	 		 is reset with default values.
+	*/
 	void reset_tree()
 	{
 		reset(root,a_moves);
 		root->reset();
-		//a_moves = 2 * (C - 1) * C;
 		return;
 	}
 
+	/**
+	 *@brief resets dotandbox_tree by deleting each level except for root, root
+	 		 is reset with default values and avalible moves with max number of 
+	 		 moves into map.
+	*/
+	void delete_tree()
+	{
+		reset(root,a_moves);
+		root->reset();
+		a_moves = 2 * (C - 1) * C;
+		return;
+	}
+
+	/**
+	 *@brief sets tree after being reset with a new map and move.
+	*/
 	void set(const map<R,C> & new_map, const MOVE & new_move)
 	{
 		root->set_bucket(new_map,new_move,nullptr);
@@ -147,11 +270,18 @@ public:
 		return;
 	}
 
+	/**
+	 *@brief returns root of tree.
+	*/
 	move_bucket<R,C> *& get_root()
 	{
 		return root;
 	}
 
+	/**
+	 *@brief creates array with children of a move, param a_moves_ tells number
+	 		 of children.
+	*/
 	move_bucket<R,C> * gen_children(const map<R,C> & new_map, unsigned short 
 									player, size_t a_moves_)
 	{
@@ -217,6 +347,9 @@ public:
 		return children_;	
 	}
 
+	/**
+	 *@brief creates entire children generation of root.
+	*/
 	void make_tree(move_bucket<R,C> *root_,const map<R,C> & new_map, 
 				   size_t cur_lvl, size_t a_moves_)
 	{
@@ -235,6 +368,10 @@ public:
 		return;
 	}
 
+	/**
+	 *@brief creates entire children generation of root and sets root with a new
+	 		 move.
+	*/
 	void make_decision_tree(const map<R,C> & new_map, const MOVE & new_move)
 	{
 		set(new_map,new_move);

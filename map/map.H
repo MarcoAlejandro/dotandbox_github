@@ -106,18 +106,29 @@ public:
 				delete boxes[i][j];
 	}
 
-
+	/**
+	 *@brief copy constructor of class map.
+	 		sets entire map by coping each dot of map given by parameter.
+	*/
 	map(const map & map_)
 	{
 		copy_map(map_);
 	}
 
+	/**
+	 *@brief definition of operator = for class map.
+	 		 function copies entire map with map given by parameter.
+	*/
 	const map & operator = (const map & map_)
 	{
 		copy_map(map_);
 		return *this;
 	}
 
+	/**
+	 *@brief copies map with map given by parameter by coping each dot
+	 		 of map given by parameter.
+	*/
 	void copy_map(const map & map_)
 	{
 		p1_score = map_.p1_score;
@@ -642,7 +653,11 @@ public:
 		cout << "*\n"; //Last point in the row.
 	}
 
-
+	/**
+	*@brief tells if move given by dots could be done or not, on afirmative case
+			returns wich kind of move was it.
+	*@return case of move.
+	*/
 	unsigned short try_(dot<R,C>* dot_1,dot<R,C>* dot_2) const
 	{
 		if (dot_1->is_full())
@@ -702,6 +717,9 @@ public:
 		//dot_2 is off side;
 	}
 
+	/**
+	*@brief tells if could be done or not.
+	*/
 	bool try_move(move cur_move) const
 	{	
 		if (  get<0>(get<0>(cur_move)) >= R or get<0>(get<1>(cur_move)) >= C or 

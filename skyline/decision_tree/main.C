@@ -18,23 +18,11 @@ int main()
 	//map_.print_map_terminal();
 
 	
-	dotandbox_tree<2,2,3>  d_t(map_,mv);
+	dotandbox_tree<2,2,3> * d_t = new dotandbox_tree<2,2,3>(map_,mv);
 
-	d_t.make_decision_tree(map_,mv);
-
-	d_t.reset_tree();
-
-	get<0>(get<0>(mv)) = 0;
-	get<1>(get<0>(mv)) = 1;
-
-	get<0>(get<1>(mv)) = 1;
-	get<1>(get<1>(mv)) = 1;
-
-	map_.play(mv,1);
-
-cout << "\nAFTER RESET\n";
-
-	d_t.make_decision_tree(map_,mv);	
+	d_t->make_decision_tree(map_,mv);
+	
+	delete d_t;
 
 	/*cout << "\n";
 	d_t.get_root()->get_map().print_map_terminal();
