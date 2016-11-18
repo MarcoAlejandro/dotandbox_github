@@ -401,6 +401,29 @@ public:
 
 		return;
 	}
+
+	/**
+	 *@brief selects best move to play, wich is child of root with biggest 
+	 		 utility.
+	 *return move to be play.
+	*/
+
+	MOVE get_next_move()
+	{
+		MOVE best_move;
+		long biggest_utility = root->get_children()[0].get_utility();
+
+		for (size_t i = 0; i < a_moves; i++)
+		{
+			if (root->get_children()[i].get_utility() >= biggest_utility)
+			{
+				best_move = root->get_children()[i].get_move();
+				biggest_utility = root->get_children()[i].get_utility();
+			}
+		}
+
+		return best_move;
+	}
 };
 
 # endif
