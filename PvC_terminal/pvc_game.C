@@ -1,0 +1,128 @@
+# include <d_tree_node.H>
+# include <iostream>
+//# include <stdlib>
+using namespace std;
+
+# define R 3
+# define C 3
+# define LVL 6 //Number of levels on tree.
+
+	/**	
+	*@brief Player vs Computer game on terminal.
+	*/
+
+void read_mv(MOVE & _mv)
+{
+	uint r,c;
+	cout << "First dot:\n";
+	cout << "R = ";
+	cin >> r;
+	cout << "C = ";
+	cin >> c;
+	get<0>(get<0>(_mv)) = r;
+	get<1>(get<0>(_mv)) = c;
+	cout << "Second dot:\n";
+	cout << "R = ";
+	cin >> r;
+	cout << "C = ";
+	cin >> c;
+	get<0>(get<1>(_mv)) = r;
+	get<1>(get<1>(_mv)) = c;
+}
+
+void printl(auto & m)
+{
+		for(int i = 0; i <= 40; i++)
+			cout << '\n';
+	
+	cout << "\tDOTANDBOXES! PvC on terminal.\n\n";
+	m.print_map_terminal();
+	cout << "Scores: Player->" << m.get_p1_score() << "\tComputer->" 
+			 << m.get_p2_score() << '\n'; 
+	cout << endl;
+}
+
+int main()
+{
+	//
+	map<R,C> game_map;
+	MOVE cur_move;
+	dotandbox_tree<R,C,LVL> * d_t = new dotandbox_tree<R,C,LVL>(game_map,cur_move);
+	size_t last_player, p1_last_score, p2_last_score;
+	//
+	
+	while(not game_map.is_full())
+	{
+			while(1)
+			{
+				do
+				{
+					printl(game_map);
+					cout << "Player turn!\n";
+					read_mv(cur_move);
+				}while(not game_map.try_move(cur_move));
+				
+				p1_last_score = game_map.get_p1_score();
+				game_map.play(cur_move,1);
+				
+				if(game_map.is_full())
+					break;
+				
+				if(p1_last_score != game_map.get_p1_score())
+				{
+					d_t->moves_number()--;
+					continue;
+				}
+				else
+					break;
+			
+			}
+			
+			if(game_map.is_full())
+				break;
+			last_player = 1;
+			
+			while(1)
+			{
+				p2_last_score = game_map.get_p2_score();
+				printl(game_map);
+				cout << "Computer turn...";
+				d_t->make_decision_tree(game_map,cur_move,last_player);
+				
+				cur_move = d_t->get_next_move();
+				game_map.play(cur_move,2);
+				
+				if(game_map.is_full())
+					break;
+				
+				if(p2_last_score != game_map.get_p2_score())
+				{
+					last_player = 2;
+					continue;
+				}
+				else
+				{
+					d_t->moves_number()--;
+					d_t->reset_tree();
+					break;
+				}
+			}
+			
+			if(game_map.is_full())
+				break;
+	
+	}
+	
+	printl(game_map);
+	cout << "Game finished!\n";
+	cout << "Winner: ";
+	if(game_map.get_p1_score() > game_map.get_p2_score())
+		cout << "Player.\n";
+	else if(game_map.get_p1_score() < game_map.get_p2_score())
+		cout << "Computer.\n";
+	else
+		cout << "It was a tie.\n";
+	
+	
+	return 0;
+}

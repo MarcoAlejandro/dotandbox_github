@@ -269,6 +269,14 @@ public:
 		a_moves -= 1;
 		return;
 	}
+	
+	/**
+	 *@brief returns moves contained by this tree.
+	**/
+	size_t & moves_number()
+	{
+		return a_moves;
+	}
 
 	/**
 	 *@brief returns root of tree.
