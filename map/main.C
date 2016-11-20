@@ -24,6 +24,8 @@ int main()
 	else
 		cout << "invalid move" << "\n";
 
+	cout << "was_point: " << map_.was_point(mv) << "\n";
+
 	get<0>(get<0>(mv)) = 1;
 	get<1>(get<0>(mv)) = 1;
 
@@ -34,6 +36,8 @@ int main()
 		cout << "valid move" << "\n";
 	else
 		cout << "invalid move" << "\n";
+
+	cout << "was_point: " << map_.was_point(mv) << "\n";
 
 	get<0>(get<0>(mv)) = 1;
 	get<1>(get<0>(mv)) = 1;
@@ -46,7 +50,7 @@ int main()
 	else
 		cout << "invalid move" << "\n";
 
-
+cout << "was_point: " << map_.was_point(mv) << "\n";
 
 	get<0>(get<0>(mv)) = 2;
 	get<1>(get<0>(mv)) = 1;
@@ -60,6 +64,7 @@ int main()
 		cout << "invalid move" << "\n";
 
 
+	cout << "was_point: " << map_.was_point(mv) << "\n";
 
 	cout << "score player 1: " << map_.get_p1_score() << "\n";
 

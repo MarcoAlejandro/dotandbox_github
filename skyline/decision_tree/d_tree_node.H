@@ -366,7 +366,6 @@ public:
 
 		if(root_->get_map().was_point(root_->get_move()))
 			root_->get_children() = gen_children(new_map,player,a_moves_);
-		
 		else
 		{	
 			if (player == 1)
@@ -389,7 +388,7 @@ public:
 					root_->get_children()[i].get_map().get_p1_score() - 
 					root_->get_children()[i].get_map().get_p2_score() );
 
-			if (root_->get_children()[i].get_utility() >= biggest_utility)
+			if (root_->get_children()[i].get_utility() > biggest_utility)
 				biggest_utility = root_->get_children()[i].get_utility();
 		}
 		
@@ -409,7 +408,7 @@ public:
 
 		return;
 	}
-
+	
 	/**
 	 *@brief selects best move to play, wich is child of root with biggest 
 	 		 utility.
@@ -420,13 +419,19 @@ public:
 	{
 		MOVE best_move;
 		long biggest_utility = root->get_children()[0].get_utility();
+		best_move = root->get_children()[0].get_move();
 
 		for (size_t i = 0; i < a_moves; i++)
 		{
-			if (root->get_children()[i].get_utility() >= biggest_utility)
+			if (root->get_children()[i].get_utility() + 
+				root->get_children()[i].get_map().get_p1_score() - 
+				root->get_children()[i].get_map().get_p2_score() 
+														> biggest_utility)
 			{
 				best_move = root->get_children()[i].get_move();
-				biggest_utility = root->get_children()[i].get_utility();
+				biggest_utility = root->get_children()[i].get_utility() +
+				root->get_children()[i].get_map().get_p1_score() - 
+				root->get_children()[i].get_map().get_p2_score() ;
 			}
 		}
 

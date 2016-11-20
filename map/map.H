@@ -64,28 +64,28 @@ if (boxes[get<0>(dot_1->get_pos()) - 1][get<1>(dot_1->get_pos()) + 1]->has_down(
 	increase_score(player); 	     													\
 }
 
-# define MOVE_DOWN_RIGTH_CHECK 																\
+# define MOVE_DOWN_RIGTH_CHECK 															\
 if (boxes[get<0>(dot_1->get_pos()) + 1][get<1>(dot_1->get_pos()) + 1]->has_up() and 	\
 	boxes[get<0>(dot_1->get_pos()) + 1][get<1>(dot_1->get_pos()) + 1]->has_left()) 		\
 {																						\
-	return true; 	     													\
+	return true;			 	     													\
 }
 
-# define MOVE_DOWN_LEFT_CHECK																\
+# define MOVE_DOWN_LEFT_CHECK															\
 if (boxes[get<0>(dot_1->get_pos()) + 1][get<1>(dot_1->get_pos()) - 1]->has_up() and 	\
 	boxes[get<0>(dot_1->get_pos()) + 1][get<1>(dot_1->get_pos()) - 1]->has_right()) 	\
 {																						\
-	return true;      														\
+	return true;      																	\
 }
 
-# define MOVE_UP_LEFT_CHECK 																	\
+# define MOVE_UP_LEFT_CHECK 															\
 if (boxes[get<0>(dot_1->get_pos()) - 1][get<1>(dot_1->get_pos()) - 1]->has_down() and 	\
 	boxes[get<0>(dot_1->get_pos()) - 1][get<1>(dot_1->get_pos()) - 1]->has_right()) 	\
 {																						\
-	return true; 	     													\
+	return true; 				     													\
 }
 
-# define MOVE_UP_RIGTH_CHECK 																	\
+# define MOVE_UP_RIGTH_CHECK 															\
 if (boxes[get<0>(dot_1->get_pos()) - 1][get<1>(dot_1->get_pos()) + 1]->has_down() and	\
 	boxes[get<0>(dot_1->get_pos()) - 1][get<1>(dot_1->get_pos()) + 1]->has_left()) 	    \
 {																						\
@@ -603,73 +603,74 @@ public:
 		return;
 	}
 
-
 	/**
-	*@brief wich_case() is used by was_point()
-	*
-	*This function is to obtain de case that play_() 
-	 will return for a certain pair of dots.
-	*@return size_t representing the case.
+	*@brief tells if move given by dots could be done or not, on afirmative case
+			returns wich kind of move was it.
+	*@return case of move.
 	*/
-	size_t wich_case(dot<R,C>& dot_1, dot<R,C>& dot_2) 
+	unsigned short try_to_point(dot<R,C>* dot_1,dot<R,C>* dot_2) const
 	{
+
+		if (*dot_1 == *dot_2)
+			return 0;
+
 		//dot_2 is left side
-		if (get<0>(dot_1.get_pos()) - get<0>(dot_2.get_pos()) == 0 and 
-			get<1>(dot_1.get_pos()) - get<1>(dot_2.get_pos()) == 1)
+		if (get<0>(dot_1->get_pos()) - get<0>(dot_2->get_pos()) == 0 and 
+			get<1>(dot_1->get_pos()) - get<1>(dot_2->get_pos()) == 1)
 		{
-			if (dot_1.is_ul_corner() or dot_1.is_l_border() or 
-				  dot_1.is_dl_corner())
+			if (dot_1->is_ul_corner() or dot_1->is_l_border())
 				return 0;
 
 			return 1;
 		}
-		
+
 		//dot_2 is right side
-		if (get<0>(dot_1.get_pos()) - get<0>(dot_2.get_pos()) == 0 and 
-			get<1>(dot_1.get_pos()) - get<1>(dot_2.get_pos()) == -1)
+		if (get<0>(dot_1->get_pos()) - get<0>(dot_2->get_pos()) == 0 and 
+			get<1>(dot_1->get_pos()) - get<1>(dot_2->get_pos()) == -1)
 		{
-			if (dot_1.is_ur_corner() or dot_1.is_r_border() or 
-				 dot_1.is_dr_corner())
+			if (dot_1->is_ur_corner() or dot_1->is_r_border())
 				return 0;
-				
+
 			return 2;
 		}
-		
+
 		//dot_2 is down side
-		if ( get<0>(dot_1.get_pos()) - get<0>(dot_2.get_pos()) == -1 and
-			 get<1>(dot_1.get_pos()) - get<1>(dot_2.get_pos()) == 0)
+		if ( get<0>(dot_1->get_pos()) - get<0>(dot_2->get_pos()) == -1 and
+			 get<1>(dot_1->get_pos()) - get<1>(dot_2->get_pos()) == 0)
 		{
-			if (dot_1.is_dl_corner() or dot_1.is_dr_corner() or 
-				dot_1.is_d_border())
+			if (dot_1->is_dl_corner() or dot_1->is_dr_corner())
 				return 0;
 
 			return 3;
 		}
-		
+
 		//dot_2 is up side
-		if ( get<0>(dot_1.get_pos()) - get<0>(dot_2.get_pos()) == 1 and
-			 get<1>(dot_1.get_pos()) - get<1>(dot_2.get_pos()) == 0)
+		if ( get<0>(dot_1->get_pos()) - get<0>(dot_2->get_pos()) == 1 and
+			 get<1>(dot_1->get_pos()) - get<1>(dot_2->get_pos()) == 0)
 		{
-			if (dot_1.is_ul_corner() or dot_1.is_ur_corner() or 
-				dot_1.is_u_border())
+			if (dot_1->is_ul_corner() or dot_1->is_ur_corner())
 				return 0;
 
 			return 4;
 		}
-		
-		return 0;
+		else
+			return 0;
+		//dot_2 is off side;
 	}
 
-  /**
-  *@brief was_point() return true if the dot is a corner of a marked box.
-  */
-  bool was_point(MOVE m ) 
-  {
-  	dot<R,C> * dot_1 = new dot<R,C>(get<0>(m));
-  	dot<R,C> * dot_2 = new dot<R,C>(get<1>(m));
-  	size_t case_ = wich_case(*dot_1,*dot_2);
-  
-  	if (dot_1->is_ul_corner())
+	/**
+	*@brief was_point() return true if the dot is a corner of a marked box.
+	*/
+	bool was_point(MOVE cur_move ) 
+	{
+		dot<R,C> * dot_1 = DOT1;
+		dot<R,C> * dot_2 = DOT2;
+		size_t case_ = try_to_point(dot_1,dot_2);
+
+		if (case_ == 0)
+			return false;
+		
+		if (dot_1->is_ul_corner())
 		{
 			if(not dot_1->has_right() or not dot_1->has_down())
 				return false;
@@ -695,7 +696,7 @@ public:
 			MOVE_UP_LEFT_CHECK;
 			return false;
 		}
-		
+	
 		if (dot_1->is_dl_corner())
 		{
 			if(not dot_1->has_right() or not dot_1->has_up())
@@ -964,7 +965,7 @@ public:
 		}
 
 		return false;
-  }
+	}
   
 	/**
 	 *@brief makes sure move is into range and also works as interface of 

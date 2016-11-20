@@ -5,7 +5,7 @@ using namespace std;
 
 # define R 3
 # define C 3
-# define LVL 6 //Number of levels on tree.
+# define LVL 3 //Number of levels on tree.
 
 	/**	
 	*@brief Player vs Computer game on terminal.
@@ -50,7 +50,6 @@ int main()
 	dotandbox_tree<R,C,LVL> * d_t = new dotandbox_tree<R,C,LVL>(game_map,cur_move);
 	size_t last_player, p1_last_score, p2_last_score;
 	//
-	
 	while(not game_map.is_full())
 	{
 			while(1)
