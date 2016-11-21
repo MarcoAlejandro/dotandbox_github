@@ -3,9 +3,9 @@
 //# include <stdlib>
 using namespace std;
 
-# define R 3
-# define C 3
-# define LVL 3 //Number of levels on tree.
+# define R 4
+# define C 4
+# define LVL 4 //Number of levels on tree.
 
 	/**	
 	*@brief Player vs Computer game on terminal.

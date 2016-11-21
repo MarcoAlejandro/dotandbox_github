@@ -409,6 +409,23 @@ public:
 		return;
 	}
 	
+	void subs_utility(move_bucket<R,C> & bucket,size_t cur_lvl,size_t a_moves_,long & sub)
+	{
+		if (cur_lvl >= lvl or a_moves_ == 0)	
+			return;
+
+		for (size_t j = 0; j < a_moves_; ++j)
+			{
+				if (bucket.get_children()[j].get_map().
+						was_point(bucket.get_children()[j].get_move()))
+				{
+					sub += 1;
+					subs_utility(bucket.get_children()[j],cur_lvl + 1, a_moves_ - 1, sub);
+					return;
+				}
+			}
+	}
+
 	/**
 	 *@brief selects best move to play, wich is child of root with biggest 
 	 		 utility.
@@ -421,8 +438,27 @@ public:
 		long biggest_utility = root->get_children()[0].get_utility();
 		best_move = root->get_children()[0].get_move();
 
+		long sub = 0;
+
 		for (size_t i = 0; i < a_moves; i++)
 		{
+			sub = 0;
+			subs_utility(root->get_children()[i],1,a_moves - 1,sub);
+				root->get_children()[i].set_utility(root->get_children()[i].get_utility() - sub );
+
+			/*for (size_t j = 0; j < a_moves - 1; ++j)
+			{
+
+				if (root->get_children()[i].get_children()[j].get_map().get_p2_score() - 
+					root->get_children()[i].get_children()[j].get_map().get_p1_score() > 0)
+				{
+					root->get_children()[i].set_utility(root->get_children()[i].get_utility() -
+		  				root->get_children()[i].get_children()[j].get_map().get_p2_score() - 
+						root->get_children()[i].get_children()[j].get_map().get_p1_score());
+				}
+			}*/
+					
+
 			if (root->get_children()[i].get_utility() + 
 				root->get_children()[i].get_map().get_p1_score() - 
 				root->get_children()[i].get_map().get_p2_score() 
