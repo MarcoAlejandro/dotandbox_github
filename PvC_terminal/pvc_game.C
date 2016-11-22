@@ -88,7 +88,7 @@ int main()
 				cout << "Computer turn...";
 				d_t->make_decision_tree(game_map,cur_move,last_player);
 				
-				cur_move = d_t->get_next_move();
+				cur_move = d_t->get_next_move(last_player);
 				game_map.play(cur_move,1);
 				
 				if(game_map.is_full())
