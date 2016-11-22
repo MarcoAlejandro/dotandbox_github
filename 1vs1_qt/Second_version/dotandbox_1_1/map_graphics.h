@@ -67,6 +67,8 @@ private:
     map<3,3> *m_game;
     MOVE cur_mv;
     int turn = 0;
+    dotandbox_tree<3,3,3> *d_t;
+    size_t last_player;
 
 };
 

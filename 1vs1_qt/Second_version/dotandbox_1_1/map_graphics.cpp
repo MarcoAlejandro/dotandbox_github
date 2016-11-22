@@ -4,13 +4,16 @@
 map_graphics::map_graphics(QWidget *parent) :
     QGraphicsView(parent)
 {
+    m_game = new map<3,3>;
+    d_t = new dotandbox_tree<3,3,3>(*m_game, cur_mv);
+    last_player =0;
 }
 
 void map_graphics::start_graph()
 {
+
     p1_score = 0;
     p2_score = 0;
-    m_game = new map<3,3>;
     c_free = new QColor("navy");
     c_marked = new QColor("green");
     c_marked2 = new QColor("gray");
@@ -131,7 +134,106 @@ void map_graphics::mousePressEvent(QMouseEvent *e)
 
 void map_graphics::mouseReleaseEvent(QMouseEvent *event)
 {
-    QPointF release_point = this->mapToScene(event->pos());
+    if(turn==0)
+    {
+            QPointF release_point = this->mapToScene(event->pos());
+            std::get<0>(cur_mv) = detect_dot(*click_point);
+            std::get<1>(cur_mv) = detect_dot(release_point);
+
+            if(dot_00->contains(release_point))
+                scene->addEllipse(*dot_00,*c_marked,*b_marked);
+            else if(dot_01->contains(release_point))
+                scene->addEllipse(*dot_01,*c_marked,*b_marked);
+            else if(dot_02->contains(release_point))
+                scene->addEllipse(*dot_02,*c_marked,*b_marked);
+            else if(dot_10->contains(release_point))
+                scene->addEllipse(*dot_10,*c_marked,*b_marked);
+            else if(dot_11->contains(release_point))
+                scene->addEllipse(*dot_11,*c_marked,*b_marked);
+            else if(dot_12->contains(release_point))
+                scene->addEllipse(*dot_12,*c_marked,*b_marked);
+            else if(dot_20->contains(release_point))
+                scene->addEllipse(*dot_20,*c_marked,*b_marked);
+            else if(dot_21->contains(release_point))
+                scene->addEllipse(*dot_21,*c_marked,*b_marked);
+            else if(dot_22->contains(release_point))
+                scene->addEllipse(*dot_22,*c_marked,*b_marked);
+
+            if(check_move(release_point))
+            {
+                    draw_line(release_point, *b_marked);
+
+                    p1_score = m_game->get_p1_score();
+                    m_game->play(cur_mv,2);
+                    if(p1_score == m_game->get_p1_score())
+                        turn = 1;
+            }
+
+            last_player = 2;
+    }
+    else
+    {
+        p2_score = m_game->get_p2_score();
+
+        d_t->make_decision_tree(*m_game,cur_mv,last_player);
+
+        cur_mv = d_t->get_next_move(last_player);
+        m_game->play(cur_mv,1);
+
+        QPointF par1 = dot_to_qpointf(std::get<0>(cur_mv));
+        QPointF par2 = dot_to_qpointf(std::get<1>(cur_mv));
+
+        *click_point = par1;
+
+        if(dot_00->contains(par2))
+            scene->addEllipse(*dot_00,*c_marked,*b_marked);
+        else if(dot_01->contains(par2))
+            scene->addEllipse(*dot_01,*c_marked,*b_marked);
+        else if(dot_02->contains(par2))
+            scene->addEllipse(*dot_02,*c_marked,*b_marked);
+        else if(dot_10->contains(par2))
+            scene->addEllipse(*dot_10,*c_marked,*b_marked);
+        else if(dot_11->contains(par2))
+            scene->addEllipse(*dot_11,*c_marked,*b_marked);
+        else if(dot_12->contains(par2))
+            scene->addEllipse(*dot_12,*c_marked,*b_marked);
+        else if(dot_20->contains(par2))
+            scene->addEllipse(*dot_20,*c_marked,*b_marked);
+        else if(dot_21->contains(par2))
+            scene->addEllipse(*dot_21,*c_marked,*b_marked);
+        else if(dot_22->contains(par2))
+            scene->addEllipse(*dot_22,*c_marked,*b_marked);
+
+        draw_line(par2, *b_marked2);
+
+        if(p2_score == m_game->get_p2_score())
+            turn = 0;
+
+        last_player = 1;
+    }
+
+    act_score();
+    emit refresh_score(p1_score,p2_score);
+    emit set_turn(turn);
+    refresh_dots();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /* QPointF release_point = this->mapToScene(event->pos());
     std::get<0>(cur_mv) = detect_dot(*click_point);
     std::get<1>(cur_mv) = detect_dot(release_point);
 
@@ -181,7 +283,7 @@ void map_graphics::mouseReleaseEvent(QMouseEvent *event)
     emit refresh_score(p1_score,p2_score);
     emit set_turn(turn);
     refresh_dots();
-    //refresh_dots();
+    //refresh_dots();*/
 
 
 }
