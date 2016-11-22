@@ -8,7 +8,7 @@
 /**
  *@file map.H
  *
- *@brief implementation on C++ of map for game dot and boxes, map 
+ *@brief implementation on C++ of map for game dot and boxes, map
 	 has score of two players and a matrix that saves dots.
 	 Logic of game is implemented  here, with this first version
 	 users can play one aganist each others.
@@ -64,39 +64,12 @@ if (boxes[std::get<0>(dot_1->get_pos()) - 1][std::get<1>(dot_1->get_pos()) + 1]-
 	increase_score(player); 	     													\
 }
 
-# define MOVE_DOWN_RIGTH_CHECK 															\
-if (boxes[std::get<0>(dot_1->get_pos()) + 1][std::get<1>(dot_1->get_pos()) + 1]->has_up() and 	\
-	boxes[std::get<0>(dot_1->get_pos()) + 1][std::get<1>(dot_1->get_pos()) + 1]->has_left()) 		\
-{																						\
-	return true;			 	     													\
-}
-
-# define MOVE_DOWN_LEFT_CHECK															\
-if (boxes[std::get<0>(dot_1->get_pos()) + 1][std::get<1>(dot_1->get_pos()) - 1]->has_up() and 	\
-	boxes[std::get<0>(dot_1->get_pos()) + 1][std::get<1>(dot_1->get_pos()) - 1]->has_right()) 	\
-{																						\
-	return true;      																	\
-}
-
-# define MOVE_UP_LEFT_CHECK 															\
-if (boxes[std::get<0>(dot_1->get_pos()) - 1][std::get<1>(dot_1->get_pos()) - 1]->has_down() and 	\
-	boxes[std::get<0>(dot_1->get_pos()) - 1][std::get<1>(dot_1->get_pos()) - 1]->has_right()) 	\
-{																						\
-	return true; 				     													\
-}
-
-# define MOVE_UP_RIGTH_CHECK 															\
-if (boxes[std::get<0>(dot_1->get_pos()) - 1][std::get<1>(dot_1->get_pos()) + 1]->has_down() and	\
-	boxes[std::get<0>(dot_1->get_pos()) - 1][std::get<1>(dot_1->get_pos()) + 1]->has_left()) 	    \
-{																						\
-	return true; 	     													\
-}
 
 
 /**
  *@brief map class
  *
- *map class is a template. 
+ *map class is a template.
  *@param R is the number of rows of matrix.
  *@param C is the number of columns of matrix.
  */
@@ -112,7 +85,7 @@ private:
 public:
 
 	/**
-	 *@brief constructor of class map, sets entire map by giving memory 
+	 *@brief constructor of class map, sets entire map by giving memory
 		to every single dot into the map and seting scores with 0.
 	*/
 	map() : p1_score(0), p2_score(0)
@@ -123,7 +96,7 @@ public:
 	}
 
 	/**
-	 *@brief destructor of class map, unsets entire map by deleting memory 
+	 *@brief destructor of class map, unsets entire map by deleting memory
 		of every single dot into the map.
 	*/
 	~map()
@@ -133,29 +106,18 @@ public:
 				delete boxes[i][j];
 	}
 
-	/**
-	 *@brief copy constructor of class map.
-	 		sets entire map by coping each dot of map given by parameter.
-	*/
+
 	map(const map & map_)
 	{
 		copy_map(map_);
 	}
 
-	/**
-	 *@brief definition of operator = for class map.
-	 		 function copies entire map with map given by parameter.
-	*/
 	const map & operator = (const map & map_)
 	{
 		copy_map(map_);
 		return *this;
 	}
 
-	/**
-	 *@brief copies map with map given by parameter by coping each dot
-	 		 of map given by parameter.
-	*/
 	void copy_map(const map & map_)
 	{
 		p1_score = map_.p1_score;
@@ -190,29 +152,29 @@ public:
 	*/
 	bool increase_score(unsigned short player)
 	{
-		switch(player)																	
-		{																					
+		switch(player)
+		{
 			case PLAYER1:
 
 				p1_score ++;
-				return true;	
+				return true;
 				break;
 
 			case PLAYER2:
 
 				p2_score ++;
-				return true;									
+				return true;
 				break;
 
 			default :
-				break;										
+				break;
 		}
 
-		return false;			
+		return false;
 	}
 
 	/**
-	 *@brief tells if map was completely full by checking if 
+	 *@brief tells if map was completely full by checking if
 	  "p1_score + p2_score" is equal to maximiun number of boxes.
 	 *@return bool telling if map is full.
 	*/
@@ -226,7 +188,7 @@ public:
 	   if move was correct then
 	   function sets necessary flags to represent move on the map.
 	   function evalutes if both dots are in range by checking their
-	   positions, therefore if dots are in range function sets the move. 
+	   positions, therefore if dots are in range function sets the move.
 	 *
 	 *@return bool telling if move could be set or not.
 	*/
@@ -242,10 +204,10 @@ public:
 			return 0;
 
 		//dot_2 is left side
-		if (std::get<0>(dot_1->get_pos()) - std::get<0>(dot_2->get_pos()) == 0 and 
+		if (std::get<0>(dot_1->get_pos()) - std::get<0>(dot_2->get_pos()) == 0 and
 			std::get<1>(dot_1->get_pos()) - std::get<1>(dot_2->get_pos()) == 1)
 		{
-			if (dot_1->is_ul_corner() or dot_1->is_l_border() or 
+			if (dot_1->is_ul_corner() or dot_1->is_l_border() or
 				dot_1->has_left() or dot_1->is_dl_corner())
 				return 0;
 
@@ -255,10 +217,10 @@ public:
 		}
 
 		//dot_2 is right side
-		if (std::get<0>(dot_1->get_pos()) - std::get<0>(dot_2->get_pos()) == 0 and 
+		if (std::get<0>(dot_1->get_pos()) - std::get<0>(dot_2->get_pos()) == 0 and
 			std::get<1>(dot_1->get_pos()) - std::get<1>(dot_2->get_pos()) == -1)
 		{
-			if (dot_1->is_ur_corner() or dot_1->is_r_border() or 
+			if (dot_1->is_ur_corner() or dot_1->is_r_border() or
 				dot_1->has_right() or dot_1->is_dr_corner())
 				return 0;
 
@@ -271,7 +233,7 @@ public:
 		if ( std::get<0>(dot_1->get_pos()) - std::get<0>(dot_2->get_pos()) == -1 and
 			 std::get<1>(dot_1->get_pos()) - std::get<1>(dot_2->get_pos()) == 0)
 		{
-			if (dot_1->is_dl_corner() or dot_1->is_dr_corner() or 
+			if (dot_1->is_dl_corner() or dot_1->is_dr_corner() or
 				dot_1->is_d_border() or dot_1->has_down())
 				return 0;
 
@@ -284,7 +246,7 @@ public:
 		if ( std::get<0>(dot_1->get_pos()) - std::get<0>(dot_2->get_pos()) == 1 and
 			 std::get<1>(dot_1->get_pos()) - std::get<1>(dot_2->get_pos()) == 0)
 		{
-			if (dot_1->is_ul_corner() or dot_1->is_ur_corner() or 
+			if (dot_1->is_ul_corner() or dot_1->is_ur_corner() or
 				dot_1->is_u_border() or dot_1->has_up())
 				return 0;
 
@@ -331,7 +293,7 @@ public:
 			MOVE_UP_LEFT;
 			return;
 		}
-		
+
 		if (dot_1->is_dl_corner())
 		{
 			if(not dot_1->has_right() or not dot_1->has_up())
@@ -347,23 +309,17 @@ public:
 				return;
 
 			if (case_ == 1)
-			{	
-				if (not dot_1->has_down())
-					return;
-
+			{
 				MOVE_DOWN_LEFT;
 				return;
 			}
-	
+
 			if (case_ == 2)
 			{
-				if (not dot_1->has_down())
-					return;
-
 				MOVE_DOWN_RIGTH;
 				return;
 			}
-			
+
 			if(case_ == 3)
 			{
 				if (not dot_1->has_right())
@@ -391,22 +347,16 @@ public:
 
 			if (case_ == 1)
 			{
-				if (not dot_1->has_up())
-					return;
-
 				MOVE_UP_LEFT;
 				return;
 			}
 
 			if (case_ == 2)
 			{
-				if (not dot_1->has_up())
-					return;
-
 				MOVE_UP_RIGTH;
 				return;
 			}
-		
+
 			if (case_ == 4)
 			{
 				if (not dot_1->has_right())
@@ -433,22 +383,16 @@ public:
 
 			if (case_ == 4)
 			{
-				if(not dot_1->has_right())
-					return;
-
 				MOVE_UP_RIGTH;
 				return;
 			}
 
 			if (case_ == 3)
 			{
-				if(not dot_1->has_right())
-					return;
-
 				MOVE_DOWN_RIGTH;
 				return;
 			}
-			
+
 			if (case_ == 2)
 			{
 				if (not dot_1->has_up())
@@ -475,22 +419,16 @@ public:
 
 			if (case_ == 4)
 			{
-				if(not dot_1->has_left())
-					return;
-
 				MOVE_UP_LEFT;
 				return;
 			}
 
 			if (case_ == 3)
-			{	
-				if(not dot_1->has_left())
-					return;
-
+			{
 				MOVE_DOWN_LEFT;
 				return;
 			}
-		
+
 			if (case_ == 1)
 			{
 				if (not dot_1->has_up())
@@ -603,383 +541,19 @@ public:
 	}
 
 	/**
-	*@brief tells if move given by dots could be done or not, on afirmative case
-			returns wich kind of move was it.
-	*@return case of move.
-	*/
-	unsigned short try_to_point(dot<R,C>* dot_1,dot<R,C>* dot_2) const
-	{
-
-		if (*dot_1 == *dot_2)
-			return 0;
-
-		//dot_2 is left side
-		if (std::get<0>(dot_1->get_pos()) - std::get<0>(dot_2->get_pos()) == 0 and 
-			std::get<1>(dot_1->get_pos()) - std::get<1>(dot_2->get_pos()) == 1)
-		{
-			if (dot_1->is_ul_corner() or dot_1->is_l_border())
-				return 0;
-
-			return 1;
-		}
-
-		//dot_2 is right side
-		if (std::get<0>(dot_1->get_pos()) - std::get<0>(dot_2->get_pos()) == 0 and 
-			std::get<1>(dot_1->get_pos()) - std::get<1>(dot_2->get_pos()) == -1)
-		{
-			if (dot_1->is_ur_corner() or dot_1->is_r_border())
-				return 0;
-
-			return 2;
-		}
-
-		//dot_2 is down side
-		if ( std::get<0>(dot_1->get_pos()) - std::get<0>(dot_2->get_pos()) == -1 and
-			 std::get<1>(dot_1->get_pos()) - std::get<1>(dot_2->get_pos()) == 0)
-		{
-			if (dot_1->is_dl_corner() or dot_1->is_dr_corner())
-				return 0;
-
-			return 3;
-		}
-
-		//dot_2 is up side
-		if ( std::get<0>(dot_1->get_pos()) - std::get<0>(dot_2->get_pos()) == 1 and
-			 std::get<1>(dot_1->get_pos()) - std::get<1>(dot_2->get_pos()) == 0)
-		{
-			if (dot_1->is_ul_corner() or dot_1->is_ur_corner())
-				return 0;
-
-			return 4;
-		}
-		else
-			return 0;
-		//dot_2 is off side;
-	}
-
-	/**
-	*@brief was_point() return true if the dot is a corner of a marked box.
-	*/
-	bool was_point(MOVE cur_move ) 
-	{
-		dot<R,C> * dot_1 = DOT1;
-		dot<R,C> * dot_2 = DOT2;
-		size_t case_ = try_to_point(dot_1,dot_2);
-
-		if (case_ == 0)
-			return false;
-		
-		if (dot_1->is_ul_corner())
-		{
-			if(not dot_1->has_right() or not dot_1->has_down())
-				return false;
-
-			MOVE_DOWN_RIGTH_CHECK;
-			return false;
-		}
-
-		if (dot_1->is_ur_corner())
-		{
-			if(not dot_1->has_left() or not dot_1->has_down())
-				return false;
-
-			MOVE_DOWN_LEFT_CHECK;
-			return false;
-		}
-
-		if (dot_1->is_dr_corner())
-		{
-			if(not dot_1->has_left() or not dot_1->has_up())
-				return false;
-
-			MOVE_UP_LEFT_CHECK;
-			return false;
-		}
-	
-		if (dot_1->is_dl_corner())
-		{
-			if(not dot_1->has_right() or not dot_1->has_up())
-				return false;
-
-			MOVE_UP_RIGTH_CHECK;
-			return false;
-		}
-
-		if(dot_1->is_u_border())
-		{
-			if(not dot_1->has_right() and not dot_1->has_left())
-				return false;
-
-			if (case_ == 1)
-			{	
-				if (not dot_1->has_down())
-					return false;
-
-				MOVE_DOWN_LEFT_CHECK;
-				return false;
-			}
-	
-			if (case_ == 2)
-			{
-				if (not dot_1->has_down())
-					return false;
-
-				MOVE_DOWN_RIGTH_CHECK;
-				return false;
-			}
-			
-			if(case_ == 3)
-			{
-				if (not dot_1->has_right())
-				{
-					MOVE_DOWN_LEFT_CHECK;
-					return false;
-				}
-
-				if (not dot_1->has_left())
-				{
-					MOVE_DOWN_RIGTH_CHECK;
-					return false;
-				}
-
-				MOVE_DOWN_LEFT_CHECK;
-				MOVE_DOWN_RIGTH_CHECK;
-				return false;
-			}
-		}
-
-		if(dot_1->is_d_border())
-		{
-			if(not dot_1->has_right() and not dot_1->has_left())
-				return false;
-
-			if (case_ == 1)
-			{
-				if (not dot_1->has_up())
-					return false;
-
-				MOVE_UP_LEFT_CHECK;
-				return false;
-			}
-
-			if (case_ == 2)
-			{
-				if (not dot_1->has_up())
-					return false;
-
-				MOVE_UP_RIGTH_CHECK;
-				return false;
-			}
-		
-			if (case_ == 4)
-			{
-				if (not dot_1->has_right())
-				{
-					MOVE_UP_LEFT_CHECK;
-					return false;
-				}
-
-				if (not dot_1->has_left())
-				{
-					MOVE_UP_RIGTH_CHECK;
-					return false;
-				}
-				MOVE_UP_RIGTH_CHECK;
-				MOVE_UP_LEFT_CHECK;
-				return false;
-			}
-		}
-
-		if(dot_1->is_l_border())
-		{
-			if(not dot_1->has_up() and not dot_1->has_down())
-				return false;
-
-			if (case_ == 4)
-			{
-				if(not dot_1->has_right())
-					return false;
-
-				MOVE_UP_RIGTH_CHECK;
-				return false;
-			}
-
-			if (case_ == 3)
-			{
-				if(not dot_1->has_right())
-					return false;
-
-				MOVE_DOWN_RIGTH_CHECK;
-				return false;
-			}
-			
-			if (case_ == 2)
-			{
-				if (not dot_1->has_up())
-				{
-					MOVE_DOWN_RIGTH_CHECK;
-					return false;
-				}
-
-				if (not dot_1->has_down())
-				{
-					MOVE_UP_RIGTH_CHECK;
-					return false;
-				}
-				MOVE_UP_RIGTH_CHECK;
-				MOVE_DOWN_RIGTH_CHECK;
-				return false;
-			}
-		}
-
-		if(dot_1->is_r_border())
-		{
-			if(not dot_1->has_up() and not dot_1->has_down())
-				return false;
-
-			if (case_ == 4)
-			{
-				if(not dot_1->has_left())
-					return false;
-
-				MOVE_UP_LEFT_CHECK;
-				return false;
-			}
-
-			if (case_ == 3)
-			{	
-				if(not dot_1->has_left())
-					return false;
-
-				MOVE_DOWN_LEFT_CHECK;
-				return false;
-			}
-		
-			if (case_ == 1)
-			{
-				if (not dot_1->has_up())
-				{
-					MOVE_DOWN_LEFT_CHECK;
-					return false;
-				}
-
-				if (not dot_1->has_down())
-				{
-					MOVE_UP_LEFT_CHECK;
-					return false;
-				}
-
-				MOVE_UP_LEFT_CHECK;
-				MOVE_DOWN_LEFT_CHECK;
-				return false;
-			}
-		}
-
-		if (case_ == 4)
-		{
-			if (not dot_1->has_left() and not dot_1->has_right())
-				return false;
-
-			if (not dot_1->has_right())
-			{
-				MOVE_UP_LEFT_CHECK;
-				return false;
-			}
-
-			if (not dot_1->has_left())
-			{
-				MOVE_UP_RIGTH_CHECK;
-				return false;
-			}
-
-			MOVE_UP_RIGTH_CHECK;
-			MOVE_UP_LEFT_CHECK;
-			return false;
-		}
-
-		if (case_ == 3)
-		{
-			if (not dot_1->has_left() and not dot_1->has_right())
-				return false;
-
-			if (not dot_1->has_right())
-			{
-				MOVE_DOWN_LEFT_CHECK;
-				return false;
-			}
-
-			if (not dot_1->has_left())
-			{
-				MOVE_DOWN_RIGTH_CHECK;
-				return false;
-			}
-
-			MOVE_DOWN_LEFT_CHECK;
-			MOVE_DOWN_RIGTH_CHECK;
-			return false;
-		}
-
-		if(case_ == 2)
-		{
-			if(not dot_1->has_up() and not dot_1->has_down())
-				return false;
-
-			if (not dot_1->has_up())
-			{
-				MOVE_DOWN_RIGTH_CHECK;
-				return false;
-			}
-
-			if (not dot_1->has_down())
-			{
-				MOVE_UP_RIGTH_CHECK;
-				return false;
-			}
-
-			MOVE_UP_RIGTH_CHECK;
-			MOVE_DOWN_RIGTH_CHECK;
-			return false;
-		}
-
-		if(case_ == 1)
-		{
-			if(not dot_1->has_up() and not dot_1->has_down())
-				return false;
-
-			if (not dot_1->has_up())
-			{
-				MOVE_DOWN_LEFT_CHECK;
-				return false;
-			}
-
-			if (not dot_1->has_down())
-			{
-				MOVE_UP_LEFT_CHECK;
-				return false;
-			}
-
-			MOVE_UP_LEFT_CHECK;
-			MOVE_DOWN_LEFT_CHECK;
-			return false;
-		}
-
-		return false;
-	}
-  
-	/**
-	 *@brief makes sure move is into range and also works as interface of 
+	 *@brief makes sure move is into range and also works as interface of
 	 	function play_, first evaluates if move can be done and then gives point
-	 	to player by calling function "check_box". 
+	 	to player by calling function "check_box".
 	 *
 	 *@return bool telling if move could be set or not.
 	*/
 	bool play(move cur_move, unsigned short player)
 	{
 		if(player != PLAYER1 and player != PLAYER2 )
-                        throw std::out_of_range("player out of range");
-			
-		if (  std::get<0>(std::get<0>(cur_move)) >= R or std::get<0>(std::get<1>(cur_move)) >= C or 
-		 	  std::get<1>(std::get<0>(cur_move)) >= R or std::get<1>(std::get<1>(cur_move)) >= C   ) 
+			throw std::out_of_range("player out of range");
+
+		if (  std::get<0>(std::get<0>(cur_move)) >= R or std::get<0>(std::get<1>(cur_move)) >= C or
+		 	  std::get<1>(std::get<0>(cur_move)) >= R or std::get<1>(std::get<1>(cur_move)) >= C   )
 			throw std::out_of_range("move out of range");
 
 		unsigned short case_ = play_(DOT1,DOT2);
@@ -993,9 +567,9 @@ public:
 	}
 
 	/**
-	 *@brief resets entire map by reseting each dot after reset is done both 
+	 *@brief resets entire map by reseting each dot after reset is done both
 	 players
-	 have "0" as score. 
+	 have "0" as score.
 	*/
 	void reset()
 	{
@@ -1006,7 +580,7 @@ public:
 		p1_score = 0;
 		p2_score = 0;
 	}
-	
+
 	/**
 	*@brief prints the map on the terminal.
 	*/
@@ -1032,7 +606,7 @@ public:
 			}
 			std::cout << '\n';
 		}
-		
+
 		for(size_t j = 0; j < C - 1; ++j)//last row
 		{
 			std::cout << "*";
@@ -1044,11 +618,7 @@ public:
 		std::cout << "*\n"; //Last point in the row.
 	}
 
-	/**
-	*@brief tells if move given by dots could be done or not, on afirmative case
-			returns wich kind of move was it.
-	*@return case of move.
-	*/
+
 	unsigned short try_(dot<R,C>* dot_1,dot<R,C>* dot_2) const
 	{
 		if (dot_1->is_full())
@@ -1061,10 +631,10 @@ public:
 			return 0;
 
 		//dot_2 is left side
-		if (std::get<0>(dot_1->get_pos()) - std::get<0>(dot_2->get_pos()) == 0 and 
+		if (std::get<0>(dot_1->get_pos()) - std::get<0>(dot_2->get_pos()) == 0 and
 			std::get<1>(dot_1->get_pos()) - std::get<1>(dot_2->get_pos()) == 1)
 		{
-			if (dot_1->is_ul_corner() or dot_1->is_l_border() or 
+			if (dot_1->is_ul_corner() or dot_1->is_l_border() or
 				dot_1->has_left() or dot_1->is_dl_corner())
 				return 0;
 
@@ -1072,10 +642,10 @@ public:
 		}
 
 		//dot_2 is right side
-		if (std::get<0>(dot_1->get_pos()) - std::get<0>(dot_2->get_pos()) == 0 and 
+		if (std::get<0>(dot_1->get_pos()) - std::get<0>(dot_2->get_pos()) == 0 and
 			std::get<1>(dot_1->get_pos()) - std::get<1>(dot_2->get_pos()) == -1)
 		{
-			if (dot_1->is_ur_corner() or dot_1->is_r_border() or 
+			if (dot_1->is_ur_corner() or dot_1->is_r_border() or
 				dot_1->has_right() or dot_1->is_dr_corner())
 				return 0;
 
@@ -1086,7 +656,7 @@ public:
 		if ( std::get<0>(dot_1->get_pos()) - std::get<0>(dot_2->get_pos()) == -1 and
 			 std::get<1>(dot_1->get_pos()) - std::get<1>(dot_2->get_pos()) == 0)
 		{
-			if (dot_1->is_dl_corner() or dot_1->is_dr_corner() or 
+			if (dot_1->is_dl_corner() or dot_1->is_dr_corner() or
 				dot_1->is_d_border() or dot_1->has_down())
 				return 0;
 
@@ -1097,7 +667,7 @@ public:
 		if ( std::get<0>(dot_1->get_pos()) - std::get<0>(dot_2->get_pos()) == 1 and
 			 std::get<1>(dot_1->get_pos()) - std::get<1>(dot_2->get_pos()) == 0)
 		{
-			if (dot_1->is_ul_corner() or dot_1->is_ur_corner() or 
+			if (dot_1->is_ul_corner() or dot_1->is_ur_corner() or
 				dot_1->is_u_border() or dot_1->has_up())
 				return 0;
 
@@ -1108,16 +678,13 @@ public:
 		//dot_2 is off side;
 	}
 
-	/**
-	*@brief tells if could be done or not.
-	*/
 	bool try_move(move cur_move) const
-	{	
-		if (  std::get<0>(std::get<0>(cur_move)) >= R or std::get<0>(std::get<1>(cur_move)) >= C or 
-		 	  std::get<1>(std::get<0>(cur_move)) >= R or std::get<1>(std::get<1>(cur_move)) >= C   ) 
+	{
+		if (  std::get<0>(std::get<0>(cur_move)) >= R or std::get<0>(std::get<1>(cur_move)) >= C or
+		 	  std::get<1>(std::get<0>(cur_move)) >= R or std::get<1>(std::get<1>(cur_move)) >= C   )
 			throw std::out_of_range("move out of range");
 
-		if (try_(DOT1,DOT2)  and not is_full())
+		if (try_(DOT1,DOT2))
 			return true;
 		else
 			return false;
@@ -1125,4 +692,4 @@ public:
 
 };
 
-#endif 
+#endif

@@ -1,10 +1,11 @@
 # ifndef PLAYER_H
 # define PLAYER_H
 
-# include <string> 
+# include <string>
 # include <iostream>
 # include <utility>
 
+//using namespace std;
 /**
  *@file player.H
  *@brief Declarations on C++ of class player, game dot and boxes.
@@ -25,7 +26,7 @@ public:
 	 *@brief Constructor, sets values of player attributes.
 	*/
 	player() : id(""),score(0),record(0){/*empty*/}
-	 
+
 
 	/**
 	 *@brief Copy constructor, sets values of player attributes with values of a player.

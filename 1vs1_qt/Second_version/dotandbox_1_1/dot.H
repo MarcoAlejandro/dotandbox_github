@@ -3,15 +3,16 @@
 
 # include <utility>
 # include <stdexcept>
+//using namespace std;
 
 /**
  * @file dot.H
  * @brief C++ Definition of dot class.
  *
- * The dot class is the implementation of a dot in a map. 
+ * The dot class is the implementation of a dot in a map.
  	 The map is a matrix.
  	 A dot can have another dot on his right, left, above or below.
- 	 A dot can be on a corner of the map, if is not on a corner, 
+ 	 A dot can be on a corner of the map, if is not on a corner,
  	 then it is on a border.
  * @author Codemakers.
  * @date 03/11/2016
@@ -20,17 +21,16 @@
 /**
  *@brief dot class
  *
- *dot class is a template. 
+ *dot class is a template.
  *@param R is the number of rows in the map.
  *@param C is the number of columns in the map.
  */
 template<size_t R,size_t C> class dot
 {
-	
+
 private:
 	bool _has_left, _has_right, _has_up, _has_down;
-	bool ur_corner,ul_corner,dr_corner, dl_corner, u_border, d_border, 
-		 r_border, l_border;
+	bool ur_corner,ul_corner,dr_corner, dl_corner, u_border, d_border, r_border, l_border;
 	std::pair< size_t, size_t> position;
 
 public:
@@ -46,7 +46,7 @@ public:
 	*@brief Constructor by position
 	*
 	*This constructor receives the position values of the dot
-	 in the map, and makes sure that they are not out of range. 
+	 in the map, and makes sure that they are not out of range.
 	 By the end, the flags asociated to that position are marked.
 	 Important: The map is C style matrix.
 	*/
@@ -54,7 +54,7 @@ public:
 	{
 
 		if(std::get<0>(pos) >= R or std::get<1>(pos) >= C)
-                        throw std::out_of_range("position out of range");
+			throw std::out_of_range("position out of range");
 
 		position = pos;
 		_has_down = false;
@@ -64,7 +64,7 @@ public:
 
 		if (std::get<0>(pos) == R - 1 and std::get<1>(pos) == C - 1)
 		{
-			ur_corner = false; 
+			ur_corner = false;
 			ul_corner = false;
 			dr_corner = true;
 			dl_corner = false;
@@ -77,7 +77,7 @@ public:
 
 		if (std::get<0>(pos) == 0 and std::get<1>(pos) == C - 1)
 		{
-			ur_corner = true; 
+			ur_corner = true;
 			ul_corner = false;
 			dr_corner = false;
 			dl_corner = false;
@@ -89,7 +89,7 @@ public:
 		}
 		if(std::get<0>(pos)== 0 and std::get<1>(pos) == 0)
 		{
-			ur_corner = false; 
+			ur_corner = false;
 			ul_corner = true;
 			dr_corner = false;
 			dl_corner = false;
@@ -101,7 +101,7 @@ public:
 		}
 		if(std::get<0>(pos)== R - 1 and std::get<1>(pos) == 0)
 		{
-			ur_corner = false; 
+			ur_corner = false;
 			ul_corner = false;
 			dr_corner = false;
 			dl_corner = true;
@@ -114,7 +114,7 @@ public:
 
 		if(std::get<0>(pos) == 0)
 		{
-			ur_corner = false; 
+			ur_corner = false;
 			ul_corner = false;
 			dr_corner = false;
 			dl_corner = false;
@@ -127,7 +127,7 @@ public:
 
 		if(std::get<0>(pos) == R - 1)
 		{
-			ur_corner = false; 
+			ur_corner = false;
 			ul_corner = false;
 			dr_corner = false;
 			dl_corner = false;
@@ -140,7 +140,7 @@ public:
 
 		if(std::get<1>(pos) == C - 1)
 		{
-			ur_corner = false; 
+			ur_corner = false;
 			ul_corner = false;
 			dr_corner = false;
 			dl_corner = false;
@@ -153,7 +153,7 @@ public:
 
 		if(std::get<1>(pos) == 0)
 		{
-			ur_corner = false; 
+			ur_corner = false;
 			ul_corner = false;
 			dr_corner = false;
 			dl_corner = false;
@@ -164,7 +164,7 @@ public:
 			return;
 		}
 
-		ur_corner = false; 
+		ur_corner = false;
 		ul_corner = false;
 		dr_corner = false;
 		dl_corner = false;
@@ -180,7 +180,7 @@ public:
 	/**
 	*@brief Copy Constructor.
 	*
-	*This constructor receives a dot to be copied, this 
+	*This constructor receives a dot to be copied, this
 	 constructor calls function "copy_dot()", to make copy
 	 by copying every attribute.
 	*/
@@ -215,7 +215,7 @@ public:
 	/**
 	*@brief operator =.
 	*
-	*This operator receives a dot to be copied, this 
+	*This operator receives a dot to be copied, this
 	 operator calls function "copy_dot()", to make copy
 	 by copying every attribute.
 	*/
@@ -226,23 +226,23 @@ public:
 	}
 
 	/**
-	*@brief has_left() return true if there's a dot on left. 
+	*@brief has_left() return true if there's a dot on left.
 	*/
 	bool has_left()
 	{
 		return _has_left;
 	}
-	
+
 	/**
-	*@brief has_right() return true if there's a dot on right. 
+	*@brief has_right() return true if there's a dot on right.
 	*/
 	bool has_right()
 	{
 		return _has_right;
 	}
-	
+
 	/**
-	*@brief has_up() return true if there's a dot above. 
+	*@brief has_up() return true if there's a dot above.
 	*/
 	bool has_up()
 	{
@@ -250,7 +250,7 @@ public:
 	}
 
 	/**
-	*@brief has_donw() return true if there's a dot below. 
+	*@brief has_donw() return true if there's a dot below.
 	*/
 	bool has_down()
 	{
@@ -259,31 +259,31 @@ public:
 
 
 	/**
-	*@brief is_ur_corner() return true if the dot is on the Up right corner. 
+	*@brief is_ur_corner() return true if the dot is on the Up right corner.
 	*/
 	bool is_ur_corner()
 	{
 		return ur_corner;
 	}
-	
+
 	/**
-	*@brief is_ul_corner() return true if the dot is on the Up left corner. 
+	*@brief is_ul_corner() return true if the dot is on the Up left corner.
 	*/
 	bool is_ul_corner()
 	{
 		return ul_corner;
 	}
-	
+
 	/**
-	*@brief is_dr_corner() return true if the dot is on the Down right corner. 
+	*@brief is_dr_corner() return true if the dot is on the Down right corner.
 	*/
 	bool is_dr_corner()
 	{
 		return dr_corner;
 	}
-	
+
 	/**
-	*@brief is_dl_corner() return true if the dot is on the Down left corner. 
+	*@brief is_dl_corner() return true if the dot is on the Down left corner.
 	*/
 	bool is_dl_corner()
 	{
@@ -292,31 +292,31 @@ public:
 
 
 	/**
-	*@brief is_u_border() return true if the dot is on the Up border. 
+	*@brief is_u_border() return true if the dot is on the Up border.
 	*/
 	bool is_u_border()
 	{
 		return u_border;
 	}
-	
+
 	/**
-	*@brief is_d_border() return true if the dot is on the down  border. 
+	*@brief is_d_border() return true if the dot is on the down  border.
 	*/
 	bool is_d_border()
 	{
 		return d_border;
 	}
-	
+
 	/**
-	*@brief is_l_border() return true if the dot is on the left  border. 
+	*@brief is_l_border() return true if the dot is on the left  border.
 	*/
 	bool is_l_border()
 	{
 		return l_border;
 	}
-	
+
 	/**
-	*@brief is_u_border() return true if the dot is on the right border. 
+	*@brief is_u_border() return true if the dot is on the right border.
 	*/
 	bool is_r_border()
 	{
@@ -326,11 +326,11 @@ public:
 	/**
 	*@brief get_position() return the position of the dot on the map.
 	*/
-	const std::pair<size_t, size_t> & get_position() 
+	const std::pair<size_t, size_t> & get_position()
 	{
 		return position;
 	}
-	
+
 	/**
 	*@brief get_pos() return the position of the dot on the map.
 	*/
@@ -346,7 +346,7 @@ public:
 	{
 		_has_left = true;
 	}
-	
+
 	/**
 	*@brief mark_left() Set has_right true.
 	*/
@@ -354,7 +354,7 @@ public:
 	{
 		_has_right = true;
 	}
-	
+
 	/**
 	*@brief mark_left() Set has_up true.
 	*/
@@ -362,7 +362,7 @@ public:
 	{
 		_has_up = true;
 	}
-	
+
 	/**
 	*@brief mark_left() Set has_down true.
 	*/
@@ -378,7 +378,7 @@ public:
 	{
 		_has_left = l;
 	}
-	
+
 	/**
 	*@brief set_right(bool r).
 	*/
@@ -386,7 +386,7 @@ public:
 	{
 		_has_right = r;
 	}
-	
+
 	/**
 	*@brief set_up(bool u).
 	*/
@@ -394,7 +394,7 @@ public:
 	{
 		_has_up = u;
 	}
-	
+
 	/**
 	*@brief set_down(bool l).
 	*/
@@ -404,34 +404,34 @@ public:
 	}
 
 	/**
-	*@brief is_full() Return true if the dot is completely surrounded. 
+	*@brief is_full() Return true if the dot is completely surrounded.
 	*/
 	bool is_full()
 	{
 		if(ur_corner)
 			return _has_down and _has_left;
-		
+
 		if(ul_corner)
 			return _has_down and _has_right;
-			
+
 		if(dr_corner)
 			return _has_left and _has_up;
-		
+
 		if(dl_corner)
 			return _has_right and _has_up;
-		
+
 		if(u_border)
 			return _has_down and _has_left and _has_right;
-		
+
 		if(d_border)
 			return _has_up and _has_left and _has_right;
-		
+
 		if(l_border)
 			return _has_right and _has_up and _has_down;
-		
+
 		if(r_border)
 			return _has_left and _has_up and _has_down;
-			
+
 		return _has_down and _has_up and _has_right and _has_left;
 	}
 

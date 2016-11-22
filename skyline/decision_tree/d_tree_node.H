@@ -21,7 +21,7 @@
  *@brief macro to have a better code readability.
    POS = represents position into map.
 */
-# define POS pair<size_t,size_t>
+# define POS std::pair<size_t,size_t>
 
 /**
  *@brief move_bucket class
@@ -163,10 +163,10 @@ public:
 	void reset()
 	{
 		actual_map.reset();
-		get<0>(get<0>(actual_move)) = 0;
-		get<1>(get<0>(actual_move)) = 0;
-		get<0>(get<1>(actual_move)) = 0;
-		get<1>(get<1>(actual_move)) = 0;
+		std::get<0>(std::get<0>(actual_move)) = 0;
+		std::get<1>(std::get<0>(actual_move)) = 0;
+		std::get<0>(std::get<1>(actual_move)) = 0;
+		std::get<1>(std::get<1>(actual_move)) = 0;
 		children = nullptr;
 	}
 
@@ -297,8 +297,8 @@ public:
 		size_t pos = 0;
 		MOVE mv;
 		POS pos_aux;
-		get<0>(pos_aux) = 0;
-		get<1>(pos_aux) = 0;
+		std::get<0>(pos_aux) = 0;
+		std::get<1>(pos_aux) = 0;
 
 		for (size_t i = 0; i < R; ++i)
 		{	
@@ -307,10 +307,10 @@ public:
 				
 				if (i != 0)
 				{
-					get<0>(get<0>(mv)) = get<0>(pos_aux);
-					get<1>(get<0>(mv)) = get<1>(pos_aux);
-					get<0>(get<1>(mv)) = i - 1;
-					get<1>(get<1>(mv)) = j - 1;
+					std::get<0>(std::get<0>(mv)) = std::get<0>(pos_aux);
+					std::get<1>(std::get<0>(mv)) = std::get<1>(pos_aux);
+					std::get<0>(std::get<1>(mv)) = i - 1;
+					std::get<1>(std::get<1>(mv)) = j - 1;
 
 					if(new_map.try_move(mv))
 					{ 
@@ -320,10 +320,10 @@ public:
 					}
 				}					
 
-				get<0>(get<0>(mv)) = get<0>(pos_aux);
-				get<1>(get<0>(mv)) = get<1>(pos_aux);
-				get<0>(pos_aux) = get<0>(get<1>(mv)) = i;
-				get<1>(pos_aux) = get<1>(get<1>(mv)) = j;
+				std::get<0>(std::get<0>(mv)) = std::get<0>(pos_aux);
+				std::get<1>(std::get<0>(mv)) = std::get<1>(pos_aux);
+				std::get<0>(pos_aux) = std::get<0>(std::get<1>(mv)) = i;
+				std::get<1>(pos_aux) = std::get<1>(std::get<1>(mv)) = j;
 
 				if(new_map.try_move(mv))
 				{	
@@ -335,10 +335,10 @@ public:
 
 			if (i != 0)
 			{
-				get<0>(get<0>(mv)) = get<0>(pos_aux);
-				get<1>(get<0>(mv)) = get<1>(pos_aux);
-				get<0>(get<1>(mv)) = i - 1; 
-				get<1>(get<1>(mv)) = get<1>(pos_aux);
+				std::get<0>(std::get<0>(mv)) = std::get<0>(pos_aux);
+				std::get<1>(std::get<0>(mv)) = std::get<1>(pos_aux);
+				std::get<0>(std::get<1>(mv)) = i - 1; 
+				std::get<1>(std::get<1>(mv)) = std::get<1>(pos_aux);
 				
 				if(new_map.try_move(mv))
 				{
@@ -348,8 +348,8 @@ public:
 				}
 			}					
 
-			get<0>(pos_aux) = i + 1;
-			get<1>(pos_aux) = 0;
+			std::get<0>(pos_aux) = i + 1;
+			std::get<1>(pos_aux) = 0;
 		}
 
 		return children_;	
