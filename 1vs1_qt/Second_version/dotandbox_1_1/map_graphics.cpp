@@ -357,3 +357,56 @@ void map_graphics::act_score()
     p2_score = m_game->get_p2_score();
 }
 
+QPointF map_graphics::dot_to_qpointf(std::pair<size_t, size_t> &dot_)
+{
+    QPointF click_;  //Click point to return
+
+    //First row:
+    if(std::get<0>(dot_) == 0)
+    {
+        //First column:
+        if(std::get<1>(dot_) == 0)
+            return click_ = dot_00->center();
+        //Second column:
+        if(std::get<1>(dot_) == 1)
+            return click_ = dot_01->center();
+        //Third column:
+        if(std::get<1>(dot_) == 2)
+            return click_ = dot_02->center();
+    }
+
+    //Second row:
+    if(std::get<0>(dot_) == 1)
+    {
+        //First column:
+        if(std::get<1>(dot_) == 0)
+            return click_ = dot_10->center();
+
+        //Second column:
+        if(std::get<1>(dot_) == 1)
+            return click_ = dot_11->center();
+
+        //Third column:
+        if(std::get<1>(dot_) == 2)
+            return click_ = dot_12->center();
+    }
+
+    //Third row:
+    if(std::get<0>(dot_) == 2)
+    {
+        //First column:
+        if(std::get<1>(dot_) == 0)
+            return click_ = dot_20->center();
+
+        //Second column:
+        if(std::get<1>(dot_) == 1)
+            return click_ = dot_21->center();
+
+        //Third column:
+        if(std::get<1>(dot_) == 2)
+            return click_ = dot_22->center();
+    }
+
+    return click_ = QPointF(-1,-1);
+}
+

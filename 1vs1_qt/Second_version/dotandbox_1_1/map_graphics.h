@@ -26,7 +26,7 @@ public:
     void draw_line(QPointF &point, QBrush &color);
     void refresh_dots();
     void act_score();
-
+    QPointF dot_to_qpointf(std::pair<size_t,size_t>&dot_);
     std::pair<unsigned short, unsigned short> detect_dot(QPointF &point);
     uint p1_score, p2_score;
 
