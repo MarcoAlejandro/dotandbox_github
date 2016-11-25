@@ -6,7 +6,7 @@ int main()
 	map<3,3> map_;
 	MOVE mv;
 
-	dotandbox_tree<3,3,3> * d_t = new dotandbox_tree<3,3,3>(map_,mv);
+	dotandbox_tree<3,3,3> * d_t = new dotandbox_tree<3,3,3>();
 
 	get<0>(get<0>(mv)) = 0;
 	get<1>(get<0>(mv)) = 0;
@@ -26,7 +26,7 @@ int main()
 
 
 	d_t->make_decision_tree(map_,mv,2);
-	mv = d_t->get_next_move(2);
+	mv = d_t->get_next_move();
 	cout << "\nIA_move_after_player_move(" << get<0>(get<0>(mv)) << "," << get<1>(get<0>(mv)) 
 	     << ") - (" << get<0>(get<1>(mv)) << "," << get<1>(get<1>(mv)) << ")" << endl;
 	d_t->reset_tree();
@@ -59,7 +59,7 @@ int main()
 	cout << "\nIA_score: " << map_.get_p1_score() << " player_score: " << map_.get_p2_score() << "\n\n";
 
 	d_t->make_decision_tree(map_,mv,2);
-	mv = d_t->get_next_move(2);
+	mv = d_t->get_next_move();
 	cout << "IA_move_after_player_move(" << get<0>(get<0>(mv)) << "," << get<1>(get<0>(mv)) 
 	     << ") - (" << get<0>(get<1>(mv)) << "," << get<1>(get<1>(mv)) << ")" << endl;
 	d_t->reset_tree();
@@ -72,7 +72,7 @@ int main()
 	cout << "\nIA_score: " << map_.get_p1_score() << " player_score: " << map_.get_p2_score() << "\n\n";
 
 	d_t->make_decision_tree(map_,mv,1);
-	mv = d_t->get_next_move(1);
+	mv = d_t->get_next_move();
 	cout << "IA_move_after_point(" << get<0>(get<0>(mv)) << "," << get<1>(get<0>(mv)) 
 	     << ") - (" << get<0>(get<1>(mv)) << "," << get<1>(get<1>(mv)) << ")" << endl;
 	d_t->reset_tree();
@@ -104,7 +104,7 @@ int main()
 	cout << "\nIA_score: " << map_.get_p1_score() << " player_score: " << map_.get_p2_score() << "\n\n";
 
 	d_t->make_decision_tree(map_,mv,2);
-	mv = d_t->get_next_move(2);
+	mv = d_t->get_next_move();
 	cout << "IA_move_after_player_move(" << get<0>(get<0>(mv)) << "," << get<1>(get<0>(mv)) 
 	     << ") - (" << get<0>(get<1>(mv)) << "," << get<1>(get<1>(mv)) << ")" << endl;
 	d_t->reset_tree();
@@ -117,7 +117,7 @@ int main()
 	cout << "\nIA_score: " << map_.get_p1_score() << " player_score: " << map_.get_p2_score() << "\n\n";
 
 	d_t->make_decision_tree(map_,mv,1);
-	mv = d_t->get_next_move(1);
+	mv = d_t->get_next_move();
 	cout << "IA_move_after_point(" << get<0>(get<0>(mv)) << "," << get<1>(get<0>(mv)) 
 	     << ") - (" << get<0>(get<1>(mv)) << "," << get<1>(get<1>(mv)) << ")" << endl;
 	d_t->reset_tree();
@@ -150,7 +150,7 @@ int main()
 	cout << "\nIA_score: " << map_.get_p1_score() << " player_score: " << map_.get_p2_score() << "\n\n";
 
 	d_t->make_decision_tree(map_,mv,2);
-	mv = d_t->get_next_move(2);
+	mv = d_t->get_next_move();
 	cout << "IA_move_after_player_move(" << get<0>(get<0>(mv)) << "," << get<1>(get<0>(mv)) 
 	     << ") - (" << get<0>(get<1>(mv)) << "," << get<1>(get<1>(mv)) << ")" << endl;
 	d_t->reset_tree();

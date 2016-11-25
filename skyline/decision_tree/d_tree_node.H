@@ -195,7 +195,11 @@ public:
 	 *@brief default constructor of class dotandbox_tree, sets dotandbox_tree
 	  		 with default values.
 	*/
-	dotandbox_tree() : a_moves(2 * (C - 1) * C), root(nullptr){/*empty*/}
+	dotandbox_tree() : a_moves(2 * (C - 1) * C)
+	{
+		root = new move_bucket<R,C>;
+		return;
+	}
 
 	/**
 	 *@brief constructor of class dotandbox_tree, it is used to set 
@@ -376,7 +380,7 @@ public:
 			root_->get_children() = gen_children(new_map,player,a_moves_);
 		}
 		
-		long biggest_utility = root_->get_children()[0].get_utility();
+		long utility = 0;
 
 	    for (size_t i = 0; i < a_moves_; i++)
 		{
@@ -388,11 +392,10 @@ public:
 					root_->get_children()[i].get_map().get_p1_score() - 
 					root_->get_children()[i].get_map().get_p2_score() );
 
-			if (root_->get_children()[i].get_utility() > biggest_utility)
-				biggest_utility = root_->get_children()[i].get_utility();
+				utility += root_->get_children()[i].get_utility();
 		}
 		
-		root_->set_utility(biggest_utility);		
+		root_->set_utility(utility);		
 		return;
 	}
 
@@ -408,37 +411,13 @@ public:
 
 		return;
 	}
-	
-	/**
-	 *@brief Goes through a road following moves that makes points, this 
-	 fuction is used to modify utility acording with who is playing.
-	*/
-
-	void add_sub_utility(move_bucket<R,C> & bucket,size_t cur_lvl,
-		                size_t a_moves_,long & add_sub)
-	{
-		if (cur_lvl >= lvl or a_moves_ == 0)	
-			return;
-
-		for (size_t j = 0; j < a_moves_; ++j)
-			{
-				if (bucket.get_children()[j].get_map().
-						was_point(bucket.get_children()[j].get_move()))
-				{
-					add_sub += 1;
-					add_sub_utility(bucket.get_children()[j],cur_lvl + 1, 
-													a_moves_ - 1, add_sub);
-					return;
-				}
-			}
-	}
 
 	/**
 	 *@brief selects best move to play, wich is child of root with biggest 
 	 		 utility.
 	 *return move to be play.
 	*/
-	MOVE get_next_move(unsigned short last_player)
+	MOVE get_next_move()
 	{
 		MOVE best_move;
 		long biggest_utility = root->get_children()[0].get_utility();
@@ -448,29 +427,17 @@ public:
 
 		for (size_t i = 0; i < a_moves; i++)
 		{
-			add_sub = 0;
-			add_sub_utility(root->get_children()[i],1,a_moves - 1,add_sub);
-			
 			if (root->get_children()[i].get_map().
 					was_point(
-					root->get_children()[i].get_move()) and last_player == 1)
-			{
-				root->get_children()[i].set_utility(
-							root->get_children()[i].get_utility() + add_sub );
-			}
-			else
-				root->get_children()[i].set_utility(
-							root->get_children()[i].get_utility() - add_sub );
-
-			if (root->get_children()[i].get_utility() + 
-				root->get_children()[i].get_map().get_p1_score() - 
-				root->get_children()[i].get_map().get_p2_score() 
-														> biggest_utility)
+					root->get_children()[i].get_move()))
 			{
 				best_move = root->get_children()[i].get_move();
-				biggest_utility = root->get_children()[i].get_utility() +
-				root->get_children()[i].get_map().get_p1_score() - 
-				root->get_children()[i].get_map().get_p2_score() ;
+				break;
+			}
+			if (root->get_children()[i].get_utility() > biggest_utility)
+			{
+				best_move = root->get_children()[i].get_move();
+				biggest_utility = root->get_children()[i].get_utility();
 			}
 		}
 
