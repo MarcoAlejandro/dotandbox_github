@@ -1,4 +1,4 @@
-# include <d_tree_node.H>
+# include <skyline.H>
 # include <iostream>
 //# include <stdlib>
 using namespace std;
@@ -47,50 +47,10 @@ int main()
 	//
 	map<R,C> game_map;
 	MOVE cur_move;
-	dotandbox_tree<R,C,LVL> * d_t = new dotandbox_tree<R,C,LVL>(game_map,cur_move);
-	size_t last_player, p1_last_score, p2_last_score;
-
-	get<0>(get<0>(cur_move)) = 1;
-	get<1>(get<0>(cur_move)) = 2;
-
-	get<0>(get<1>(cur_move)) = 0;
-	get<1>(get<1>(cur_move)) = 2;
-
-	game_map.play(cur_move,2);
-	d_t->moves_number()--;
+	skyline sky(game_map, cur_move);
+	size_t p1_last_score, p2_last_score;
 
 
-	get<0>(get<0>(cur_move)) = 2;
-	get<1>(get<0>(cur_move)) = 2;
-
-	get<0>(get<1>(cur_move)) = 2;
-	get<1>(get<1>(cur_move)) = 3;
-
-	game_map.play(cur_move,1);
-	d_t->moves_number()--;
-
-	get<0>(get<0>(cur_move)) = 2;
-	get<1>(get<0>(cur_move)) = 1;
-
-	get<0>(get<1>(cur_move)) = 3;
-	get<1>(get<1>(cur_move)) = 1;
-
-	game_map.play(cur_move,2);
-	d_t->moves_number()--;
-
-
-	get<0>(get<0>(cur_move)) = 1;
-	get<1>(get<0>(cur_move)) = 0;
-
-	get<0>(get<1>(cur_move)) = 1;
-	get<1>(get<1>(cur_move)) = 1;
-
-	game_map.play(cur_move,1);
-	d_t->moves_number()--;
-
-
-
-	//
 	while(not game_map.is_full())
 	{
 			while(1)
@@ -110,40 +70,40 @@ int main()
 				
 				if(p2_last_score != game_map.get_p2_score())
 				{
-					d_t->moves_number()--;
+					sky.check_play(game_map,cur_move,2);
 					continue;
 				}
 				else
+				{
+					sky.check_play(game_map,cur_move,2);
 					break;
-			
+				}
 			}
 			
 			if(game_map.is_full())
 				break;
-			last_player = 2;
+			
 			
 			while(1)
 			{
 				p1_last_score = game_map.get_p1_score();
 				printl(game_map);
 				cout << "Computer turn...";
-				d_t->make_decision_tree(game_map,cur_move,last_player);
-				
-				cur_move = d_t->get_next_move();
+				cur_move = sky.AI_play();
 				game_map.play(cur_move,1);
+				
 				
 				if(game_map.is_full())
 					break;
 				
 				if(p1_last_score != game_map.get_p1_score())
 				{
-					last_player = 1;
+					sky.check_play(game_map, cur_move,1);
 					continue;
 				}
 				else
 				{
-					d_t->moves_number()--;
-					d_t->reset_tree();
+					sky.check_play(game_map, cur_move,1);
 					break;
 				}
 			}
