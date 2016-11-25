@@ -6,7 +6,6 @@ map_graphics::map_graphics(QWidget *parent) :
 {
     m_game = new map<3,3>;
     d_t = new dotandbox_tree<3,3,3>(*m_game, cur_mv);
-    last_player =0;
 }
 
 void map_graphics::start_graph()
@@ -14,9 +13,9 @@ void map_graphics::start_graph()
 
     p1_score = 0;
     p2_score = 0;
-    c_free = new QColor("navy");
-    c_marked = new QColor("green");
-    c_marked2 = new QColor("gray");
+    c_free = new QColor("000000");
+    c_marked = new QColor("#EB7F0C");
+    c_marked2 = new QColor("#0C6DEB");
     b_free = new QBrush(*c_free,Qt::SolidPattern);
     b_marked = new QBrush(*c_marked, Qt::SolidPattern);
     b_marked2 = new QBrush(*c_marked2,Qt::SolidPattern);
@@ -112,20 +111,28 @@ void map_graphics::mousePressEvent(QMouseEvent *e)
     {
         if(dot_00->contains(*click_point))
             scene->addEllipse(*dot_00,*c_marked,*b_marked);
+
         else if(dot_01->contains(*click_point))
             scene->addEllipse(*dot_01,*c_marked,*b_marked);
+
         else if(dot_02->contains(*click_point))
             scene->addEllipse(*dot_02,*c_marked,*b_marked);
+
         else if(dot_10->contains(*click_point))
             scene->addEllipse(*dot_10,*c_marked,*b_marked);
+
         else if(dot_11->contains(*click_point))
             scene->addEllipse(*dot_11,*c_marked,*b_marked);
+
         else if(dot_12->contains(*click_point))
             scene->addEllipse(*dot_12,*c_marked,*b_marked);
+
         else if(dot_20->contains(*click_point))
             scene->addEllipse(*dot_20,*c_marked,*b_marked);
+
         else if(dot_21->contains(*click_point))
             scene->addEllipse(*dot_21,*c_marked,*b_marked);
+
         else if(dot_22->contains(*click_point))
             scene->addEllipse(*dot_22,*c_marked,*b_marked);
     }
@@ -134,7 +141,7 @@ void map_graphics::mousePressEvent(QMouseEvent *e)
 
 void map_graphics::mouseReleaseEvent(QMouseEvent *event)
 {
-    if(turn==0)
+    if(turn==PLAYER_TURN)
     {
             QPointF release_point = this->mapToScene(event->pos());
             std::get<0>(cur_mv) = detect_dot(*click_point);
@@ -163,27 +170,32 @@ void map_graphics::mouseReleaseEvent(QMouseEvent *event)
             {
                     draw_line(release_point, *b_marked);
 
-                    p1_score = m_game->get_p1_score();
-                    m_game->play(cur_mv,2);
-                    if(p1_score == m_game->get_p1_score())
-                        turn = 1;
+                    p2_score = m_game->get_p2_score();
+                    m_game->play(cur_mv,PLAYER_TURN);
+                    if(p2_score == m_game->get_p2_score())
+                    {
+                        turn = IA_TURN;
+                        last_player = IA_TURN;
+                    }
+                    else
+                        d_t->moves_number()--;
             }
 
-            last_player = 2;
     }
-    else
+    if(turn==IA_TURN)
     {
-        p2_score = m_game->get_p2_score();
+
+        p1_score = m_game->get_p1_score();
 
         d_t->make_decision_tree(*m_game,cur_mv,last_player);
 
         cur_mv = d_t->get_next_move(last_player);
-        m_game->play(cur_mv,1);
+        m_game->play(cur_mv,IA_TURN);
 
         QPointF par1 = dot_to_qpointf(std::get<0>(cur_mv));
         QPointF par2 = dot_to_qpointf(std::get<1>(cur_mv));
 
-        *click_point = par1;
+        //*click_point = par1;
 
         if(dot_00->contains(par2))
             scene->addEllipse(*dot_00,*c_marked,*b_marked);
@@ -204,31 +216,23 @@ void map_graphics::mouseReleaseEvent(QMouseEvent *event)
         else if(dot_22->contains(par2))
             scene->addEllipse(*dot_22,*c_marked,*b_marked);
 
-        draw_line(par2, *b_marked2);
 
-        if(p2_score == m_game->get_p2_score())
-            turn = 0;
+        draw_line(par1, par2, *b_marked2);
 
-        last_player = 1;
+        if(p1_score == m_game->get_p1_score())
+        {
+            turn = PLAYER_TURN;
+            last_player = PLAYER_TURN;
+            d_t->moves_number()--;
+            d_t->reset_tree();
+        }
+
     }
 
     act_score();
-    emit refresh_score(p1_score,p2_score);
+    emit refresh_score(p2_score,p1_score);
     emit set_turn(turn);
     refresh_dots();
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -291,6 +295,7 @@ void map_graphics::mouseReleaseEvent(QMouseEvent *event)
 std::pair<unsigned short,unsigned short> map_graphics::detect_dot(QPointF &point)
 {
     std::pair<unsigned short,unsigned short> dot;
+
     if(dot_00->contains(point))
     {
         return dot = std::make_pair(0,0);
@@ -336,6 +341,8 @@ std::pair<unsigned short,unsigned short> map_graphics::detect_dot(QPointF &point
 
     }
 }
+
+//void map_graphics::msleep(unsigned long msecs){QThread::msleep(msecs);}
 
 bool map_graphics::check_move(QPointF &point)
 {
@@ -438,6 +445,59 @@ void map_graphics::draw_line(QPointF &point, QBrush &color)
 
 }
 
+void map_graphics::draw_line(QPointF &first_point, QPointF &second_point, QBrush &color)
+{
+    //Horizontal:
+    if( (dot_00->contains(first_point) and dot_01->contains(second_point)) or
+       (dot_00->contains(second_point) and dot_01->contains(first_point)) )
+        scene->addRect(*l_00_01,*c_free,color);
+
+    if( (dot_01->contains(first_point) and dot_02->contains(second_point)) or
+       (dot_01->contains(second_point) and dot_02->contains(first_point)) )
+        scene->addRect(*l_01_02,*c_free,color);
+
+    if( (dot_10->contains(first_point) and dot_11->contains(second_point)) or
+       (dot_10->contains(second_point) and dot_11->contains(first_point)) )
+        scene->addRect(*l_10_11,*c_free,color);
+
+    if( (dot_11->contains(first_point) and dot_12->contains(second_point)) or
+       (dot_11->contains(second_point) and dot_12->contains(first_point)) )
+        scene->addRect(*l_11_12,*c_free,color);
+
+    if( (dot_20->contains(first_point) and dot_21->contains(second_point)) or
+       (dot_20->contains(second_point) and dot_21->contains(first_point)) )
+        scene->addRect(*l_20_21,*c_free,color);
+
+    if( (dot_21->contains(first_point) and dot_22->contains(second_point)) or
+       (dot_21->contains(second_point) and dot_22->contains(first_point)) )
+        scene->addRect(*l_21_22,*c_free,color);
+    //Vertical:
+    if( (dot_00->contains(first_point) and dot_10->contains(second_point)) or
+       (dot_00->contains(second_point) and dot_10->contains(first_point)) )
+        scene->addRect(*l_00_10,*c_free,color);
+
+    if( (dot_10->contains(first_point) and dot_20->contains(second_point)) or
+       (dot_10->contains(second_point) and dot_20->contains(first_point)) )
+        scene->addRect(*l_10_20,*c_free,color);
+
+    if( (dot_01->contains(first_point) and dot_11->contains(second_point)) or
+       (dot_01->contains(second_point) and dot_11->contains(first_point)) )
+        scene->addRect(*l_01_11,*c_free,color);
+
+    if( (dot_11->contains(first_point) and dot_21->contains(second_point)) or
+       (dot_11->contains(second_point) and dot_21->contains(first_point)) )
+        scene->addRect(*l_11_21,*c_free,color);
+
+    if( (dot_02->contains(first_point) and dot_12->contains(second_point)) or
+       (dot_02->contains(second_point) and dot_12->contains(first_point)) )
+        scene->addRect(*l_02_12,*c_free,color);
+
+    if( (dot_12->contains(first_point) and dot_22->contains(second_point)) or
+       (dot_12->contains(second_point) and dot_22->contains(first_point)) )
+        scene->addRect(*l_12_22,*c_free,color);
+
+}
+
 void map_graphics::refresh_dots()
 {
     scene->addEllipse(*dot_00,*c_free,*b_free);
@@ -511,4 +571,6 @@ QPointF map_graphics::dot_to_qpointf(std::pair<size_t, size_t> &dot_)
 
     return click_ = QPointF(-1,-1);
 }
+
+//void map_graphics::msleep(unsigned long 500){QThread::msleep(msecs);}
 

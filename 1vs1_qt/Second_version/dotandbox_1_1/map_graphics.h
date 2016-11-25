@@ -7,11 +7,15 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QMouseEvent>
 #include <QColor>
+#include <QThread>
 
 #include <../../../dot_H/dot.H>
 #include <../../../map/map.H>
 #include <../../../player_H/player.H>
 #include <../../../skyline/decision_tree/d_tree_node.H>
+
+#define PLAYER_TURN 2
+#define IA_TURN 1
 
 class map_graphics : public QGraphicsView
 {
@@ -24,6 +28,7 @@ public:
 
     bool check_move(QPointF &point);
     void draw_line(QPointF &point, QBrush &color);
+    void draw_line(QPointF&, QPointF&,QBrush&);
     void refresh_dots();
     void act_score();
     QPointF dot_to_qpointf(std::pair<size_t,size_t>&dot_);
@@ -31,11 +36,19 @@ public:
     uint p1_score, p2_score;
 
 
+    //To delay:
+
+
+
+
 public slots:
    void mousePressEvent(QMouseEvent *e);
    // void dotPressed()
    void mouseReleaseEvent(QMouseEvent *event);
+   //void mouseMoveEvent()
    //void show_turn(int);
+
+   //static void msleep(unsigned long);
 
 signals:
     void refresh_score(uint,uint);
@@ -66,7 +79,7 @@ private:
     //Game Atributes:
     map<3,3> *m_game;
     MOVE cur_mv;
-    int turn = 0;
+    int turn = PLAYER_TURN;
     dotandbox_tree<3,3,3> *d_t;
     size_t last_player;
 

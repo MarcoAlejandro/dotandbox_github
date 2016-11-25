@@ -45,7 +45,7 @@ void game_window::act_score(uint a,uint b)
 }
 
 void game_window::show_turn(int t){
-    if(t == 0)
+    if(t == 2)
     {
         this->ui->l_img->setVisible(true);
         this->ui->l_p1_id->setStyleSheet("background-color: green");
