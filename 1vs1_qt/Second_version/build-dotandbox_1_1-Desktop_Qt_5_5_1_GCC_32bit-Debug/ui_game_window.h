@@ -55,7 +55,7 @@ public:
         game_window->resize(774, 494);
         g_map = new map_graphics(game_window);
         g_map->setObjectName(QStringLiteral("g_map"));
-        g_map->setGeometry(QRect(140, 20, 451, 341));
+        g_map->setGeometry(QRect(140, 20, 451, 361));
         g_map->setLayoutDirection(Qt::LeftToRight);
         g_map->setFrameShape(QFrame::StyledPanel);
         g_map->setLineWidth(0);
@@ -63,7 +63,7 @@ public:
         g_map->setAlignment(Qt::AlignJustify|Qt::AlignVCenter);
         layoutWidget = new QWidget(game_window);
         layoutWidget->setObjectName(QStringLiteral("layoutWidget"));
-        layoutWidget->setGeometry(QRect(190, 360, 330, 29));
+        layoutWidget->setGeometry(QRect(190, 400, 330, 29));
         horizontalLayout = new QHBoxLayout(layoutWidget);
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
         horizontalLayout->setContentsMargins(0, 0, 0, 0);
@@ -91,7 +91,7 @@ public:
 
         layoutWidget1 = new QWidget(game_window);
         layoutWidget1->setObjectName(QStringLiteral("layoutWidget1"));
-        layoutWidget1->setGeometry(QRect(40, 120, 91, 61));
+        layoutWidget1->setGeometry(QRect(10, 130, 91, 61));
         verticalLayout_2 = new QVBoxLayout(layoutWidget1);
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
         verticalLayout_2->setContentsMargins(0, 0, 0, 0);
@@ -111,7 +111,7 @@ public:
 
         layoutWidget2 = new QWidget(game_window);
         layoutWidget2->setObjectName(QStringLiteral("layoutWidget2"));
-        layoutWidget2->setGeometry(QRect(590, 120, 101, 61));
+        layoutWidget2->setGeometry(QRect(630, 120, 101, 61));
         verticalLayout = new QVBoxLayout(layoutWidget2);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         verticalLayout->setContentsMargins(0, 0, 0, 0);
@@ -135,12 +135,12 @@ public:
         l_img->setScaledContents(true);
         l_img_2 = new QLabel(game_window);
         l_img_2->setObjectName(QStringLiteral("l_img_2"));
-        l_img_2->setGeometry(QRect(590, 30, 111, 81));
+        l_img_2->setGeometry(QRect(630, 30, 111, 81));
         l_img_2->setPixmap(QPixmap(QString::fromUtf8("ehm.jpg")));
         l_img_2->setScaledContents(true);
         l_img_3 = new QLabel(game_window);
         l_img_3->setObjectName(QStringLiteral("l_img_3"));
-        l_img_3->setGeometry(QRect(300, 270, 111, 81));
+        l_img_3->setGeometry(QRect(20, 280, 111, 81));
         l_img_3->setPixmap(QPixmap(QString::fromUtf8("ehm.jpg")));
         l_img_3->setScaledContents(true);
         layoutWidget->raise();
@@ -151,8 +151,6 @@ public:
         l_img_2->raise();
         l_img_3->raise();
         l_p1_score->raise();
-        l_p2_id->raise();
-        l_p2_score->raise();
 
         retranslateUi(game_window);
 

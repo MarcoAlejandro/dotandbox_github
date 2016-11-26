@@ -4,8 +4,8 @@
 map_graphics::map_graphics(QWidget *parent) :
     QGraphicsView(parent)
 {
-    m_game = new map<3,3>;
-    //sky = new skyline(*m_game, cur_mv);
+    m_game = new map<4,4>;
+    sky = new skyline<4>(*m_game, cur_mv);
 }
 
 void map_graphics::start_graph()
@@ -195,7 +195,7 @@ void map_graphics::mousePressEvent(QMouseEvent *e)
 
 void map_graphics::mouseReleaseEvent(QMouseEvent *event)
 {
-  /*  if(turn==PLAYER_TURN)
+    if(turn==PLAYER_TURN)
     {
             QPointF release_point = this->mapToScene(event->pos());
             std::get<0>(cur_mv) = detect_dot(*click_point);
@@ -229,11 +229,11 @@ void map_graphics::mouseReleaseEvent(QMouseEvent *event)
 
                 if(p2_score != m_game->get_p2_score())
                 {
-                    sky.check_play(*m_game,cur_mv,PLAYER_TURN);
+                    sky->check_play(*m_game,cur_mv,PLAYER_TURN);
                 }
                 else
                 {
-                    sky.check_play(*m_game,cur_mv,PLAYER_TURN);
+                    sky->check_play(*m_game,cur_mv,PLAYER_TURN);
                     turn = IA_TURN;
                 }
             }
@@ -242,7 +242,7 @@ void map_graphics::mouseReleaseEvent(QMouseEvent *event)
     {
 
         p1_score = m_game->get_p1_score();
-        cur_mv = sky.AI_play();
+        cur_mv = sky->AI_play();
         m_game->play(cur_mv,IA_TURN);
 
         QPointF par1 = dot_to_qpointf(std::get<0>(cur_mv));
@@ -274,11 +274,11 @@ void map_graphics::mouseReleaseEvent(QMouseEvent *event)
 
         if(p1_score != m_game->get_p1_score())
         {
-            sky.check_play(*m_game,cur_mv,IA_TURN);
+            sky->check_play(*m_game,cur_mv,IA_TURN);
         }
         else
         {
-            sky.check_play(*m_game, cur_mv,IA_TURN);
+            sky->check_play(*m_game, cur_mv,IA_TURN);
             turn = PLAYER_TURN;
         }
     }
@@ -287,10 +287,6 @@ void map_graphics::mouseReleaseEvent(QMouseEvent *event)
     emit refresh_score(p2_score,p1_score);
     emit set_turn(turn);
     refresh_dots();
-
- */
-
-
 }
 
 std::pair<unsigned short,unsigned short> map_graphics::detect_dot(QPointF &point)
@@ -473,6 +469,10 @@ void map_graphics::draw_line(QPointF &point, QBrush &color)
        (dot_01->contains(point) and dot_02->contains(*click_point)) )
         scene->addRect(*l_01_02,*c_free,color);
 
+    if( (dot_02->contains(*click_point) and dot_03->contains(point)) or
+       (dot_02->contains(point) and dot_03->contains(*click_point)) )
+        scene->addRect(*l_02_03,*c_free,color);
+
     if( (dot_10->contains(*click_point) and dot_11->contains(point)) or
        (dot_10->contains(point) and dot_11->contains(*click_point)) )
         scene->addRect(*l_10_11,*c_free,color);
@@ -481,6 +481,10 @@ void map_graphics::draw_line(QPointF &point, QBrush &color)
        (dot_11->contains(point) and dot_12->contains(*click_point)) )
         scene->addRect(*l_11_12,*c_free,color);
 
+    if( (dot_12->contains(*click_point) and dot_13->contains(point)) or
+       (dot_12->contains(point) and dot_13->contains(*click_point)) )
+        scene->addRect(*l_12_13,*c_free,color);
+
     if( (dot_20->contains(*click_point) and dot_21->contains(point)) or
        (dot_20->contains(point) and dot_21->contains(*click_point)) )
         scene->addRect(*l_20_21,*c_free,color);
@@ -488,6 +492,22 @@ void map_graphics::draw_line(QPointF &point, QBrush &color)
     if( (dot_21->contains(*click_point) and dot_22->contains(point)) or
        (dot_21->contains(point) and dot_22->contains(*click_point)) )
         scene->addRect(*l_21_22,*c_free,color);
+
+    if( (dot_22->contains(*click_point) and dot_23->contains(point)) or
+       (dot_22->contains(point) and dot_23->contains(*click_point)) )
+        scene->addRect(*l_22_23,*c_free,color);
+
+    if( (dot_30->contains(*click_point) and dot_31->contains(point)) or
+       (dot_30->contains(point) and dot_31->contains(*click_point)) )
+        scene->addRect(*l_30_31,*c_free,color);
+
+    if( (dot_31->contains(*click_point) and dot_32->contains(point)) or
+       (dot_31->contains(point) and dot_32->contains(*click_point)) )
+        scene->addRect(*l_31_32,*c_free,color);
+
+    if( (dot_32->contains(*click_point) and dot_33->contains(point)) or
+       (dot_32->contains(point) and dot_33->contains(*click_point)) )
+        scene->addRect(*l_32_33,*c_free,color);
     //Vertical:
     if( (dot_00->contains(*click_point) and dot_10->contains(point)) or
        (dot_00->contains(point) and dot_10->contains(*click_point)) )
@@ -497,6 +517,10 @@ void map_graphics::draw_line(QPointF &point, QBrush &color)
        (dot_10->contains(point) and dot_20->contains(*click_point)) )
         scene->addRect(*l_10_20,*c_free,color);
 
+    if( (dot_20->contains(*click_point) and dot_30->contains(point)) or
+       (dot_20->contains(point) and dot_30->contains(*click_point)) )
+        scene->addRect(*l_20_30,*c_free,color);
+
     if( (dot_01->contains(*click_point) and dot_11->contains(point)) or
        (dot_01->contains(point) and dot_11->contains(*click_point)) )
         scene->addRect(*l_01_11,*c_free,color);
@@ -505,6 +529,10 @@ void map_graphics::draw_line(QPointF &point, QBrush &color)
        (dot_11->contains(point) and dot_21->contains(*click_point)) )
         scene->addRect(*l_11_21,*c_free,color);
 
+    if( (dot_21->contains(*click_point) and dot_31->contains(point)) or
+       (dot_21->contains(point) and dot_31->contains(*click_point)) )
+        scene->addRect(*l_21_31,*c_free,color);
+
     if( (dot_02->contains(*click_point) and dot_12->contains(point)) or
        (dot_02->contains(point) and dot_12->contains(*click_point)) )
         scene->addRect(*l_02_12,*c_free,color);
@@ -512,6 +540,22 @@ void map_graphics::draw_line(QPointF &point, QBrush &color)
     if( (dot_12->contains(*click_point) and dot_22->contains(point)) or
        (dot_12->contains(point) and dot_22->contains(*click_point)) )
         scene->addRect(*l_12_22,*c_free,color);
+
+    if( (dot_22->contains(*click_point) and dot_32->contains(point)) or
+       (dot_22->contains(point) and dot_32->contains(*click_point)) )
+        scene->addRect(*l_22_32,*c_free,color);
+
+    if( (dot_03->contains(*click_point) and dot_13->contains(point)) or
+       (dot_03->contains(point) and dot_13->contains(*click_point)) )
+        scene->addRect(*l_03_13,*c_free,color);
+
+    if( (dot_13->contains(*click_point) and dot_23->contains(point)) or
+       (dot_13->contains(point) and dot_23->contains(*click_point)) )
+        scene->addRect(*l_13_23,*c_free,color);
+
+    if( (dot_23->contains(*click_point) and dot_33->contains(point)) or
+       (dot_23->contains(point) and dot_33->contains(*click_point)) )
+        scene->addRect(*l_23_33,*c_free,color);
 
 }
 
@@ -526,6 +570,11 @@ void map_graphics::draw_line(QPointF &first_point, QPointF &second_point, QBrush
        (dot_01->contains(second_point) and dot_02->contains(first_point)) )
         scene->addRect(*l_01_02,*c_free,color);
 
+    if( (dot_02->contains(first_point) and dot_03->contains(second_point)) or
+       (dot_02->contains(second_point) and dot_03->contains(first_point)) )
+        scene->addRect(*l_02_03,*c_free,color);
+
+
     if( (dot_10->contains(first_point) and dot_11->contains(second_point)) or
        (dot_10->contains(second_point) and dot_11->contains(first_point)) )
         scene->addRect(*l_10_11,*c_free,color);
@@ -534,6 +583,10 @@ void map_graphics::draw_line(QPointF &first_point, QPointF &second_point, QBrush
        (dot_11->contains(second_point) and dot_12->contains(first_point)) )
         scene->addRect(*l_11_12,*c_free,color);
 
+    if( (dot_12->contains(first_point) and dot_13->contains(second_point)) or
+       (dot_12->contains(second_point) and dot_13->contains(first_point)) )
+        scene->addRect(*l_12_13,*c_free,color);
+
     if( (dot_20->contains(first_point) and dot_21->contains(second_point)) or
        (dot_20->contains(second_point) and dot_21->contains(first_point)) )
         scene->addRect(*l_20_21,*c_free,color);
@@ -541,6 +594,24 @@ void map_graphics::draw_line(QPointF &first_point, QPointF &second_point, QBrush
     if( (dot_21->contains(first_point) and dot_22->contains(second_point)) or
        (dot_21->contains(second_point) and dot_22->contains(first_point)) )
         scene->addRect(*l_21_22,*c_free,color);
+
+    if( (dot_22->contains(first_point) and dot_23->contains(second_point)) or
+       (dot_22->contains(second_point) and dot_23->contains(first_point)) )
+        scene->addRect(*l_22_23,*c_free,color);
+
+    if( (dot_30->contains(first_point) and dot_31->contains(second_point)) or
+       (dot_30->contains(second_point) and dot_31->contains(first_point)) )
+        scene->addRect(*l_30_31,*c_free,color);
+
+    if( (dot_31->contains(first_point) and dot_32->contains(second_point)) or
+       (dot_31->contains(second_point) and dot_32->contains(first_point)) )
+        scene->addRect(*l_31_32,*c_free,color);
+
+    if( (dot_32->contains(first_point) and dot_33->contains(second_point)) or
+       (dot_32->contains(second_point) and dot_33->contains(first_point)) )
+        scene->addRect(*l_32_33,*c_free,color);
+
+
     //Vertical:
     if( (dot_00->contains(first_point) and dot_10->contains(second_point)) or
        (dot_00->contains(second_point) and dot_10->contains(first_point)) )
@@ -550,6 +621,10 @@ void map_graphics::draw_line(QPointF &first_point, QPointF &second_point, QBrush
        (dot_10->contains(second_point) and dot_20->contains(first_point)) )
         scene->addRect(*l_10_20,*c_free,color);
 
+    if( (dot_20->contains(first_point) and dot_30->contains(second_point)) or
+       (dot_20->contains(second_point) and dot_30->contains(first_point)) )
+        scene->addRect(*l_20_30,*c_free,color);
+
     if( (dot_01->contains(first_point) and dot_11->contains(second_point)) or
        (dot_01->contains(second_point) and dot_11->contains(first_point)) )
         scene->addRect(*l_01_11,*c_free,color);
@@ -557,6 +632,10 @@ void map_graphics::draw_line(QPointF &first_point, QPointF &second_point, QBrush
     if( (dot_11->contains(first_point) and dot_21->contains(second_point)) or
        (dot_11->contains(second_point) and dot_21->contains(first_point)) )
         scene->addRect(*l_11_21,*c_free,color);
+
+    if( (dot_21->contains(first_point) and dot_31->contains(second_point)) or
+       (dot_21->contains(second_point) and dot_31->contains(first_point)) )
+        scene->addRect(*l_21_31,*c_free,color);
 
     if( (dot_02->contains(first_point) and dot_12->contains(second_point)) or
        (dot_02->contains(second_point) and dot_12->contains(first_point)) )
@@ -566,6 +645,22 @@ void map_graphics::draw_line(QPointF &first_point, QPointF &second_point, QBrush
        (dot_12->contains(second_point) and dot_22->contains(first_point)) )
         scene->addRect(*l_12_22,*c_free,color);
 
+    if( (dot_22->contains(first_point) and dot_32->contains(second_point)) or
+       (dot_22->contains(second_point) and dot_32->contains(first_point)) )
+        scene->addRect(*l_22_32,*c_free,color);
+
+    if( (dot_03->contains(first_point) and dot_13->contains(second_point)) or
+       (dot_03->contains(second_point) and dot_13->contains(first_point)) )
+        scene->addRect(*l_03_13,*c_free,color);
+
+    if( (dot_13->contains(first_point) and dot_23->contains(second_point)) or
+       (dot_13->contains(second_point) and dot_23->contains(first_point)) )
+        scene->addRect(*l_13_23,*c_free,color);
+
+    if( (dot_23->contains(first_point) and dot_33->contains(second_point)) or
+       (dot_23->contains(second_point) and dot_33->contains(first_point)) )
+        scene->addRect(*l_23_33,*c_free,color);
+
 }
 
 void map_graphics::refresh_dots()
@@ -573,14 +668,22 @@ void map_graphics::refresh_dots()
     scene->addEllipse(*dot_00,*c_free,*b_free);
     scene->addEllipse(*dot_10,*c_free,*b_free);
     scene->addEllipse(*dot_20,*c_free,*b_free);
+    scene->addEllipse(*dot_30,*c_free,*b_free);
 
     scene->addEllipse(*dot_01,*c_free,*b_free);
     scene->addEllipse(*dot_11,*c_free,*b_free);
     scene->addEllipse(*dot_21,*c_free,*b_free);
+    scene->addEllipse(*dot_31,*c_free,*b_free);
 
     scene->addEllipse(*dot_02,*c_free,*b_free);
     scene->addEllipse(*dot_12,*c_free,*b_free);
     scene->addEllipse(*dot_22,*c_free,*b_free);
+    scene->addEllipse(*dot_32,*c_free,*b_free);
+
+    scene->addEllipse(*dot_03,*c_free,*b_free);
+    scene->addEllipse(*dot_13,*c_free,*b_free);
+    scene->addEllipse(*dot_23,*c_free,*b_free);
+    scene->addEllipse(*dot_33,*c_free,*b_free);
 }
 
 void map_graphics::act_score()
@@ -605,6 +708,9 @@ QPointF map_graphics::dot_to_qpointf(std::pair<size_t, size_t> &dot_)
         //Third column:
         if(std::get<1>(dot_) == 2)
             return click_ = dot_02->center();
+        //Quarter column:
+        if(std::get<1>(dot_) == 3)
+            return click_ = dot_03->center();
     }
 
     //Second row:
@@ -621,6 +727,10 @@ QPointF map_graphics::dot_to_qpointf(std::pair<size_t, size_t> &dot_)
         //Third column:
         if(std::get<1>(dot_) == 2)
             return click_ = dot_12->center();
+
+        //Quarter column:
+        if(std::get<1>(dot_) == 3)
+            return click_ = dot_13->center();
     }
 
     //Third row:
@@ -637,6 +747,30 @@ QPointF map_graphics::dot_to_qpointf(std::pair<size_t, size_t> &dot_)
         //Third column:
         if(std::get<1>(dot_) == 2)
             return click_ = dot_22->center();
+
+        //Quarter column:
+        if(std::get<1>(dot_) == 3)
+            return click_ = dot_23->center();
+    }
+
+    //Quarter row:
+    if(std::get<0>(dot_) == 3)
+    {
+        //First column:
+        if(std::get<1>(dot_) == 0)
+            return click_ = dot_30->center();
+
+        //Second column:
+        if(std::get<1>(dot_) == 1)
+            return click_ = dot_31->center();
+
+        //Third column:
+        if(std::get<1>(dot_) == 2)
+            return click_ = dot_32->center();
+
+        //Quarter column:
+        if(std::get<1>(dot_) == 3)
+            return click_ = dot_33->center();
     }
 
     return click_ = QPointF(-1,-1);

@@ -19,7 +19,7 @@
      <x>140</x>
      <y>20</y>
      <width>451</width>
-     <height>341</height>
+     <height>361</height>
     </rect>
    </property>
    <property name="accessibleDescription">
@@ -45,7 +45,7 @@
    <property name="geometry">
     <rect>
      <x>190</x>
-     <y>360</y>
+     <y>400</y>
      <width>330</width>
      <height>29</height>
     </rect>
@@ -109,8 +109,8 @@
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>40</x>
-     <y>120</y>
+     <x>10</x>
+     <y>130</y>
      <width>91</width>
      <height>61</height>
     </rect>
@@ -147,7 +147,7 @@
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>590</x>
+     <x>630</x>
      <y>120</y>
      <width>101</width>
      <height>61</height>
@@ -201,7 +201,7 @@
   <widget class="QLabel" name="l_img_2">
    <property name="geometry">
     <rect>
-     <x>590</x>
+     <x>630</x>
      <y>30</y>
      <width>111</width>
      <height>81</height>
@@ -220,8 +220,8 @@
   <widget class="QLabel" name="l_img_3">
    <property name="geometry">
     <rect>
-     <x>300</x>
-     <y>270</y>
+     <x>20</x>
+     <y>280</y>
      <width>111</width>
      <height>81</height>
     </rect>
@@ -244,8 +244,6 @@
   <zorder>l_img_2</zorder>
   <zorder>l_img_3</zorder>
   <zorder>l_p1_score</zorder>
-  <zorder>l_p2_id</zorder>
-  <zorder>l_p2_score</zorder>
  </widget>
  <customwidgets>
   <customwidget>

@@ -86,11 +86,10 @@ private:
 
 
     //Game Atributes:
-    map<3,3> *m_game;
+    map<4,4> *m_game;
     MOVE cur_mv;
     int turn = PLAYER_TURN;
-    //skyline sky;
-   // size_t last_player;
+    skyline<4> *sky;
 
 };
 
