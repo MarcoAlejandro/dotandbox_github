@@ -47,7 +47,7 @@ int main()
 	//
 	map<R,C> game_map;
 	MOVE cur_move;
-	skyline sky(game_map, cur_move);
+	skyline<4> sky(game_map, cur_move);
 	size_t p1_last_score, p2_last_score;
 
 
