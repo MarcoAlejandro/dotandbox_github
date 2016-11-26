@@ -70,7 +70,7 @@ int main()
 				
 				if(p2_last_score != game_map.get_p2_score())
 				{
-					sky.check_play(game_map,cur_move,2);
+					sky.blind_move();
 					continue;
 				}
 				else
@@ -82,7 +82,6 @@ int main()
 			
 			if(game_map.is_full())
 				break;
-			
 			
 			while(1)
 			{
@@ -103,7 +102,7 @@ int main()
 				}
 				else
 				{
-					sky.check_play(game_map, cur_move,1);
+					sky.blind_move();
 					break;
 				}
 			}

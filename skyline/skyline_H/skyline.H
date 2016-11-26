@@ -22,6 +22,7 @@
 /**
  *@brief skyline class contains its own dotandbox_tree, and a vector<MOVE>.
  *This vector works to build the ideal map.
+ *@param lvl is the difficult of skyline AI.
  */
 template<unsigned short lvl>class skyline
 {
@@ -149,23 +150,15 @@ public:
         MOVE AI_play()
         {
                 //AI turn.
-          bool is_a_score = false;
           for(size_t i = 0; i < this->decision_tree->moves_number() ; i++)
           {
 	            if(this->decision_tree->get_root()->get_children()[i].get_map().
 	              was_point(
 	              this->decision_tree->get_root()->get_children()[i].get_move()))
 	            {
-	                is_a_score = true;
-	                break;
+	                return this->decision_tree->get_root()->get_children()[i].get_move();
 	            }
           }
-
-			if(is_a_score)
-			{
-				MOVE ret = this->decision_tree->get_next_move();
-				return ret;
-			}
 
 			if(ideal_moves.size() != 0)
 			{
@@ -176,8 +169,8 @@ public:
 		        return ret;
 			}
 
-                MOVE ret = this->decision_tree->get_next_move();
-                return ret;
+                 
+                return this->decision_tree->get_next_move();
         }
 
         /**
@@ -192,7 +185,7 @@ public:
          */
         void check_play(const map<4,4>& game_map, MOVE cur_move, size_t player)
         {
-            this->decision_tree->reset_tree();
+        		this->decision_tree->reset_tree();
             if(player == 2 and ideal_moves.size() != 0) //Human turn
             {
                 human_turn(game_map, cur_move);
@@ -212,6 +205,16 @@ public:
                 											cur_move,player);
                 return;
             }
+        }
+        
+        /**
+         *@brief blind_move is used for discount a move.
+         *It must be used when a play has been made, and AI does not need to build
+         *a predictive tree. (For example, player plays again, or player comes next).
+         */
+        void blind_move()
+        {
+        	this->decision_tree->moves_number()--;
         }
 };
 
