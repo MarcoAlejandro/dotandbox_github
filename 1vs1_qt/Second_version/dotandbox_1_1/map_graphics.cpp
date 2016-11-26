@@ -5,7 +5,7 @@ map_graphics::map_graphics(QWidget *parent) :
     QGraphicsView(parent)
 {
     m_game = new map<3,3>;
-    d_t = new dotandbox_tree<3,3,3>(*m_game, cur_mv);
+    //sky = new skyline(*m_game, cur_mv);
 }
 
 void map_graphics::start_graph()
@@ -24,34 +24,57 @@ void map_graphics::start_graph()
     dot_00 = new QRectF(0,30,20,20);
     dot_10 = new QRectF(0,130,20,20);
     dot_20 = new QRectF(0,230,20,20);
+    dot_30 = new QRectF(0,330,20,20);
 
     dot_01 = new QRectF(100,30,20,20);
     dot_11 = new QRectF(100,130,20,20);
     dot_21 = new QRectF(100,230,20,20);
+    dot_31 = new QRectF(100,330,20,20);
 
     dot_02 = new QRectF(200,30,20,20);
     dot_12 = new QRectF(200,130,20,20);
     dot_22 = new QRectF(200,230,20,20);
+    dot_32 = new QRectF(200,330,20,20);
+
+    dot_03 = new QRectF(300,30,20,20);
+    dot_13 = new QRectF(300,130,20,20);
+    dot_23 = new QRectF(300,230,20,20);
+    dot_33 = new QRectF(300,330,20,20);
 
     //Lines:
         //vertical:
     l_00_10 = new QRectF(7,50,7,80);
     l_10_20 = new QRectF(7,150,7,80);
+    l_20_30 = new QRectF(7,250,7,80);
 
     l_01_11 = new QRectF(107,50,7,80);
     l_11_21 = new QRectF(107,150,7,80);
+    l_21_31 = new QRectF(107,250,7,80);
 
     l_02_12 = new QRectF(207,50,7,80);
     l_12_22 = new QRectF(207,150,7,80);
+    l_22_32 = new QRectF(207,250,7,80);
+
+    l_03_13 = new QRectF(307,50,7,80);
+    l_13_23 = new QRectF(307,150,7,80);
+    l_23_33 = new QRectF(307,250,7,80);
+
         //horizontal:
     l_00_01 = new QRectF(20,37,80,7);
     l_01_02 = new QRectF(120,37,80,7);
+    l_02_03 = new QRectF(220,37,80,7);
 
     l_10_11 = new QRectF(20,137,80,7);
     l_11_12 = new QRectF(120,137,80,7);
+    l_12_13 = new QRectF(220,137,80,7);
 
     l_20_21 = new QRectF(20,237,80,7);
     l_21_22 = new QRectF(120,237,80,7);
+    l_22_23 = new QRectF(220,237,80,7);
+
+    l_30_31 = new QRectF(20,337,80,7);
+    l_31_32 = new QRectF(120,337,80,7);
+    l_32_33 = new QRectF(220,337,80,7);
 
 
     this->scene = new QGraphicsScene();
@@ -61,14 +84,24 @@ void map_graphics::start_graph()
     scene->addEllipse(*dot_00,*c_free,*b_free);
     scene->addEllipse(*dot_10,*c_free,*b_free);
     scene->addEllipse(*dot_20,*c_free,*b_free);
+    scene->addEllipse(*dot_30,*c_free,*b_free);
 
     scene->addEllipse(*dot_01,*c_free,*b_free);
     scene->addEllipse(*dot_11,*c_free,*b_free);
     scene->addEllipse(*dot_21,*c_free,*b_free);
+    scene->addEllipse(*dot_31,*c_free,*b_free);
 
     scene->addEllipse(*dot_02,*c_free,*b_free);
     scene->addEllipse(*dot_12,*c_free,*b_free);
     scene->addEllipse(*dot_22,*c_free,*b_free);
+    scene->addEllipse(*dot_32,*c_free,*b_free);
+
+    scene->addEllipse(*dot_03,*c_free,*b_free);
+    scene->addEllipse(*dot_13,*c_free,*b_free);
+    scene->addEllipse(*dot_23,*c_free,*b_free);
+    scene->addEllipse(*dot_33,*c_free,*b_free);
+
+
 
     act_score();
     emit refresh_score(p1_score,p2_score);
@@ -118,6 +151,9 @@ void map_graphics::mousePressEvent(QMouseEvent *e)
         else if(dot_02->contains(*click_point))
             scene->addEllipse(*dot_02,*c_marked,*b_marked);
 
+        else if(dot_03->contains(*click_point))
+            scene->addEllipse(*dot_03,*c_marked,*b_marked);
+
         else if(dot_10->contains(*click_point))
             scene->addEllipse(*dot_10,*c_marked,*b_marked);
 
@@ -127,6 +163,9 @@ void map_graphics::mousePressEvent(QMouseEvent *e)
         else if(dot_12->contains(*click_point))
             scene->addEllipse(*dot_12,*c_marked,*b_marked);
 
+        else if(dot_13->contains(*click_point))
+            scene->addEllipse(*dot_13,*c_marked,*b_marked);
+
         else if(dot_20->contains(*click_point))
             scene->addEllipse(*dot_20,*c_marked,*b_marked);
 
@@ -135,13 +174,28 @@ void map_graphics::mousePressEvent(QMouseEvent *e)
 
         else if(dot_22->contains(*click_point))
             scene->addEllipse(*dot_22,*c_marked,*b_marked);
+
+        else if(dot_23->contains(*click_point))
+            scene->addEllipse(*dot_23,*c_marked,*b_marked);
+
+        else if(dot_30->contains(*click_point))
+            scene->addEllipse(*dot_30,*c_marked,*b_marked);
+
+        else if(dot_31->contains(*click_point))
+            scene->addEllipse(*dot_31,*c_marked,*b_marked);
+
+        else if(dot_32->contains(*click_point))
+            scene->addEllipse(*dot_32,*c_marked,*b_marked);
+
+        else if(dot_33->contains(*click_point))
+            scene->addEllipse(*dot_33,*c_marked,*b_marked);
     }
 
 }
 
 void map_graphics::mouseReleaseEvent(QMouseEvent *event)
 {
-    if(turn==PLAYER_TURN)
+  /*  if(turn==PLAYER_TURN)
     {
             QPointF release_point = this->mapToScene(event->pos());
             std::get<0>(cur_mv) = detect_dot(*click_point);
@@ -168,28 +222,27 @@ void map_graphics::mouseReleaseEvent(QMouseEvent *event)
 
             if(check_move(release_point))
             {
-                    draw_line(release_point, *b_marked);
+                draw_line(release_point, *b_marked);
 
-                    p2_score = m_game->get_p2_score();
-                    m_game->play(cur_mv,PLAYER_TURN);
-                    if(p2_score == m_game->get_p2_score())
-                    {
-                        turn = IA_TURN;
-                        last_player = IA_TURN;
-                    }
-                    else
-                        d_t->moves_number()--;
+                p2_score = m_game->get_p2_score();
+                m_game->play(cur_mv,PLAYER_TURN);
+
+                if(p2_score != m_game->get_p2_score())
+                {
+                    sky.check_play(*m_game,cur_mv,PLAYER_TURN);
+                }
+                else
+                {
+                    sky.check_play(*m_game,cur_mv,PLAYER_TURN);
+                    turn = IA_TURN;
+                }
             }
-
     }
     if(turn==IA_TURN)
     {
 
         p1_score = m_game->get_p1_score();
-
-        d_t->make_decision_tree(*m_game,cur_mv,last_player);
-
-        cur_mv = d_t->get_next_move(last_player);
+        cur_mv = sky.AI_play();
         m_game->play(cur_mv,IA_TURN);
 
         QPointF par1 = dot_to_qpointf(std::get<0>(cur_mv));
@@ -219,14 +272,15 @@ void map_graphics::mouseReleaseEvent(QMouseEvent *event)
 
         draw_line(par1, par2, *b_marked2);
 
-        if(p1_score == m_game->get_p1_score())
+        if(p1_score != m_game->get_p1_score())
         {
-            turn = PLAYER_TURN;
-            last_player = PLAYER_TURN;
-            d_t->moves_number()--;
-            d_t->reset_tree();
+            sky.check_play(*m_game,cur_mv,IA_TURN);
         }
-
+        else
+        {
+            sky.check_play(*m_game, cur_mv,IA_TURN);
+            turn = PLAYER_TURN;
+        }
     }
 
     act_score();
@@ -234,60 +288,7 @@ void map_graphics::mouseReleaseEvent(QMouseEvent *event)
     emit set_turn(turn);
     refresh_dots();
 
-
-
-
-  /* QPointF release_point = this->mapToScene(event->pos());
-    std::get<0>(cur_mv) = detect_dot(*click_point);
-    std::get<1>(cur_mv) = detect_dot(release_point);
-
-    if(dot_00->contains(release_point))
-        scene->addEllipse(*dot_00,*c_marked,*b_marked);
-    else if(dot_01->contains(release_point))
-        scene->addEllipse(*dot_01,*c_marked,*b_marked);
-    else if(dot_02->contains(release_point))
-        scene->addEllipse(*dot_02,*c_marked,*b_marked);
-    else if(dot_10->contains(release_point))
-        scene->addEllipse(*dot_10,*c_marked,*b_marked);
-    else if(dot_11->contains(release_point))
-        scene->addEllipse(*dot_11,*c_marked,*b_marked);
-    else if(dot_12->contains(release_point))
-        scene->addEllipse(*dot_12,*c_marked,*b_marked);
-    else if(dot_20->contains(release_point))
-        scene->addEllipse(*dot_20,*c_marked,*b_marked);
-    else if(dot_21->contains(release_point))
-        scene->addEllipse(*dot_21,*c_marked,*b_marked);
-    else if(dot_22->contains(release_point))
-        scene->addEllipse(*dot_22,*c_marked,*b_marked);
-
-    if(check_move(release_point))
-    {
-        if(turn == 0)
-        {
-            draw_line(release_point, *b_marked);
-
-            p1_score = m_game->get_p1_score();
-            m_game->play(cur_mv,1);
-            if(p1_score == m_game->get_p1_score())
-                turn = 1;
-        }
-        else
-        {
-            draw_line(release_point, *b_marked2);
-
-            p2_score = m_game->get_p2_score();
-            m_game->play(cur_mv,2);
-            if(p2_score == m_game->get_p2_score())
-                turn = 0;
-        }
-
-    }
-
-    act_score();
-    emit refresh_score(p1_score,p2_score);
-    emit set_turn(turn);
-    refresh_dots();
-    //refresh_dots();*/
+ */
 
 
 }
@@ -310,6 +311,11 @@ std::pair<unsigned short,unsigned short> map_graphics::detect_dot(QPointF &point
         return dot = std::make_pair(0,2);
 
     }
+    else if(dot_03->contains(point))
+    {
+        return dot = std::make_pair(0,3);
+
+    }
     else if(dot_10->contains(point))
     {
         return dot = std::make_pair(1,0);
@@ -325,6 +331,11 @@ std::pair<unsigned short,unsigned short> map_graphics::detect_dot(QPointF &point
         return dot = std::make_pair(1,2);
 
     }
+    else if(dot_13->contains(point))
+    {
+        return dot = std::make_pair(1,3);
+
+    }
     else if(dot_20->contains(point))
     {
         return dot = std::make_pair(2,0);
@@ -338,6 +349,31 @@ std::pair<unsigned short,unsigned short> map_graphics::detect_dot(QPointF &point
     else if(dot_22->contains(point))
     {
         return dot = std::make_pair(2,2);
+
+    }
+    else if(dot_23->contains(point))
+    {
+        return dot = std::make_pair(2,3);
+
+    }
+    else if(dot_30->contains(point))
+    {
+        return dot = std::make_pair(3,0);
+
+    }
+    else if(dot_31->contains(point))
+    {
+        return dot = std::make_pair(3,1);
+
+    }
+    else if(dot_32->contains(point))
+    {
+        return dot = std::make_pair(3,2);
+
+    }
+    else if(dot_33->contains(point))
+    {
+        return dot = std::make_pair(3,3);
 
     }
 }
@@ -356,8 +392,13 @@ bool map_graphics::check_move(QPointF &point)
                                            dot_02->contains(point)) )
         return true;
     //For dot02:
-    if(dot_02->contains(*click_point) and (dot_02->contains(point) or
+    if(dot_02->contains(*click_point) and (dot_01->contains(point) or
+                                           dot_03->contains(point) or
                                            dot_12->contains(point)) )
+        return true;
+    //For dot03:
+    if(dot_03->contains(*click_point) and (dot_02->contains(point) or
+                                           dot_13->contains(point)) )
         return true;
     //For dot10
     if(dot_10->contains(*click_point) and (dot_00->contains(point) or
@@ -373,20 +414,49 @@ bool map_graphics::check_move(QPointF &point)
     //For dot12:
     if(dot_12->contains(*click_point) and (dot_02->contains(point) or
                                            dot_11->contains(point) or
+                                           dot_13->contains(point) or
                                            dot_22->contains(point)) )
+        return true;
+    //For dot13:
+    if(dot_13->contains(*click_point) and (dot_03->contains(point) or
+                                           dot_12->contains(point) or
+                                           dot_23->contains(point)) )
         return true;
     //For dot20:
     if(dot_20->contains(*click_point) and (dot_10->contains(point) or
+                                           dot_30->contains(point) or
                                            dot_21->contains(point)) )
         return true;
     //For dot21:
     if(dot_21->contains(*click_point) and (dot_11->contains(point) or
                                            dot_20->contains(point) or
+                                           dot_31->contains(point) or
                                            dot_22->contains(point)) )
         return true;
     //For dot22:
     if(dot_22->contains(*click_point) and (dot_12->contains(point) or
+                                           dot_23->contains(point) or
+                                           dot_32->contains(point) or
                                            dot_21->contains(point)) )
+        return true;
+    //For dot23:
+    if(dot_23->contains(*click_point) and (dot_13->contains(point) or
+                                           dot_22->contains(point) or
+                                           dot_33->contains(point)) )
+        return true;
+    //For dot30:
+    if(dot_30->contains(*click_point) and (dot_20->contains(point) or
+                                           dot_31->contains(point)) )
+        return true;
+    //For dot31:
+    if(dot_31->contains(*click_point) and (dot_21->contains(point) or
+                                           dot_30->contains(point) or
+                                           dot_32->contains(point)) )
+        return true;
+    //For dot32:
+    if(dot_32->contains(*click_point) and (dot_22->contains(point) or
+                                           dot_31->contains(point) or
+                                           dot_33->contains(point)) )
         return true;
 
     return false;

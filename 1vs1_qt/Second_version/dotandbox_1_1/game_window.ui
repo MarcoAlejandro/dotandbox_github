@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>723</width>
-    <height>440</height>
+    <width>774</width>
+    <height>494</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,8 +18,8 @@
     <rect>
      <x>140</x>
      <y>20</y>
-     <width>441</width>
-     <height>321</height>
+     <width>451</width>
+     <height>341</height>
     </rect>
    </property>
    <property name="accessibleDescription">
@@ -243,6 +243,9 @@
   <zorder>l_img</zorder>
   <zorder>l_img_2</zorder>
   <zorder>l_img_3</zorder>
+  <zorder>l_p1_score</zorder>
+  <zorder>l_p2_id</zorder>
+  <zorder>l_p2_score</zorder>
  </widget>
  <customwidgets>
   <customwidget>

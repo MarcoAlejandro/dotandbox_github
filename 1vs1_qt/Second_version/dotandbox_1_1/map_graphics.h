@@ -12,7 +12,7 @@
 #include <../../../dot_H/dot.H>
 #include <../../../map/map.H>
 #include <../../../player_H/player.H>
-#include <../../../skyline/decision_tree/d_tree_node.H>
+#include <../../../skyline/skyline_H/skyline.H>
 
 #define PLAYER_TURN 2
 #define IA_TURN 1
@@ -59,13 +59,22 @@ private:
     //HUD Atributes:
     QGraphicsScene *scene;
 
-    QRectF *dot_00, *dot_01, *dot_02, *dot_10, *dot_11, *dot_12,
-    *dot_20, *dot_21, *dot_22,
+    QRectF *dot_00, *dot_01, *dot_02, *dot_03,
+           *dot_10, *dot_11, *dot_12, *dot_13,
+           *dot_20, *dot_21, *dot_22, *dot_23,
+           *dot_30, *dot_31, *dot_32, *dot_33,
     //Lines (l_Fila_Columna):
-        //Vertical:
-    *l_00_01, *l_01_02, *l_10_11, *l_11_12, *l_20_21, *l_21_22,
-        //Horizontal:
-    *l_00_10, *l_10_20, *l_01_11, *l_11_21, *l_02_12, *l_12_22;
+        //HORIZONTAL:
+           *l_00_01, *l_01_02, *l_02_03,
+           *l_10_11, *l_11_12, *l_12_13,
+           *l_20_21, *l_21_22, *l_22_23,
+           *l_30_31, *l_31_32, *l_32_33,
+
+        //VERTICAL:
+           *l_00_10, *l_10_20, *l_20_30,
+           *l_01_11, *l_11_21, *l_21_31,
+           *l_02_12, *l_12_22, *l_22_32,
+           *l_03_13, *l_13_23, *l_23_33;
 
     QColor *c_free;
     QColor *c_marked;
@@ -80,8 +89,8 @@ private:
     map<3,3> *m_game;
     MOVE cur_mv;
     int turn = PLAYER_TURN;
-    dotandbox_tree<3,3,3> *d_t;
-    size_t last_player;
+    //skyline sky;
+   // size_t last_player;
 
 };
 
