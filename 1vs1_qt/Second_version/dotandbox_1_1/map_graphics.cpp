@@ -207,18 +207,32 @@ void map_graphics::mouseReleaseEvent(QMouseEvent *event)
                 scene->addEllipse(*dot_01,*c_marked,*b_marked);
             else if(dot_02->contains(release_point))
                 scene->addEllipse(*dot_02,*c_marked,*b_marked);
+            else if(dot_03->contains(release_point))
+                scene->addEllipse(*dot_03,*c_marked,*b_marked);
             else if(dot_10->contains(release_point))
                 scene->addEllipse(*dot_10,*c_marked,*b_marked);
             else if(dot_11->contains(release_point))
                 scene->addEllipse(*dot_11,*c_marked,*b_marked);
             else if(dot_12->contains(release_point))
                 scene->addEllipse(*dot_12,*c_marked,*b_marked);
+            else if(dot_13->contains(release_point))
+                scene->addEllipse(*dot_13,*c_marked,*b_marked);
             else if(dot_20->contains(release_point))
                 scene->addEllipse(*dot_20,*c_marked,*b_marked);
             else if(dot_21->contains(release_point))
                 scene->addEllipse(*dot_21,*c_marked,*b_marked);
             else if(dot_22->contains(release_point))
                 scene->addEllipse(*dot_22,*c_marked,*b_marked);
+            else if(dot_23->contains(release_point))
+                scene->addEllipse(*dot_23,*c_marked,*b_marked);
+            else if(dot_30->contains(release_point))
+                scene->addEllipse(*dot_30,*c_marked,*b_marked);
+            else if(dot_31->contains(release_point))
+                scene->addEllipse(*dot_31,*c_marked,*b_marked);
+            else if(dot_32->contains(release_point))
+                scene->addEllipse(*dot_32,*c_marked,*b_marked);
+            else if(dot_33->contains(release_point))
+                scene->addEllipse(*dot_33,*c_marked,*b_marked);
 
             if(check_move(release_point))
             {
@@ -248,27 +262,38 @@ void map_graphics::mouseReleaseEvent(QMouseEvent *event)
         QPointF par1 = dot_to_qpointf(std::get<0>(cur_mv));
         QPointF par2 = dot_to_qpointf(std::get<1>(cur_mv));
 
-        //*click_point = par1;
-
-        if(dot_00->contains(par2))
+        /*if(dot_00->contains(par2))
             scene->addEllipse(*dot_00,*c_marked,*b_marked);
         else if(dot_01->contains(par2))
             scene->addEllipse(*dot_01,*c_marked,*b_marked);
         else if(dot_02->contains(par2))
             scene->addEllipse(*dot_02,*c_marked,*b_marked);
+        else if(dot_03->contains(par2))
+            scene->addEllipse(*dot_03,*c_marked,*b_marked);
         else if(dot_10->contains(par2))
             scene->addEllipse(*dot_10,*c_marked,*b_marked);
         else if(dot_11->contains(par2))
             scene->addEllipse(*dot_11,*c_marked,*b_marked);
         else if(dot_12->contains(par2))
             scene->addEllipse(*dot_12,*c_marked,*b_marked);
+        else if(dot_13->contains(par2))
+            scene->addEllipse(*dot_13,*c_marked,*b_marked);
         else if(dot_20->contains(par2))
             scene->addEllipse(*dot_20,*c_marked,*b_marked);
         else if(dot_21->contains(par2))
             scene->addEllipse(*dot_21,*c_marked,*b_marked);
         else if(dot_22->contains(par2))
             scene->addEllipse(*dot_22,*c_marked,*b_marked);
-
+        else if(dot_23->contains(par2))
+            scene->addEllipse(*dot_23,*c_marked,*b_marked);
+        else if(dot_30->contains(par2))
+            scene->addEllipse(*dot_30,*c_marked,*b_marked);
+        else if(dot_31->contains(par2))
+            scene->addEllipse(*dot_31,*c_marked,*b_marked);
+        else if(dot_32->contains(par2))
+            scene->addEllipse(*dot_32,*c_marked,*b_marked);
+        else if(dot_33->contains(par2))
+            scene->addEllipse(*dot_33,*c_marked,*b_marked);*/
 
         draw_line(par1, par2, *b_marked2);
 
@@ -453,6 +478,11 @@ bool map_graphics::check_move(QPointF &point)
     if(dot_32->contains(*click_point) and (dot_22->contains(point) or
                                            dot_31->contains(point) or
                                            dot_33->contains(point)) )
+        return true;
+
+    //For dot33:
+    if(dot_33->contains(*click_point) and (dot_32->contains(point) or
+                                           dot_23->contains(point)) )
         return true;
 
     return false;

@@ -48,7 +48,7 @@ void game_window::show_turn(int t){
     if(t == 2)
     {
         this->ui->l_img->setVisible(true);
-        this->ui->l_p1_id->setStyleSheet("background-color: green");
+        this->ui->l_p1_id->setStyleSheet("background-color: #EB7F0C");
         this->ui->l_p2_id->setStyleSheet("background-color: none");
 
 
@@ -58,7 +58,7 @@ void game_window::show_turn(int t){
     {
         this->ui->l_img->setVisible(false);
         this->ui->l_p1_id->setStyleSheet("background-color: none");
-        this->ui->l_p2_id->setStyleSheet("background-color: gray");
+        this->ui->l_p2_id->setStyleSheet("background-color: #0C6DEB");
         this->ui->l_img_2->setVisible(true);
     }
 }
