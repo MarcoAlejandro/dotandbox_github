@@ -14,6 +14,8 @@ void map_graphics::start_graph()
     p1_score = 0;
     p2_score = 0;
     c_free = new QColor("000000");
+    box_paint1 = new QBrush("#0C6DEB",Qt::SolidPattern);
+    box_paint2 = new QBrush("#EB7F0C",Qt::SolidPattern);
     c_marked = new QColor("#EB7F0C");
     c_marked2 = new QColor("#0C6DEB");
     b_free = new QBrush(*c_free,Qt::SolidPattern);
@@ -76,6 +78,10 @@ void map_graphics::start_graph()
     l_31_32 = new QRectF(120,337,80,7);
     l_32_33 = new QRectF(220,337,80,7);
 
+    //Cuadro Punto
+
+    box_01 = new QRectF(10,37,100,105);
+
 
     this->scene = new QGraphicsScene();
     this->setScene(scene);
@@ -102,6 +108,9 @@ void map_graphics::start_graph()
     scene->addEllipse(*dot_33,*c_free,*b_free);
 
 
+    //Adding box point
+
+    //scene->addRect(*box_01,*c_free,*box_paint1);
 
     act_score();
     emit refresh_score(p1_score,p2_score);
@@ -243,69 +252,20 @@ void map_graphics::mouseReleaseEvent(QMouseEvent *event)
 
                 if(p2_score != m_game->get_p2_score())
                 {
-                    sky->check_play(*m_game,cur_mv,PLAYER_TURN);
+                    //sky->check_play(*m_game,cur_mv,PLAYER_TURN);
+                    sky->blind_move();
                 }
                 else
                 {
                     sky->check_play(*m_game,cur_mv,PLAYER_TURN);
                     turn = IA_TURN;
+
                 }
             }
     }
     if(turn==IA_TURN)
     {
-
-        p1_score = m_game->get_p1_score();
-        cur_mv = sky->AI_play();
-        m_game->play(cur_mv,IA_TURN);
-
-        QPointF par1 = dot_to_qpointf(std::get<0>(cur_mv));
-        QPointF par2 = dot_to_qpointf(std::get<1>(cur_mv));
-
-        /*if(dot_00->contains(par2))
-            scene->addEllipse(*dot_00,*c_marked,*b_marked);
-        else if(dot_01->contains(par2))
-            scene->addEllipse(*dot_01,*c_marked,*b_marked);
-        else if(dot_02->contains(par2))
-            scene->addEllipse(*dot_02,*c_marked,*b_marked);
-        else if(dot_03->contains(par2))
-            scene->addEllipse(*dot_03,*c_marked,*b_marked);
-        else if(dot_10->contains(par2))
-            scene->addEllipse(*dot_10,*c_marked,*b_marked);
-        else if(dot_11->contains(par2))
-            scene->addEllipse(*dot_11,*c_marked,*b_marked);
-        else if(dot_12->contains(par2))
-            scene->addEllipse(*dot_12,*c_marked,*b_marked);
-        else if(dot_13->contains(par2))
-            scene->addEllipse(*dot_13,*c_marked,*b_marked);
-        else if(dot_20->contains(par2))
-            scene->addEllipse(*dot_20,*c_marked,*b_marked);
-        else if(dot_21->contains(par2))
-            scene->addEllipse(*dot_21,*c_marked,*b_marked);
-        else if(dot_22->contains(par2))
-            scene->addEllipse(*dot_22,*c_marked,*b_marked);
-        else if(dot_23->contains(par2))
-            scene->addEllipse(*dot_23,*c_marked,*b_marked);
-        else if(dot_30->contains(par2))
-            scene->addEllipse(*dot_30,*c_marked,*b_marked);
-        else if(dot_31->contains(par2))
-            scene->addEllipse(*dot_31,*c_marked,*b_marked);
-        else if(dot_32->contains(par2))
-            scene->addEllipse(*dot_32,*c_marked,*b_marked);
-        else if(dot_33->contains(par2))
-            scene->addEllipse(*dot_33,*c_marked,*b_marked);*/
-
-        draw_line(par1, par2, *b_marked2);
-
-        if(p1_score != m_game->get_p1_score())
-        {
-            sky->check_play(*m_game,cur_mv,IA_TURN);
-        }
-        else
-        {
-            sky->check_play(*m_game, cur_mv,IA_TURN);
-            turn = PLAYER_TURN;
-        }
+        ia_play();
     }
 
     act_score();
@@ -313,6 +273,71 @@ void map_graphics::mouseReleaseEvent(QMouseEvent *event)
     emit set_turn(turn);
     refresh_dots();
 }
+
+void map_graphics::ia_play()
+{
+        while(turn==IA_TURN and !m_game->is_full())
+        {
+            p1_score = m_game->get_p1_score();
+            cur_mv = sky->AI_play();
+            m_game->play(cur_mv,IA_TURN);
+
+            QPointF par1 = dot_to_qpointf(std::get<0>(cur_mv));
+            QPointF par2 = dot_to_qpointf(std::get<1>(cur_mv));
+
+            /*if(dot_00->contains(par2))
+                scene->addEllipse(*dot_00,*c_marked,*b_marked);
+            else if(dot_01->contains(par2))
+                scene->addEllipse(*dot_01,*c_marked,*b_marked);
+            else if(dot_02->contains(par2))
+                scene->addEllipse(*dot_02,*c_marked,*b_marked);
+            else if(dot_03->contains(par2))
+                scene->addEllipse(*dot_03,*c_marked,*b_marked);
+            else if(dot_10->contains(par2))
+                scene->addEllipse(*dot_10,*c_marked,*b_marked);
+            else if(dot_11->contains(par2))
+                scene->addEllipse(*dot_11,*c_marked,*b_marked);
+            else if(dot_12->contains(par2))
+                scene->addEllipse(*dot_12,*c_marked,*b_marked);
+            else if(dot_13->contains(par2))
+                scene->addEllipse(*dot_13,*c_marked,*b_marked);
+            else if(dot_20->contains(par2))
+                scene->addEllipse(*dot_20,*c_marked,*b_marked);
+            else if(dot_21->contains(par2))
+                scene->addEllipse(*dot_21,*c_marked,*b_marked);
+            else if(dot_22->contains(par2))
+                scene->addEllipse(*dot_22,*c_marked,*b_marked);
+            else if(dot_23->contains(par2))
+                scene->addEllipse(*dot_23,*c_marked,*b_marked);
+            else if(dot_30->contains(par2))
+                scene->addEllipse(*dot_30,*c_marked,*b_marked);
+            else if(dot_31->contains(par2))
+                scene->addEllipse(*dot_31,*c_marked,*b_marked);
+            else if(dot_32->contains(par2))
+                scene->addEllipse(*dot_32,*c_marked,*b_marked);
+            else if(dot_33->contains(par2))
+                scene->addEllipse(*dot_33,*c_marked,*b_marked);*/
+
+            draw_line(par1, par2, *b_marked2);
+
+            if(p1_score != m_game->get_p1_score())
+            {
+                sky->check_play(*m_game,cur_mv,IA_TURN);
+            }
+            else
+            {
+                //sky->check_play(*m_game, cur_mv,IA_TURN);
+                sky->blind_move();
+                turn = PLAYER_TURN;
+            }
+
+            act_score();
+            emit refresh_score(p2_score,p1_score);
+            emit set_turn(turn);
+            refresh_dots();
+       }
+}
+
 
 std::pair<unsigned short,unsigned short> map_graphics::detect_dot(QPointF &point)
 {
@@ -805,6 +830,31 @@ QPointF map_graphics::dot_to_qpointf(std::pair<size_t, size_t> &dot_)
 
     return click_ = QPointF(-1,-1);
 }
+
+/*void map_graphics::draw_box(int &player)
+{
+  std::pair<size_t,size_t> a;
+  std::pair<size_t,size_t> b;
+  std::tuple<std::pair<size_t,size_t>,std::pair<size_t,size_t> > c;
+
+if(m_game->was_point(c = std::make_tuple(a = std::make_pair(std::get<0>(std::get<0>cur_mv),
+                                                            std::get<0>(std::get<1>cur_mv)),
+
+
+
+
+                                         b= std::make_pair(std::get<1>(std::get<0>cur_mv),
+                                                           std::get<1>(std::get<1>cur_mv)))))
+{
+
+
+
+}
+
+
+
+}*/
+
 
 //void map_graphics::msleep(unsigned long 500){QThread::msleep(msecs);}
 

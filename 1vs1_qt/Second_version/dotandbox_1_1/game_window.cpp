@@ -11,6 +11,9 @@ game_window::game_window(QWidget *parent) :
             SLOT(act_score(uint,uint)));
 
     connect(ui->g_map,SIGNAL(set_turn(int)),this,SLOT(show_turn(int)));
+
+    this->ui->l_p1_id->setStyleSheet("background-color: #EB7F0C");
+    this->ui->l_p2_id->setStyleSheet("background-color: #0C6DEB");
 }
 
 game_window::~game_window()
@@ -48,17 +51,11 @@ void game_window::show_turn(int t){
     if(t == 2)
     {
         this->ui->l_img->setVisible(true);
-        this->ui->l_p1_id->setStyleSheet("background-color: #EB7F0C");
-        this->ui->l_p2_id->setStyleSheet("background-color: none");
-
-
         this->ui->l_img_2->setVisible(false);
     }
     else if(t == 1)
     {
         this->ui->l_img->setVisible(false);
-        this->ui->l_p1_id->setStyleSheet("background-color: none");
-        this->ui->l_p2_id->setStyleSheet("background-color: #0C6DEB");
         this->ui->l_img_2->setVisible(true);
     }
 }

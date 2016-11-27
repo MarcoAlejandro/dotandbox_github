@@ -29,17 +29,16 @@ public:
     bool check_move(QPointF &point);
     void draw_line(QPointF &point, QBrush &color);
     void draw_line(QPointF&, QPointF&,QBrush&);
+    void draw_box(int &);
     void refresh_dots();
     void act_score();
+    void ia_play();
     QPointF dot_to_qpointf(std::pair<size_t,size_t>&dot_);
     std::pair<unsigned short, unsigned short> detect_dot(QPointF &point);
     uint p1_score, p2_score;
 
 
     //To delay:
-
-
-
 
 public slots:
    void mousePressEvent(QMouseEvent *e);
@@ -76,10 +75,17 @@ private:
            *l_02_12, *l_12_22, *l_22_32,
            *l_03_13, *l_13_23, *l_23_33;
 
+
+    //Cuadro Punto
+
+    QRectF *box_01;
+
     QColor *c_free;
     QColor *c_marked;
     QColor *c_marked2;
     QBrush *b_free;
+    QBrush *box_paint1;
+    QBrush *box_paint2;
     QBrush *b_marked;
     QBrush *b_marked2;
     QPointF *click_point;

@@ -130,7 +130,7 @@ public:
 
         l_img = new QLabel(game_window);
         l_img->setObjectName(QStringLiteral("l_img"));
-        l_img->setGeometry(QRect(20, 30, 111, 81));
+        l_img->setGeometry(QRect(10, 20, 111, 81));
         l_img->setPixmap(QPixmap(QString::fromUtf8("ehm.jpg")));
         l_img->setScaledContents(true);
         l_img_2 = new QLabel(game_window);
@@ -150,7 +150,6 @@ public:
         l_img->raise();
         l_img_2->raise();
         l_img_3->raise();
-        l_p1_score->raise();
 
         retranslateUi(game_window);
 
