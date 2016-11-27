@@ -831,6 +831,151 @@ QPointF map_graphics::dot_to_qpointf(std::pair<size_t, size_t> &dot_)
     return click_ = QPointF(-1,-1);
 }
 
+bool map_graphics::upper_box(dot<4,4> *dot_1,dot<4,4> *dot_2)
+{
+  MOVE try_mv;
+  std::get<0>(try_mv) = std::pair<size_t,size_t>(std::get<0>(dot_1->get_pos()) - 1,std::get<1>(dot_1->get_pos()));
+  std::get<1>(try_mv) = std::pair<size_t,size_t>(std::get<0>(dot_2->get_pos()) - 1,std::get<1>(dot_2->get_pos()));
+
+  if(not m_game->was_point(try_mv))
+    return false;
+
+  std::get<0>(try_mv) =dot_1->get_pos();
+  std::get<1>(try_mv) = std::pair<size_t,size_t>(std::get<0>(dot_1->get_pos()) - 1,std::get<1>(dot_1->get_pos()));
+
+  if(not m_game->was_point(try_mv))
+    return false;
+
+  std::get<0>(try_mv) =dot_2->get_pos();
+  std::get<1>(try_mv) = std::pair<size_t,size_t>(std::get<0>(dot_2->get_pos()) - 1,std::get<1>(dot_2->get_pos()));
+
+  if(not m_game->was_point(try_mv))
+   return false;
+
+  return true;
+}
+
+bool map_graphics::lower_box(dot<4,4> *dot_1,dot<4,4> *dot_2)
+{
+  MOVE try_mv;
+  std::get<0>(try_mv) = std::pair<size_t,size_t>(std::get<0>(dot_1->get_pos()) + 1,std::get<1>(dot_1->get_pos()));
+  std::get<1>(try_mv) = std::pair<size_t,size_t>(std::get<0>(dot_2->get_pos()) + 1,std::get<1>(dot_2->get_pos()));
+
+  if(not m_game->was_point(try_mv))
+    return false;
+
+  std::get<0>(try_mv) =dot_1->get_pos();
+  std::get<1>(try_mv) = std::pair<size_t,size_t>(std::get<0>(dot_1->get_pos()) + 1,std::get<1>(dot_1->get_pos()));
+
+  if(not m_game->was_point(try_mv))
+    return false;
+
+  std::get<0>(try_mv) =dot_2->get_pos();
+  std::get<1>(try_mv) = std::pair<size_t,size_t>(std::get<0>(dot_2->get_pos()) + 1,std::get<1>(dot_2->get_pos()));
+
+  if(not m_game->was_point(try_mv))
+   return false;
+
+  return true;
+}
+
+bool map_graphics::left_box(dot<4,4> *dot_1,dot<4,4> *dot_2)
+{
+  MOVE try_mv;
+  std::get<0>(try_mv) = std::pair<size_t,size_t>(std::get<0>(dot_1->get_pos()),std::get<1>(dot_1->get_pos()) - 1);
+  std::get<1>(try_mv) = std::pair<size_t,size_t>(std::get<0>(dot_2->get_pos()),std::get<1>(dot_2->get_pos()) - 1);
+
+  if(not m_game->was_point(try_mv))
+    return false;
+
+  std::get<0>(try_mv) =dot_1->get_pos();
+  std::get<1>(try_mv) = std::pair<size_t,size_t>(std::get<0>(dot_1->get_pos()),std::get<1>(dot_1->get_pos()) - 1);
+
+  if(not m_game->was_point(try_mv))
+    return false;
+
+  std::get<0>(try_mv) =dot_2->get_pos();
+  std::get<1>(try_mv) = std::pair<size_t,size_t>(std::get<0>(dot_2->get_pos()),std::get<1>(dot_2->get_pos()) - 1);
+
+  if(not m_game->was_point(try_mv))
+   return false;
+
+  return true;
+}
+
+bool map_graphics::right_box(dot<4,4> *dot_1,dot<4,4> *dot_2)
+{
+  MOVE try_mv;
+  std::get<0>(try_mv) = std::pair<size_t,size_t>(std::get<0>(dot_1->get_pos()),std::get<1>(dot_1->get_pos()) + 1);
+  std::get<1>(try_mv) = std::pair<size_t,size_t>(std::get<0>(dot_2->get_pos()),std::get<1>(dot_2->get_pos()) + 1);
+
+  if(not m_game->was_point(try_mv))
+    return false;
+
+  std::get<0>(try_mv) =dot_1->get_pos();
+  std::get<1>(try_mv) = std::pair<size_t,size_t>(std::get<0>(dot_1->get_pos()),std::get<1>(dot_1->get_pos()) + 1);
+
+  if(not m_game->was_point(try_mv))
+    return false;
+
+  std::get<0>(try_mv) =dot_2->get_pos();
+  std::get<1>(try_mv) = std::pair<size_t,size_t>(std::get<0>(dot_2->get_pos()),std::get<1>(dot_2->get_pos()) + 1);
+
+  if(not m_game->was_point(try_mv))
+   return false;
+
+  return true;
+}
+
+unsigned short map_graphics::where_to_draw(MOVE last_move)
+{
+  if(not m_game->was_point(last_move))
+    return 0;
+
+  dot<4,4> *dot_1 = new dot<4,4> (std::pair<size_t,size_t>(std::get<0>(std::get<0>(last_move)),std::get<1>(std::get<0>(last_move))));
+  dot<4,4> *dot_2 = new dot<4,4> (std::pair<size_t,size_t>(std::get<0>(std::get<1>(last_move)),std::get<1>(std::get<1>(last_move))));
+
+
+  unsigned short case_ = m_game->try_to_point(dot_1,dot_2);
+
+  if(case_ == 1 or case_ == 2)
+  {
+    if(dot_1->is_d_border() or dot_2->is_d_border())
+        return 1; //draw upper box
+
+    if(dot_1->is_u_border() or dot_2->is_u_border())
+        return 2; //draw lower box
+
+    if(upper_box(dot_1,dot_2) and lower_box(dot_1,dot_2))
+      return 3; //draw upper_box and lower_box
+
+    if(upper_box(dot_1,dot_2))
+      return 1; //draw upper box
+
+    if(lower_box(dot_1,dot_2))
+      return 2; //draw lower box
+  }
+
+  if(case_ == 3 or case_ == 4)
+  {
+      if(dot_1->is_l_border() or dot_2->is_l_border())
+          return 4; //draw right box
+
+      if(dot_1->is_r_border() or dot_2->is_r_border())
+          return 5; //draw left box
+
+      if(right_box(dot_1,dot_2) and left_box(dot_1,dot_2))
+        return 6; //draw right box and left box
+
+      if(right_box(dot_1,dot_2))
+        return 4; //draw right box
+
+      if(left_box(dot_1,dot_2))
+        return 5; //draw left box
+  }
+
+}
+
 /*void map_graphics::draw_box(int &player)
 {
   std::pair<size_t,size_t> a;

@@ -36,60 +36,60 @@
   where each represents to watch diagonal dot, these macros
   are used by check_box to make necessary considerations.
 */
-# define MOVE_DOWN_RIGTH 																\
-if (boxes[std::get<0>(dot_1->get_pos()) + 1][std::get<1>(dot_1->get_pos()) + 1]->has_up() and 	\
+# define MOVE_DOWN_RIGTH 																			\
+if (boxes[std::get<0>(dot_1->get_pos()) + 1][std::get<1>(dot_1->get_pos()) + 1]->has_up() and 		\
 	boxes[std::get<0>(dot_1->get_pos()) + 1][std::get<1>(dot_1->get_pos()) + 1]->has_left()) 		\
-{																						\
-	increase_score(player); 	     													\
+{																									\
+	increase_score(player); 	     																\
 }
 
-# define MOVE_DOWN_LEFT 																\
-if (boxes[std::get<0>(dot_1->get_pos()) + 1][std::get<1>(dot_1->get_pos()) - 1]->has_up() and 	\
-	boxes[std::get<0>(dot_1->get_pos()) + 1][std::get<1>(dot_1->get_pos()) - 1]->has_right()) 	\
-{																						\
-	increase_score(player);      														\
+# define MOVE_DOWN_LEFT 																			\
+if (boxes[std::get<0>(dot_1->get_pos()) + 1][std::get<1>(dot_1->get_pos()) - 1]->has_up() and 		\
+	boxes[std::get<0>(dot_1->get_pos()) + 1][std::get<1>(dot_1->get_pos()) - 1]->has_right()) 		\
+{																									\
+	increase_score(player);      																	\
 }
 
-# define MOVE_UP_LEFT 																	\
+# define MOVE_UP_LEFT 																				\
 if (boxes[std::get<0>(dot_1->get_pos()) - 1][std::get<1>(dot_1->get_pos()) - 1]->has_down() and 	\
-	boxes[std::get<0>(dot_1->get_pos()) - 1][std::get<1>(dot_1->get_pos()) - 1]->has_right()) 	\
-{																						\
-	increase_score(player); 	     													\
+	boxes[std::get<0>(dot_1->get_pos()) - 1][std::get<1>(dot_1->get_pos()) - 1]->has_right()) 		\
+{																									\
+	increase_score(player); 	     																\
 }
 
-# define MOVE_UP_RIGTH 																	\
-if (boxes[std::get<0>(dot_1->get_pos()) - 1][std::get<1>(dot_1->get_pos()) + 1]->has_down() and	\
+# define MOVE_UP_RIGTH 																				\
+if (boxes[std::get<0>(dot_1->get_pos()) - 1][std::get<1>(dot_1->get_pos()) + 1]->has_down() and		\
 	boxes[std::get<0>(dot_1->get_pos()) - 1][std::get<1>(dot_1->get_pos()) + 1]->has_left()) 	    \
-{																						\
-	increase_score(player); 	     													\
+{																									\
+	increase_score(player); 	     																\
 }
 
-# define MOVE_DOWN_RIGTH_CHECK 															\
-if (boxes[std::get<0>(dot_1->get_pos()) + 1][std::get<1>(dot_1->get_pos()) + 1]->has_up() and 	\
+# define MOVE_DOWN_RIGTH_CHECK 																		\
+if (boxes[std::get<0>(dot_1->get_pos()) + 1][std::get<1>(dot_1->get_pos()) + 1]->has_up() and 		\
 	boxes[std::get<0>(dot_1->get_pos()) + 1][std::get<1>(dot_1->get_pos()) + 1]->has_left()) 		\
-{																						\
-	return true;			 	     													\
+{																									\
+	return true;			 	     																\
 }
 
-# define MOVE_DOWN_LEFT_CHECK															\
-if (boxes[std::get<0>(dot_1->get_pos()) + 1][std::get<1>(dot_1->get_pos()) - 1]->has_up() and 	\
-	boxes[std::get<0>(dot_1->get_pos()) + 1][std::get<1>(dot_1->get_pos()) - 1]->has_right()) 	\
-{																						\
-	return true;      																	\
+# define MOVE_DOWN_LEFT_CHECK																		\
+if (boxes[std::get<0>(dot_1->get_pos()) + 1][std::get<1>(dot_1->get_pos()) - 1]->has_up() and 		\
+	boxes[std::get<0>(dot_1->get_pos()) + 1][std::get<1>(dot_1->get_pos()) - 1]->has_right()) 		\
+{																									\
+	return true;      																				\
 }
 
-# define MOVE_UP_LEFT_CHECK 															\
+# define MOVE_UP_LEFT_CHECK 																		\
 if (boxes[std::get<0>(dot_1->get_pos()) - 1][std::get<1>(dot_1->get_pos()) - 1]->has_down() and 	\
-	boxes[std::get<0>(dot_1->get_pos()) - 1][std::get<1>(dot_1->get_pos()) - 1]->has_right()) 	\
-{																						\
-	return true; 				     													\
+	boxes[std::get<0>(dot_1->get_pos()) - 1][std::get<1>(dot_1->get_pos()) - 1]->has_right()) 		\
+{																									\
+	return true; 				     																\
 }
 
-# define MOVE_UP_RIGTH_CHECK 															\
-if (boxes[std::get<0>(dot_1->get_pos()) - 1][std::get<1>(dot_1->get_pos()) + 1]->has_down() and	\
+# define MOVE_UP_RIGTH_CHECK 																		\
+if (boxes[std::get<0>(dot_1->get_pos()) - 1][std::get<1>(dot_1->get_pos()) + 1]->has_down() and		\
 	boxes[std::get<0>(dot_1->get_pos()) - 1][std::get<1>(dot_1->get_pos()) + 1]->has_left()) 	    \
-{																						\
-	return true; 	     													\
+{																									\
+	return true; 	     																			\
 }
 
 
@@ -637,7 +637,8 @@ public:
 		if ( std::get<0>(dot_1->get_pos()) - std::get<0>(dot_2->get_pos()) == -1 and
 			 std::get<1>(dot_1->get_pos()) - std::get<1>(dot_2->get_pos()) == 0)
 		{
-			if (dot_1->is_dl_corner() or dot_1->is_dr_corner())
+			if (dot_1->is_dl_corner() or dot_1->is_dr_corner() 
+									  or dot_1->is_d_border())
 				return 0;
 
 			return 3;
@@ -647,7 +648,8 @@ public:
 		if ( std::get<0>(dot_1->get_pos()) - std::get<0>(dot_2->get_pos()) == 1 and
 			 std::get<1>(dot_1->get_pos()) - std::get<1>(dot_2->get_pos()) == 0)
 		{
-			if (dot_1->is_ul_corner() or dot_1->is_ur_corner())
+			if (dot_1->is_ul_corner() or dot_1->is_ur_corner()
+									  or dot_1->is_u_border())
 				return 0;
 
 			return 4;

@@ -13,11 +13,11 @@ int main()
 
 	MOVE mv;
 
-	get<0>(get<0>(mv)) = 1;
-	get<1>(get<0>(mv)) = 2;
+	get<0>(get<0>(mv)) = 0;
+	get<1>(get<0>(mv)) = 0;
 
-	get<0>(get<1>(mv)) = 2;
-	get<1>(get<1>(mv)) = 2;
+	get<0>(get<1>(mv)) = 0;
+	get<1>(get<1>(mv)) = 1;
 
 	if(map_.play(mv,1))
 		cout << "valid move" << "\n";
@@ -26,11 +26,11 @@ int main()
 
 	cout << "was_point: " << map_.was_point(mv) << "\n";
 
-	get<0>(get<0>(mv)) = 1;
+	get<0>(get<0>(mv)) = 0;
 	get<1>(get<0>(mv)) = 1;
 
 	get<0>(get<1>(mv)) = 1;
-	get<1>(get<1>(mv)) = 2;
+	get<1>(get<1>(mv)) = 1;
 
 	if(map_.play(mv,1))
 		cout << "valid move" << "\n";
@@ -40,10 +40,10 @@ int main()
 	cout << "was_point: " << map_.was_point(mv) << "\n";
 
 	get<0>(get<0>(mv)) = 1;
-	get<1>(get<0>(mv)) = 1;
+	get<1>(get<0>(mv)) = 0;
 
-	get<0>(get<1>(mv)) = 2;
-	get<1>(get<1>(mv)) = 1;
+	get<0>(get<1>(mv)) = 0;
+	get<1>(get<1>(mv)) = 0;
 
 	if(map_.play(mv,1))
 		cout << "valid move" << "\n";
@@ -52,11 +52,11 @@ int main()
 
 cout << "was_point: " << map_.was_point(mv) << "\n";
 
-	get<0>(get<0>(mv)) = 2;
-	get<1>(get<0>(mv)) = 1;
+	get<0>(get<0>(mv)) = 1;
+	get<1>(get<0>(mv)) = 0;
 
-	get<0>(get<1>(mv)) = 2;
-	get<1>(get<1>(mv)) = 2;
+	get<0>(get<1>(mv)) = 1;
+	get<1>(get<1>(mv)) = 1;
 
 	if(map_.play(mv,1))
 		cout << "valid move" << "\n";

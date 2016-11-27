@@ -33,6 +33,11 @@ public:
     void refresh_dots();
     void act_score();
     void ia_play();
+    bool upper_box(dot<4,4> *,dot<4,4> *);
+    bool lower_box(dot<4,4> *,dot<4,4> *);
+    bool right_box(dot<4,4> *,dot<4,4> *);
+    bool left_box(dot<4,4> *,dot<4,4> *);
+    unsigned short where_to_draw(MOVE);
     QPointF dot_to_qpointf(std::pair<size_t,size_t>&dot_);
     std::pair<unsigned short, unsigned short> detect_dot(QPointF &point);
     uint p1_score, p2_score;
