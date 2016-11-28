@@ -236,6 +236,19 @@
     <bool>true</bool>
    </property>
   </widget>
+  <widget class="QLabel" name="bandera">
+   <property name="geometry">
+    <rect>
+     <x>250</x>
+     <y>300</y>
+     <width>67</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>TextLabel</string>
+   </property>
+  </widget>
   <zorder>layoutWidget</zorder>
   <zorder>layoutWidget</zorder>
   <zorder>layoutWidget</zorder>
@@ -243,6 +256,7 @@
   <zorder>l_img</zorder>
   <zorder>l_img_2</zorder>
   <zorder>l_img_3</zorder>
+  <zorder>bandera</zorder>
  </widget>
  <customwidgets>
   <customwidget>

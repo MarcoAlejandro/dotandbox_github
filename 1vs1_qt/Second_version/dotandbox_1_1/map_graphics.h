@@ -29,7 +29,7 @@ public:
     bool check_move(QPointF &point);
     void draw_line(QPointF &point, QBrush &color);
     void draw_line(QPointF&, QPointF&,QBrush&);
-    void draw_box(int &);
+    void draw_box(QBrush& , MOVE &);
     void refresh_dots();
     void act_score();
     void ia_play();

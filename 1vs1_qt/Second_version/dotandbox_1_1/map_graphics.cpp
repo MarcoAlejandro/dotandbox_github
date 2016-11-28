@@ -252,7 +252,8 @@ void map_graphics::mouseReleaseEvent(QMouseEvent *event)
 
                 if(p2_score != m_game->get_p2_score())
                 {
-                    //sky->check_play(*m_game,cur_mv,PLAYER_TURN);
+                     draw_box(*box_paint2, cur_mv);
+                    //sky->check_play(*m_game,cur_mv,PLAYER_TURN);  
                     sky->blind_move();
                 }
                 else
@@ -280,6 +281,7 @@ void map_graphics::ia_play()
         {
             p1_score = m_game->get_p1_score();
             cur_mv = sky->AI_play();
+
             m_game->play(cur_mv,IA_TURN);
 
             QPointF par1 = dot_to_qpointf(std::get<0>(cur_mv));
@@ -322,6 +324,7 @@ void map_graphics::ia_play()
 
             if(p1_score != m_game->get_p1_score())
             {
+                draw_box(*box_paint1, cur_mv);
                 sky->check_play(*m_game,cur_mv,IA_TURN);
             }
             else
@@ -976,29 +979,28 @@ unsigned short map_graphics::where_to_draw(MOVE last_move)
 
 }
 
-/*void map_graphics::draw_box(int &player)
+void map_graphics::draw_box(QBrush& paint, MOVE &move)
 {
-  std::pair<size_t,size_t> a;
-  std::pair<size_t,size_t> b;
-  std::tuple<std::pair<size_t,size_t>,std::pair<size_t,size_t> > c;
-
-if(m_game->was_point(c = std::make_tuple(a = std::make_pair(std::get<0>(std::get<0>cur_mv),
-                                                            std::get<0>(std::get<1>cur_mv)),
+       unsigned short a = std::get<0>(std::get<0>(move)),
+        b = std::get<0>(std::get<1>(move)),
+        c = std::get<1>(std::get<0>(move)),
+        d = std::get<1>(std::get<1>(move));
 
 
+       unsigned short boxpos = where_to_draw(move);
 
+       if( ((a==0 and b==0) and (c==0 and d==1)) || ((a==0 and b==1) and (c==0 and d==0)))
+       {
+                   scene->addRect(10,37,100,105,*c_free,paint);
+                   return;
+       }
 
-                                         b= std::make_pair(std::get<1>(std::get<0>cur_mv),
-                                                           std::get<1>(std::get<1>cur_mv)))))
-{
-
-
-
+       if( ((a==0 and b==1) and (c==0 and d==2)) || ((a==0 and b==2) and (c==0 and d==1)))
+       {
+                   scene->addRect(210,237,100,105,*c_free,paint);
+                   return;
+       }
 }
-
-
-
-}*/
 
 
 //void map_graphics::msleep(unsigned long 500){QThread::msleep(msecs);}
