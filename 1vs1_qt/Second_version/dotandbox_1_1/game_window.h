@@ -2,6 +2,8 @@
 #define GAME_WINDOW_H
 
 #include <QDialog>
+#include <QDebug>
+
 
 #include <map_graphics.h>
 

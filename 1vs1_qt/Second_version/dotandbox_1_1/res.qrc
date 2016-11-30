@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>ehm.jpg</file>
+        <file>Circulos colores.gif</file>
+    </qresource>
+</RCC>

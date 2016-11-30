@@ -14,6 +14,7 @@ game_window::game_window(QWidget *parent) :
 
     this->ui->l_p1_id->setStyleSheet("background-color: #EB7F0C");
     this->ui->l_p2_id->setStyleSheet("background-color: #0C6DEB");
+
 }
 
 game_window::~game_window()
@@ -52,10 +53,14 @@ void game_window::show_turn(int t){
     {
         this->ui->l_img->setVisible(true);
         this->ui->l_img_2->setVisible(false);
+        qDebug() << "i'm here show turn1";
+
     }
     else if(t == 1)
     {
         this->ui->l_img->setVisible(false);
         this->ui->l_img_2->setVisible(true);
+        qDebug() << "i'm here show turn2";
+
     }
 }

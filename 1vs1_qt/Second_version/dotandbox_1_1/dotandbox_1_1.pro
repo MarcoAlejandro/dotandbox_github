@@ -6,6 +6,10 @@
 
 QT       += core gui
 
+#Console:
+CONFIG += console
+##
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = dotandbox_1_1
@@ -23,3 +27,9 @@ HEADERS  += mainwindow.h \
 
 FORMS    += mainwindow.ui \
     game_window.ui
+
+IMAGES += images/ehm.jpg \
+
+RESOURCES += \
+    res.qrc
+

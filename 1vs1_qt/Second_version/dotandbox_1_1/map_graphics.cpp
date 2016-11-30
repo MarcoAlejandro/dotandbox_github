@@ -6,6 +6,25 @@ map_graphics::map_graphics(QWidget *parent) :
 {
     m_game = new map<4,4>;
     sky = new skyline<4>(*m_game, cur_mv);
+    //HORIZONTAL:
+       p_00_01 = p_01_02 = p_02_03 =
+       p_10_11 = p_11_12 = p_12_13 =
+       p_20_21 = p_21_22 = p_22_23 =
+       p_30_31 = p_31_32 = p_32_33 =
+
+    //VERTICAL:
+       p_00_10 = p_10_20 = p_20_30 =
+       p_01_11 = p_11_21 = p_21_31 =
+       p_02_12 = p_12_22 = p_22_32 =
+       p_03_13 = p_13_23 = p_23_33 =
+            false;
+
+     //Sorted by horizontal:
+       s1 = s2 = s3 =
+       s4 = s5 = s6 =
+       s7 = s8 = s9 =
+            false;
+
 }
 
 void map_graphics::start_graph()
@@ -245,15 +264,15 @@ void map_graphics::mouseReleaseEvent(QMouseEvent *event)
 
             if(check_move(release_point))
             {
-                draw_line(release_point, *b_marked);
+                QRectF line_ = *(draw_line(release_point, *b_marked));
 
                 p2_score = m_game->get_p2_score();
                 m_game->play(cur_mv,PLAYER_TURN);
 
                 if(p2_score != m_game->get_p2_score())
                 {
-                     draw_box(*box_paint2, cur_mv);
-                    //sky->check_play(*m_game,cur_mv,PLAYER_TURN);  
+                     draw_box(*box_paint2, line_);
+                    //sky->check_play(*m_game,cur_mv,PLAYER_TURN);
                     sky->blind_move();
                 }
                 else
@@ -320,11 +339,12 @@ void map_graphics::ia_play()
             else if(dot_33->contains(par2))
                 scene->addEllipse(*dot_33,*c_marked,*b_marked);*/
 
-            draw_line(par1, par2, *b_marked2);
+            QRectF line = *(draw_line(par1, par2, *b_marked2));
 
             if(p1_score != m_game->get_p1_score())
             {
-                draw_box(*box_paint1, cur_mv);
+                draw_box(*box_paint1, line);
+                qInfo () << "Im here1\n";
                 sky->check_play(*m_game,cur_mv,IA_TURN);
             }
             else
@@ -516,208 +536,403 @@ bool map_graphics::check_move(QPointF &point)
     return false;
 }
 
-void map_graphics::draw_line(QPointF &point, QBrush &color)
+QRectF* map_graphics::draw_line(QPointF &point, QBrush &color)
 {
-    //Horizontal:
-    if( (dot_00->contains(*click_point) and dot_01->contains(point)) or
-       (dot_00->contains(point) and dot_01->contains(*click_point)) )
-        scene->addRect(*l_00_01,*c_free,color);
+  //Horizontal:
+  if( (dot_00->contains(*click_point) and dot_01->contains(point)) or
+     (dot_00->contains(point) and dot_01->contains(*click_point)) )
+  {
+      scene->addRect(*l_00_01,*c_free,color);
+      p_00_01 = true;
+      return l_00_01;
+  }
+  if( (dot_01->contains(*click_point) and dot_02->contains(point)) or
+     (dot_01->contains(point) and dot_02->contains(*click_point)) )
+  {
+      scene->addRect(*l_01_02,*c_free,color);
+      p_01_02 = true;
+      return l_01_02;
+  }
 
-    if( (dot_01->contains(*click_point) and dot_02->contains(point)) or
-       (dot_01->contains(point) and dot_02->contains(*click_point)) )
-        scene->addRect(*l_01_02,*c_free,color);
+  if( (dot_02->contains(*click_point) and dot_03->contains(point)) or
+     (dot_02->contains(point) and dot_03->contains(*click_point)) )
+     {
+      scene->addRect(*l_02_03,*c_free,color);
+      p_02_03 = true;
+      return l_02_03;
+    };
 
-    if( (dot_02->contains(*click_point) and dot_03->contains(point)) or
-       (dot_02->contains(point) and dot_03->contains(*click_point)) )
-        scene->addRect(*l_02_03,*c_free,color);
 
-    if( (dot_10->contains(*click_point) and dot_11->contains(point)) or
-       (dot_10->contains(point) and dot_11->contains(*click_point)) )
-        scene->addRect(*l_10_11,*c_free,color);
+  if( (dot_10->contains(*click_point) and dot_11->contains(point)) or
+     (dot_10->contains(point) and dot_11->contains(*click_point)) )
+     {
+      scene->addRect(*l_10_11,*c_free,color);
+      p_10_11 = true;
+      return l_10_11;
+    };
 
-    if( (dot_11->contains(*click_point) and dot_12->contains(point)) or
-       (dot_11->contains(point) and dot_12->contains(*click_point)) )
-        scene->addRect(*l_11_12,*c_free,color);
+  if( (dot_11->contains(*click_point) and dot_12->contains(point)) or
+     (dot_11->contains(point) and dot_12->contains(*click_point)) )
+     {
+      scene->addRect(*l_11_12,*c_free,color);
+      p_11_12 = true;
+      return l_11_12;
+    };
 
-    if( (dot_12->contains(*click_point) and dot_13->contains(point)) or
-       (dot_12->contains(point) and dot_13->contains(*click_point)) )
-        scene->addRect(*l_12_13,*c_free,color);
+  if( (dot_12->contains(*click_point) and dot_13->contains(point)) or
+     (dot_12->contains(point) and dot_13->contains(*click_point)) )
+     {
+      scene->addRect(*l_12_13,*c_free,color);
+      p_12_13 = true;
+      return l_12_13;
+    };
 
-    if( (dot_20->contains(*click_point) and dot_21->contains(point)) or
-       (dot_20->contains(point) and dot_21->contains(*click_point)) )
-        scene->addRect(*l_20_21,*c_free,color);
+  if( (dot_20->contains(*click_point) and dot_21->contains(point)) or
+     (dot_20->contains(point) and dot_21->contains(*click_point)) )
+     {
+      scene->addRect(*l_20_21,*c_free,color);
+      p_20_21 = true;
+      return l_20_21;
+    };
 
-    if( (dot_21->contains(*click_point) and dot_22->contains(point)) or
-       (dot_21->contains(point) and dot_22->contains(*click_point)) )
-        scene->addRect(*l_21_22,*c_free,color);
+  if( (dot_21->contains(*click_point) and dot_22->contains(point)) or
+     (dot_21->contains(point) and dot_22->contains(*click_point)) )
+     {
+      scene->addRect(*l_21_22,*c_free,color);
+      p_21_22 = true;
+      return l_21_22;
+    };
 
-    if( (dot_22->contains(*click_point) and dot_23->contains(point)) or
-       (dot_22->contains(point) and dot_23->contains(*click_point)) )
-        scene->addRect(*l_22_23,*c_free,color);
+  if( (dot_22->contains(*click_point) and dot_23->contains(point)) or
+     (dot_22->contains(point) and dot_23->contains(*click_point)) )
+     {
+      scene->addRect(*l_22_23,*c_free,color);
+      p_22_23 = true;
+      return l_22_23;
+    };
 
-    if( (dot_30->contains(*click_point) and dot_31->contains(point)) or
-       (dot_30->contains(point) and dot_31->contains(*click_point)) )
-        scene->addRect(*l_30_31,*c_free,color);
+  if( (dot_30->contains(*click_point) and dot_31->contains(point)) or
+     (dot_30->contains(point) and dot_31->contains(*click_point)) )
+     {
+      scene->addRect(*l_30_31,*c_free,color);
+      p_30_31 = true;
+      return l_30_31;
+    };
 
-    if( (dot_31->contains(*click_point) and dot_32->contains(point)) or
-       (dot_31->contains(point) and dot_32->contains(*click_point)) )
-        scene->addRect(*l_31_32,*c_free,color);
+  if( (dot_31->contains(*click_point) and dot_32->contains(point)) or
+     (dot_31->contains(point) and dot_32->contains(*click_point)) )
+     {
+      scene->addRect(*l_31_32,*c_free,color);
+      p_31_32 = true;
+      return l_31_32;
+    };
 
-    if( (dot_32->contains(*click_point) and dot_33->contains(point)) or
-       (dot_32->contains(point) and dot_33->contains(*click_point)) )
-        scene->addRect(*l_32_33,*c_free,color);
-    //Vertical:
-    if( (dot_00->contains(*click_point) and dot_10->contains(point)) or
-       (dot_00->contains(point) and dot_10->contains(*click_point)) )
-        scene->addRect(*l_00_10,*c_free,color);
+  if( (dot_32->contains(*click_point) and dot_33->contains(point)) or
+     (dot_32->contains(point) and dot_33->contains(*click_point)) )
+     {
+      scene->addRect(*l_32_33,*c_free,color);
+      p_32_33 = true;
+      return l_32_33;
+    };
 
-    if( (dot_10->contains(*click_point) and dot_20->contains(point)) or
-       (dot_10->contains(point) and dot_20->contains(*click_point)) )
-        scene->addRect(*l_10_20,*c_free,color);
 
-    if( (dot_20->contains(*click_point) and dot_30->contains(point)) or
-       (dot_20->contains(point) and dot_30->contains(*click_point)) )
-        scene->addRect(*l_20_30,*c_free,color);
+  //Vertical:
+  if( (dot_00->contains(*click_point) and dot_10->contains(point)) or
+     (dot_00->contains(point) and dot_10->contains(*click_point)) )
+     {
+      scene->addRect(*l_00_10,*c_free,color);
+      p_00_10 = true;
+      return l_00_10;
+    };
 
-    if( (dot_01->contains(*click_point) and dot_11->contains(point)) or
-       (dot_01->contains(point) and dot_11->contains(*click_point)) )
-        scene->addRect(*l_01_11,*c_free,color);
+  if( (dot_10->contains(*click_point) and dot_20->contains(point)) or
+     (dot_10->contains(point) and dot_20->contains(*click_point)) )
+     {
+      scene->addRect(*l_10_20,*c_free,color);
+      p_10_20 = true;
+      return l_10_20;
+    };
 
-    if( (dot_11->contains(*click_point) and dot_21->contains(point)) or
-       (dot_11->contains(point) and dot_21->contains(*click_point)) )
-        scene->addRect(*l_11_21,*c_free,color);
+  if( (dot_20->contains(*click_point) and dot_30->contains(point)) or
+     (dot_20->contains(point) and dot_30->contains(*click_point)) )
+     {
+      scene->addRect(*l_20_30,*c_free,color);
+      p_20_30 = true;
+      return l_20_30;
+    };
 
-    if( (dot_21->contains(*click_point) and dot_31->contains(point)) or
-       (dot_21->contains(point) and dot_31->contains(*click_point)) )
-        scene->addRect(*l_21_31,*c_free,color);
+  if( (dot_01->contains(*click_point) and dot_11->contains(point)) or
+     (dot_01->contains(point) and dot_11->contains(*click_point)) )
+     {
+      scene->addRect(*l_01_11,*c_free,color);
+      p_01_11 = true;
+      return l_01_11;
+    };
 
-    if( (dot_02->contains(*click_point) and dot_12->contains(point)) or
-       (dot_02->contains(point) and dot_12->contains(*click_point)) )
-        scene->addRect(*l_02_12,*c_free,color);
+  if( (dot_11->contains(*click_point) and dot_21->contains(point)) or
+     (dot_11->contains(point) and dot_21->contains(*click_point)) )
+     {
+      scene->addRect(*l_11_21,*c_free,color);
+      p_11_21 = true;
+      return l_11_21;
+    };
 
-    if( (dot_12->contains(*click_point) and dot_22->contains(point)) or
-       (dot_12->contains(point) and dot_22->contains(*click_point)) )
-        scene->addRect(*l_12_22,*c_free,color);
+  if( (dot_21->contains(*click_point) and dot_31->contains(point)) or
+     (dot_21->contains(point) and dot_31->contains(*click_point)) )
+     {
+      scene->addRect(*l_21_31,*c_free,color);
+      p_21_31 = true;
+      return l_21_31;
+    };
 
-    if( (dot_22->contains(*click_point) and dot_32->contains(point)) or
-       (dot_22->contains(point) and dot_32->contains(*click_point)) )
-        scene->addRect(*l_22_32,*c_free,color);
+  if( (dot_02->contains(*click_point) and dot_12->contains(point)) or
+     (dot_02->contains(point) and dot_12->contains(*click_point)) )
+     {
+      scene->addRect(*l_02_12,*c_free,color);
+      p_02_12 = true;
+      return l_02_12;
+    };
 
-    if( (dot_03->contains(*click_point) and dot_13->contains(point)) or
-       (dot_03->contains(point) and dot_13->contains(*click_point)) )
-        scene->addRect(*l_03_13,*c_free,color);
+  if( (dot_12->contains(*click_point) and dot_22->contains(point)) or
+     (dot_12->contains(point) and dot_22->contains(*click_point)) )
+     {
+      scene->addRect(*l_12_22,*c_free,color);
+      p_12_22 = true;
+      return l_12_22;
+    };
 
-    if( (dot_13->contains(*click_point) and dot_23->contains(point)) or
-       (dot_13->contains(point) and dot_23->contains(*click_point)) )
-        scene->addRect(*l_13_23,*c_free,color);
+  if( (dot_22->contains(*click_point) and dot_32->contains(point)) or
+     (dot_22->contains(point) and dot_32->contains(*click_point)) )
+     {
+      scene->addRect(*l_22_32,*c_free,color);
+      p_22_32 = true;
+      return l_22_32;
+    };
 
-    if( (dot_23->contains(*click_point) and dot_33->contains(point)) or
-       (dot_23->contains(point) and dot_33->contains(*click_point)) )
-        scene->addRect(*l_23_33,*c_free,color);
+  if( (dot_03->contains(*click_point) and dot_13->contains(point)) or
+     (dot_03->contains(point) and dot_13->contains(*click_point)) )
+     {
+      scene->addRect(*l_03_13,*c_free,color);
+      p_03_13 = true;
+      return l_03_13;
+    };
+
+  if( (dot_13->contains(*click_point) and dot_23->contains(point)) or
+     (dot_13->contains(point) and dot_23->contains(*click_point)) )
+     {
+      scene->addRect(*l_13_23,*c_free,color);
+      p_13_23 = true;
+      return l_13_23;
+    };
+
+  if( (dot_23->contains(*click_point) and dot_33->contains(point)) or
+     (dot_23->contains(point) and dot_33->contains(*click_point)) )
+     {
+      scene->addRect(*l_23_33,*c_free,color);
+      p_23_33 = true;
+      return l_23_33;
+    };
+
 
 }
 
-void map_graphics::draw_line(QPointF &first_point, QPointF &second_point, QBrush &color)
+QRectF* map_graphics::draw_line(QPointF &first_point, QPointF &second_point, QBrush &color)
 {
     //Horizontal:
     if( (dot_00->contains(first_point) and dot_01->contains(second_point)) or
        (dot_00->contains(second_point) and dot_01->contains(first_point)) )
+    {
         scene->addRect(*l_00_01,*c_free,color);
-
+        p_00_01 = true;
+        return l_00_01;
+    }
     if( (dot_01->contains(first_point) and dot_02->contains(second_point)) or
        (dot_01->contains(second_point) and dot_02->contains(first_point)) )
+    {
         scene->addRect(*l_01_02,*c_free,color);
+        p_01_02 = true;
+        return l_01_02;
+    }
 
     if( (dot_02->contains(first_point) and dot_03->contains(second_point)) or
        (dot_02->contains(second_point) and dot_03->contains(first_point)) )
+       {
         scene->addRect(*l_02_03,*c_free,color);
+        p_02_03 = true;
+        return l_02_03;
+      };
 
 
     if( (dot_10->contains(first_point) and dot_11->contains(second_point)) or
        (dot_10->contains(second_point) and dot_11->contains(first_point)) )
+       {
         scene->addRect(*l_10_11,*c_free,color);
+        p_10_11 = true;
+        return l_10_11;
+      };
 
     if( (dot_11->contains(first_point) and dot_12->contains(second_point)) or
        (dot_11->contains(second_point) and dot_12->contains(first_point)) )
+       {
         scene->addRect(*l_11_12,*c_free,color);
+        p_11_12 = true;
+        return l_11_12;
+      };
 
     if( (dot_12->contains(first_point) and dot_13->contains(second_point)) or
        (dot_12->contains(second_point) and dot_13->contains(first_point)) )
+       {
         scene->addRect(*l_12_13,*c_free,color);
+        p_12_13 = true;
+        return l_12_13;
+      };
 
     if( (dot_20->contains(first_point) and dot_21->contains(second_point)) or
        (dot_20->contains(second_point) and dot_21->contains(first_point)) )
+       {
         scene->addRect(*l_20_21,*c_free,color);
+        p_20_21 = true;
+        return l_20_21;
+      };
 
     if( (dot_21->contains(first_point) and dot_22->contains(second_point)) or
        (dot_21->contains(second_point) and dot_22->contains(first_point)) )
+       {
         scene->addRect(*l_21_22,*c_free,color);
+        p_21_22 = true;
+        return l_21_22;
+      };
 
     if( (dot_22->contains(first_point) and dot_23->contains(second_point)) or
        (dot_22->contains(second_point) and dot_23->contains(first_point)) )
+       {
         scene->addRect(*l_22_23,*c_free,color);
+        p_22_23 = true;
+        return l_22_23;
+      };
 
     if( (dot_30->contains(first_point) and dot_31->contains(second_point)) or
        (dot_30->contains(second_point) and dot_31->contains(first_point)) )
+       {
         scene->addRect(*l_30_31,*c_free,color);
+        p_30_31 = true;
+        return l_30_31;
+      };
 
     if( (dot_31->contains(first_point) and dot_32->contains(second_point)) or
        (dot_31->contains(second_point) and dot_32->contains(first_point)) )
+       {
         scene->addRect(*l_31_32,*c_free,color);
+        p_31_32 = true;
+        return l_31_32;
+      };
 
     if( (dot_32->contains(first_point) and dot_33->contains(second_point)) or
        (dot_32->contains(second_point) and dot_33->contains(first_point)) )
+       {
         scene->addRect(*l_32_33,*c_free,color);
+        p_32_33 = true;
+        return l_32_33;
+      };
 
 
     //Vertical:
     if( (dot_00->contains(first_point) and dot_10->contains(second_point)) or
        (dot_00->contains(second_point) and dot_10->contains(first_point)) )
+       {
         scene->addRect(*l_00_10,*c_free,color);
+        p_00_10 = true;
+        return l_00_10;
+      };
 
     if( (dot_10->contains(first_point) and dot_20->contains(second_point)) or
        (dot_10->contains(second_point) and dot_20->contains(first_point)) )
+       {
         scene->addRect(*l_10_20,*c_free,color);
+        p_10_20 = true;
+        return l_10_20;
+      };
 
     if( (dot_20->contains(first_point) and dot_30->contains(second_point)) or
        (dot_20->contains(second_point) and dot_30->contains(first_point)) )
+       {
         scene->addRect(*l_20_30,*c_free,color);
+        p_20_30 = true;
+        return l_20_30;
+      };
 
     if( (dot_01->contains(first_point) and dot_11->contains(second_point)) or
        (dot_01->contains(second_point) and dot_11->contains(first_point)) )
+       {
         scene->addRect(*l_01_11,*c_free,color);
+        p_01_11 = true;
+        return l_01_11;
+      };
 
     if( (dot_11->contains(first_point) and dot_21->contains(second_point)) or
        (dot_11->contains(second_point) and dot_21->contains(first_point)) )
+       {
         scene->addRect(*l_11_21,*c_free,color);
+        p_11_21 = true;
+        return l_11_21;
+      };
 
     if( (dot_21->contains(first_point) and dot_31->contains(second_point)) or
        (dot_21->contains(second_point) and dot_31->contains(first_point)) )
+       {
         scene->addRect(*l_21_31,*c_free,color);
+        p_21_31 = true;
+        return l_21_31;
+      };
 
     if( (dot_02->contains(first_point) and dot_12->contains(second_point)) or
        (dot_02->contains(second_point) and dot_12->contains(first_point)) )
+       {
         scene->addRect(*l_02_12,*c_free,color);
+        p_02_12 = true;
+        return l_02_12;
+      };
 
     if( (dot_12->contains(first_point) and dot_22->contains(second_point)) or
        (dot_12->contains(second_point) and dot_22->contains(first_point)) )
+       {
         scene->addRect(*l_12_22,*c_free,color);
+        p_12_22 = true;
+        return l_12_22;
+      };
 
     if( (dot_22->contains(first_point) and dot_32->contains(second_point)) or
        (dot_22->contains(second_point) and dot_32->contains(first_point)) )
+       {
         scene->addRect(*l_22_32,*c_free,color);
+        p_22_32 = true;
+        return l_22_32;
+      };
 
     if( (dot_03->contains(first_point) and dot_13->contains(second_point)) or
        (dot_03->contains(second_point) and dot_13->contains(first_point)) )
+       {
         scene->addRect(*l_03_13,*c_free,color);
+        p_03_13 = true;
+        return l_03_13;
+      };
 
     if( (dot_13->contains(first_point) and dot_23->contains(second_point)) or
        (dot_13->contains(second_point) and dot_23->contains(first_point)) )
+       {
         scene->addRect(*l_13_23,*c_free,color);
+        p_13_23 = true;
+        return l_13_23;
+      };
 
     if( (dot_23->contains(first_point) and dot_33->contains(second_point)) or
        (dot_23->contains(second_point) and dot_33->contains(first_point)) )
+       {
         scene->addRect(*l_23_33,*c_free,color);
+        p_23_33 = true;
+        return l_23_33;
+      };
+
 
 }
 
@@ -979,29 +1194,70 @@ unsigned short map_graphics::where_to_draw(MOVE last_move)
 
 }
 
-void map_graphics::draw_box(QBrush& paint, MOVE &move)
+void map_graphics::draw_box(QBrush& paint, QRectF& _line)
 {
-       unsigned short a = std::get<0>(std::get<0>(move)),
-        b = std::get<0>(std::get<1>(move)),
-        c = std::get<1>(std::get<0>(move)),
-        d = std::get<1>(std::get<1>(move));
+    //Squares sorted by horizontal
 
+        //First row:
+    if( p_00_01 and p_01_11 and p_01_11 and p_00_10 and not(s1) )
+    {
+       scene->addRect(13,44,93,93,*c_free,paint);
+       s1 = true;
+       //return;
+    }
 
-       unsigned short boxpos = where_to_draw(move);
+    if( p_01_02 and p_02_12 and p_11_12 and p_02_12 and not(s2) )
+    {
+       qDebug() << "im here2\n";
+       scene->addRect(113,44,93,93,*c_free,paint);
+       s2 = true;
+    }
 
-       if( ((a==0 and b==0) and (c==0 and d==1)) || ((a==0 and b==1) and (c==0 and d==0)))
-       {
-                   scene->addRect(10,37,100,105,*c_free,paint);
-                   return;
-       }
+    if( p_02_03 and p_03_13 and p_12_13 and p_02_12 and not(s3) )
+    {
+       scene->addRect(213,44,93,93,*c_free,paint);
+       s3 = true;
+    }
 
-       if( ((a==0 and b==1) and (c==0 and d==2)) || ((a==0 and b==2) and (c==0 and d==1)))
-       {
-                   scene->addRect(210,237,100,105,*c_free,paint);
-                   return;
-       }
+        //Second row:
+    if( p_10_11 and p_11_21 and p_20_21 and p_10_20 and not(s4) )
+    {
+       scene->addRect(13,144,93,93,*c_free,paint);
+       s4 = true;
+    }
+
+    if( p_11_12 and p_12_22 and p_21_22 and p_11_21 and not(s5) )
+    {
+       scene->addRect(113,144,93,93,*c_free,paint);
+       s5 = true;
+    }
+
+    if( p_12_13 and p_13_23 and p_22_23 and p_12_22 and not(s6))
+    {
+       scene->addRect(213,144,93,93,*c_free,paint);
+       s6 = true;
+    }
+
+        //Third row:
+    if( p_20_21 and p_21_31 and p_30_31 and p_20_30 and not(s7) )
+    {
+       scene->addRect(13,244,93,93,*c_free,paint);
+       s7 = true;
+    }
+
+    if( p_21_22 and p_22_32 and p_31_32 and p_21_31 and not(s8) )
+    {
+       scene->addRect(113,244,93,93,*c_free,paint);
+       s8 = true;
+    }
+
+    if( p_22_23 and p_23_33 and p_32_33 and p_22_32 and not(s9) )
+    {
+       scene->addRect(213,244,93,93,*c_free,paint);
+       s9 = true;
+    }
+
 }
 
 
 //void map_graphics::msleep(unsigned long 500){QThread::msleep(msecs);}
-

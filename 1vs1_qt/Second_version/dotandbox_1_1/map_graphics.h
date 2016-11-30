@@ -8,6 +8,7 @@
 #include <QMouseEvent>
 #include <QColor>
 #include <QThread>
+#include <QDebug>
 
 #include <../../../dot_H/dot.H>
 #include <../../../map/map.H>
@@ -27,9 +28,9 @@ public:
     void for_test();
 
     bool check_move(QPointF &point);
-    void draw_line(QPointF &point, QBrush &color);
-    void draw_line(QPointF&, QPointF&,QBrush&);
-    void draw_box(QBrush& , MOVE &);
+    QRectF* draw_line(QPointF &point, QBrush &color);
+    QRectF* draw_line(QPointF&, QPointF&,QBrush&);
+    void draw_box(QBrush& , QRectF &);
     void refresh_dots();
     void act_score();
     void ia_play();
@@ -79,6 +80,25 @@ private:
            *l_01_11, *l_11_21, *l_21_31,
            *l_02_12, *l_12_22, *l_22_32,
            *l_03_13, *l_13_23, *l_23_33;
+
+    //Bools to know which line has been marked:
+    bool
+    //HORIZONTAL:
+       p_00_01, p_01_02, p_02_03,
+       p_10_11, p_11_12, p_12_13,
+       p_20_21, p_21_22, p_22_23,
+       p_30_31, p_31_32, p_32_33,
+    //VERTICAL:
+       p_00_10, p_10_20, p_20_30,
+       p_01_11, p_11_21, p_21_31,
+       p_02_12, p_12_22, p_22_32,
+       p_03_13, p_13_23, p_23_33;
+    //Bools to know which square has been marked:
+    bool
+       //Sorted by horizontal:
+       s1, s2, s3,
+       s4, s5, s6,
+       s7, s8, s9;
 
 
     //Cuadro Punto
