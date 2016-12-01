@@ -8,6 +8,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->setWindowTitle("Dot and Box");
+    this->setWindowIcon(QIcon(":/images/images/WhatsApp Image 2016-11-30 at 11.45.59.jpeg"));
 }
 
 MainWindow::~MainWindow()
@@ -40,4 +42,9 @@ void MainWindow::on_b_ai_play_clicked()
     Game_window->start_game(2);
 
     Game_window->show();
+}
+
+void MainWindow::on_b_exit_clicked()
+{
+    qApp->quit();
 }

@@ -8,6 +8,9 @@ game_window::game_window(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    this->setWindowTitle("Dot and Box");
+    this->setWindowIcon(QIcon(":/images/images/WhatsApp Image 2016-11-30 at 11.45.59.jpeg"));
+
     connect(ui->g_map,SIGNAL(refresh_score(uint,uint)),this,
             SLOT(act_score(uint,uint)));
 

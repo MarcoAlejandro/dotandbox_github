@@ -20,6 +20,8 @@ private slots:
 
     void on_b_ai_play_clicked();
 
+    void on_b_exit_clicked();
+
 private:
     Ui::MainWindow *ui;
     game_window *Game_window;
