@@ -18,6 +18,8 @@ public:
 private slots:
     void on_b_play_clicked();
 
+    void on_b_ai_play_clicked();
+
 private:
     Ui::MainWindow *ui;
     game_window *Game_window;

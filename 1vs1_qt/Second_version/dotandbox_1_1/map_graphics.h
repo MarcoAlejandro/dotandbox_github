@@ -16,7 +16,10 @@
 #include <../../../skyline/skyline_H/skyline.H>
 
 #define PLAYER_TURN 2
-#define IA_TURN 1
+#define PLAYER2_TURN 1
+#define AI_TURN 1
+#define AI_PLAYER 2
+#define HUMAN_PLAYER 1
 
 class map_graphics : public QGraphicsView
 {
@@ -24,13 +27,13 @@ class map_graphics : public QGraphicsView
 public:
     explicit map_graphics(QWidget *parent = 0);
 
-    void start_graph();
+    void start_graph(ushort _p_or_ai);
     void for_test();
 
     bool check_move(QPointF &point);
     QRectF* draw_line(QPointF &point, QBrush &color);
     QRectF* draw_line(QPointF&, QPointF&,QBrush&);
-    void draw_box(QBrush& , QRectF &);
+    void draw_box(QBrush&);
     void refresh_dots();
     void act_score();
     void ia_play();
@@ -41,6 +44,7 @@ public:
     unsigned short where_to_draw(MOVE);
     QPointF dot_to_qpointf(std::pair<size_t,size_t>&dot_);
     std::pair<unsigned short, unsigned short> detect_dot(QPointF &point);
+
     uint p1_score, p2_score;
 
 
@@ -48,7 +52,6 @@ public:
 
 public slots:
    void mousePressEvent(QMouseEvent *e);
-   // void dotPressed()
    void mouseReleaseEvent(QMouseEvent *event);
    //void mouseMoveEvent()
    //void show_turn(int);
@@ -115,11 +118,12 @@ private:
     QBrush *b_marked2;
     QPointF *click_point;
 
-
+    //This is to know who's playing: 1 for human player, 2 for AI.
+    unsigned short p_or_ai;
     //Game Atributes:
     map<4,4> *m_game;
     MOVE cur_mv;
-    int turn = PLAYER_TURN;
+    int turn;
     skyline<4> *sky;
 
 };

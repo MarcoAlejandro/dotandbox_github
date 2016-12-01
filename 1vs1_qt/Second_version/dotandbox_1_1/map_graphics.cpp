@@ -4,8 +4,28 @@
 map_graphics::map_graphics(QWidget *parent) :
     QGraphicsView(parent)
 {
+}
+
+void map_graphics::start_graph(ushort _p_or_ai)
+{
+    //Initializing variables:
+    p_or_ai = _p_or_ai;
+    turn = PLAYER_TURN;
     m_game = new map<4,4>;
-    sky = new skyline<4>(*m_game, cur_mv);
+    if(p_or_ai == AI_PLAYER)
+        sky = new skyline<4>(*m_game, cur_mv);
+
+    p1_score = 0;
+    p2_score = 0;
+    c_free = new QColor("000000");
+    box_paint1 = new QBrush("#0C6DEB",Qt::SolidPattern);
+    box_paint2 = new QBrush("#EB7F0C",Qt::SolidPattern);
+    c_marked = new QColor("#EB7F0C");
+    c_marked2 = new QColor("#0C6DEB");
+    b_free = new QBrush(*c_free,Qt::SolidPattern);
+    b_marked = new QBrush(*c_marked, Qt::SolidPattern);
+    b_marked2 = new QBrush(*c_marked2,Qt::SolidPattern);
+        //more variables (a lot):
     //HORIZONTAL:
        p_00_01 = p_01_02 = p_02_03 =
        p_10_11 = p_11_12 = p_12_13 =
@@ -24,22 +44,6 @@ map_graphics::map_graphics(QWidget *parent) :
        s4 = s5 = s6 =
        s7 = s8 = s9 =
             false;
-
-}
-
-void map_graphics::start_graph()
-{
-
-    p1_score = 0;
-    p2_score = 0;
-    c_free = new QColor("000000");
-    box_paint1 = new QBrush("#0C6DEB",Qt::SolidPattern);
-    box_paint2 = new QBrush("#EB7F0C",Qt::SolidPattern);
-    c_marked = new QColor("#EB7F0C");
-    c_marked2 = new QColor("#0C6DEB");
-    b_free = new QBrush(*c_free,Qt::SolidPattern);
-    b_marked = new QBrush(*c_marked, Qt::SolidPattern);
-    b_marked2 = new QBrush(*c_marked2,Qt::SolidPattern);
 
     //Dots:
     dot_00 = new QRectF(0,30,20,20);
@@ -134,33 +138,6 @@ void map_graphics::start_graph()
     act_score();
     emit refresh_score(p1_score,p2_score);
     emit set_turn(turn);
-
-
-
-/*
-    //Adding lines:
-        //vertical:
-    scene->addRect(*l_00_10,*c_free,*b_marked);
-    scene->addRect(*l_10_20,*c_free,*b_marked);
-
-    scene->addRect(*l_01_11,*c_free,*b_marked);
-    scene->addRect(*l_11_21,*c_free,*b_marked);
-
-    scene->addRect(*l_02_12,*c_free,*b_marked);
-    scene->addRect(*l_12_22,*c_free,*b_marked);
-
-        //horizontal:
-    scene->addRect(*l_00_01,*c_free,*b_marked);
-    scene->addRect(*l_01_02,*c_free,*b_marked);
-
-    scene->addRect(*l_10_11,*c_free,*b_marked);
-    scene->addRect(*l_11_12,*c_free,*b_marked);
-
-    scene->addRect(*l_20_21,*c_free,*b_marked);
-    scene->addRect(*l_21_22,*c_free,*b_marked);
-    */
-
-
 }
 
 
@@ -223,44 +200,13 @@ void map_graphics::mousePressEvent(QMouseEvent *e)
 
 void map_graphics::mouseReleaseEvent(QMouseEvent *event)
 {
-    if(turn==PLAYER_TURN)
-    {
+    //Select 1vsAI game:
+    if(p_or_ai == AI_PLAYER){
+        if(turn==PLAYER_TURN)
+        {
             QPointF release_point = this->mapToScene(event->pos());
             std::get<0>(cur_mv) = detect_dot(*click_point);
             std::get<1>(cur_mv) = detect_dot(release_point);
-
-            if(dot_00->contains(release_point))
-                scene->addEllipse(*dot_00,*c_marked,*b_marked);
-            else if(dot_01->contains(release_point))
-                scene->addEllipse(*dot_01,*c_marked,*b_marked);
-            else if(dot_02->contains(release_point))
-                scene->addEllipse(*dot_02,*c_marked,*b_marked);
-            else if(dot_03->contains(release_point))
-                scene->addEllipse(*dot_03,*c_marked,*b_marked);
-            else if(dot_10->contains(release_point))
-                scene->addEllipse(*dot_10,*c_marked,*b_marked);
-            else if(dot_11->contains(release_point))
-                scene->addEllipse(*dot_11,*c_marked,*b_marked);
-            else if(dot_12->contains(release_point))
-                scene->addEllipse(*dot_12,*c_marked,*b_marked);
-            else if(dot_13->contains(release_point))
-                scene->addEllipse(*dot_13,*c_marked,*b_marked);
-            else if(dot_20->contains(release_point))
-                scene->addEllipse(*dot_20,*c_marked,*b_marked);
-            else if(dot_21->contains(release_point))
-                scene->addEllipse(*dot_21,*c_marked,*b_marked);
-            else if(dot_22->contains(release_point))
-                scene->addEllipse(*dot_22,*c_marked,*b_marked);
-            else if(dot_23->contains(release_point))
-                scene->addEllipse(*dot_23,*c_marked,*b_marked);
-            else if(dot_30->contains(release_point))
-                scene->addEllipse(*dot_30,*c_marked,*b_marked);
-            else if(dot_31->contains(release_point))
-                scene->addEllipse(*dot_31,*c_marked,*b_marked);
-            else if(dot_32->contains(release_point))
-                scene->addEllipse(*dot_32,*c_marked,*b_marked);
-            else if(dot_33->contains(release_point))
-                scene->addEllipse(*dot_33,*c_marked,*b_marked);
 
             if(check_move(release_point))
             {
@@ -271,21 +217,54 @@ void map_graphics::mouseReleaseEvent(QMouseEvent *event)
 
                 if(p2_score != m_game->get_p2_score())
                 {
-                     draw_box(*box_paint2, line_);
-                    //sky->check_play(*m_game,cur_mv,PLAYER_TURN);
+                    draw_box(*box_paint2);
                     sky->blind_move();
                 }
                 else
                 {
                     sky->check_play(*m_game,cur_mv,PLAYER_TURN);
-                    turn = IA_TURN;
+                    turn = AI_TURN;
 
                 }
             }
+        }
+        if(turn==AI_TURN)
+            ia_play();
     }
-    if(turn==IA_TURN)
+    //Select 1vs1 game:
+    else if(p_or_ai == HUMAN_PLAYER)
     {
-        ia_play();
+        QPointF release_point = this->mapToScene(event->pos());
+        std::get<0>(cur_mv) = detect_dot(*click_point);
+        std::get<1>(cur_mv) = detect_dot(release_point);
+
+        if(check_move(release_point))
+        {
+          if(turn == PLAYER_TURN)
+          {
+              draw_line(release_point, *b_marked);
+
+              p2_score = m_game->get_p2_score();
+              m_game->play(cur_mv,PLAYER_TURN);
+              if(p2_score == m_game->get_p2_score())
+                  turn = PLAYER2_TURN;
+              else
+                  draw_box(*box_paint2);
+
+          }
+          else
+          {
+              draw_line(release_point, *b_marked2);
+
+              p1_score = m_game->get_p1_score();
+              m_game->play(cur_mv,PLAYER2_TURN);
+              if(p1_score == m_game->get_p1_score())
+                  turn = PLAYER_TURN;
+              else{
+                  draw_box(*box_paint1);
+              qDebug() << "Second player made a point";}
+          }
+        }
     }
 
     act_score();
@@ -296,12 +275,12 @@ void map_graphics::mouseReleaseEvent(QMouseEvent *event)
 
 void map_graphics::ia_play()
 {
-        while(turn==IA_TURN and !m_game->is_full())
+        while(turn==AI_TURN and !m_game->is_full())
         {
             p1_score = m_game->get_p1_score();
             cur_mv = sky->AI_play();
 
-            m_game->play(cur_mv,IA_TURN);
+            m_game->play(cur_mv,AI_TURN);
 
             QPointF par1 = dot_to_qpointf(std::get<0>(cur_mv));
             QPointF par2 = dot_to_qpointf(std::get<1>(cur_mv));
@@ -343,9 +322,8 @@ void map_graphics::ia_play()
 
             if(p1_score != m_game->get_p1_score())
             {
-                draw_box(*box_paint1, line);
-                qInfo () << "Im here1\n";
-                sky->check_play(*m_game,cur_mv,IA_TURN);
+                draw_box(*box_paint1);
+                sky->check_play(*m_game,cur_mv,AI_TURN);
             }
             else
             {
@@ -1194,7 +1172,7 @@ unsigned short map_graphics::where_to_draw(MOVE last_move)
 
 }
 
-void map_graphics::draw_box(QBrush& paint, QRectF& _line)
+void map_graphics::draw_box(QBrush& paint)
 {
     //Squares sorted by horizontal
 
@@ -1208,7 +1186,6 @@ void map_graphics::draw_box(QBrush& paint, QRectF& _line)
 
     if( p_01_02 and p_02_12 and p_11_12 and p_02_12 and not(s2) )
     {
-       qDebug() << "im here2\n";
        scene->addRect(113,44,93,93,*c_free,paint);
        s2 = true;
     }

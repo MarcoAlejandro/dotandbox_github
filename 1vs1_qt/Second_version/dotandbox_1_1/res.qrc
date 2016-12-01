@@ -1,6 +1,8 @@
 <RCC>
     <qresource prefix="/images">
-        <file>ehm.jpg</file>
-        <file>Circulos colores.gif</file>
+        <file>images/WhatsApp Image 2016-11-30 at 11.45.59.jpeg</file>
+        <file>images/ehm.jpg</file>
+        <file>images/flecha-abajo-esbozada.png</file>
+        <file>images/paper_background.jpg</file>
     </qresource>
 </RCC>

@@ -19,12 +19,13 @@ class game_window : public QDialog
 public:
     explicit game_window(QWidget *parent = 0);
 
-    void start_game();
+    void start_game(ushort);
     //void make_move(QGraphicsSceneMouseEvent*);
     ~game_window();
 
     //void refresh_score();
     player p1, p2;
+    ushort _p_or_ai;
 
 
 private slots:
@@ -32,6 +33,10 @@ private slots:
     void show_turn(int);
 
 
+
+    void on_b_exit_clicked();
+
+    void on_b_reset_clicked();
 
 private:
     Ui::game_window *ui;

@@ -7,6 +7,7 @@ game_window::game_window(QWidget *parent) :
     ui(new Ui::game_window)
 {
     ui->setupUi(this);
+
     connect(ui->g_map,SIGNAL(refresh_score(uint,uint)),this,
             SLOT(act_score(uint,uint)));
 
@@ -22,18 +23,19 @@ game_window::~game_window()
     delete ui;
 }
 
-void game_window::start_game(){
+void game_window::start_game(ushort p_or_ai){
+    //This flag is necessary to reset the game:
+    _p_or_ai = p_or_ai;
     //Player 1:
     this->ui->l_p1_id->setText(QString::fromStdString(this->p1.get_id()));
-    //this->ui->l_p1_score->setText('0');
     //Player 2:
     this->ui->l_p2_id->setText(QString::fromStdString(this->p2.get_id()));
-    //this->ui->l_p2_score->setText('0');
+    //Showing image for turn:
     this->ui->l_img->setVisible(true);
     this->ui->l_img_2->setVisible(false);
 
-
-    this->ui->g_map->start_graph();
+    //Starting the game:
+    this->ui->g_map->start_graph(p_or_ai);
 }
 
 void game_window::act_score(uint a,uint b)
@@ -42,10 +44,6 @@ void game_window::act_score(uint a,uint b)
     this->ui->l_p1_score->setText(QString::number(a));
     //Player 2:
     this->ui->l_p2_score->setText(QString::number(b));
-
-    //this->ui->l_p1_id->setFrameShape(QFrame::Box);
-    //this->ui->l_p1_id->setStyleSheet("background-color: green");
-    //this->ui->l_p1_id->setStyleSheet("color: white");
 }
 
 void game_window::show_turn(int t){
@@ -53,14 +51,20 @@ void game_window::show_turn(int t){
     {
         this->ui->l_img->setVisible(true);
         this->ui->l_img_2->setVisible(false);
-        qDebug() << "i'm here show turn1";
-
     }
     else if(t == 1)
     {
         this->ui->l_img->setVisible(false);
         this->ui->l_img_2->setVisible(true);
-        qDebug() << "i'm here show turn2";
-
     }
+}
+
+void game_window::on_b_exit_clicked()
+{
+    this->close();
+}
+
+void game_window::on_b_reset_clicked()
+{
+    this->start_game(this->_p_or_ai);
 }
