@@ -210,7 +210,7 @@ void map_graphics::mouseReleaseEvent(QMouseEvent *event)
 
             if(check_move(release_point))
             {
-                QRectF line_ = *(draw_line(release_point, *b_marked));
+                draw_line(release_point, *b_marked);
 
                 p2_score = m_game->get_p2_score();
                 m_game->play(cur_mv,PLAYER_TURN);

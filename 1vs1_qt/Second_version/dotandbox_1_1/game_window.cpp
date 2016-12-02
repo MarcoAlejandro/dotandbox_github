@@ -8,6 +8,17 @@ game_window::game_window(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    this->ui->l_img->setAttribute(Qt::WA_TranslucentBackground);
+    this->ui->l_img_2->setAttribute(Qt::WA_TranslucentBackground);
+  //  this->ui->l_p1_id->setAttribute(Qt::WA_TranslucentBackground);
+  //  this->ui->l_p2_id->setAttribute(Qt::WA_TranslucentBackground);
+  //  this->ui->l_p1_score->setAttribute(Qt::WA_TranslucentBackground);
+   //this->ui->b_exit->setAttribute(Qt::WA_TranslucentBackground);
+    //this->ui->b_reset->setAttribute(Qt::WA_NoBackground);
+
+
+    //this->ui->g_map->setAttribute(Qt::WA_TranslucentBackground);
+
     this->setWindowTitle("Dot and Box");
     this->setWindowIcon(QIcon(":/images/images/WhatsApp Image 2016-11-30 at 11.45.59.jpeg"));
 
@@ -16,8 +27,8 @@ game_window::game_window(QWidget *parent) :
 
     connect(ui->g_map,SIGNAL(set_turn(int)),this,SLOT(show_turn(int)));
 
-    this->ui->l_p1_id->setStyleSheet("background-color: #EB7F0C");
-    this->ui->l_p2_id->setStyleSheet("background-color: #0C6DEB");
+  //  this->ui->l_p1_id->setStyleSheet("background-color: #EB7F0C");
+  //  this->ui->l_p2_id->setStyleSheet("background-color: #0C6DEB");
 
 }
 
