@@ -24,13 +24,14 @@
  *This vector works to build the ideal map.
  *@param lvl is the difficult of skyline AI.
  */
-template<unsigned short lvl>class skyline
+class skyline
 {
 
 private:
-	
+
         dotandbox_tree<4,4,4> *decision_tree;
         std::vector<MOVE> ideal_moves;
+				unsigned short lvl;
 
         /**
          *@brief equal_moves is used by skyline class.
@@ -83,8 +84,9 @@ public:
         *@param game_map is the board of the main game.
         *@param cur_move is the last move played.
         */
-        skyline(const map<4,4> & game_map, MOVE cur_move)
+        skyline(const map<4,4> & game_map, MOVE cur_move,unsigned short _lvl)
         {
+						lvl = _lvl;
             decision_tree = new dotandbox_tree<4,4,4>(game_map, cur_move);
             MOVE move;
 
@@ -169,7 +171,7 @@ public:
 		        return ret;
 			}
 
-                 
+
                 return this->decision_tree->get_next_move();
         }
 
@@ -177,7 +179,7 @@ public:
          *@brief check_play is responsible for the count of plays left.
          *
          * check_play is responsible for the count of plays left. It must be used
-                 everytime a play is made in the main board. Doing so, 
+                 everytime a play is made in the main board. Doing so,
                  the dotandbox tree of skyline keeps updated.
          *@param game_map is the board of the main game.
          *@param cur_move is the last move played
@@ -206,7 +208,7 @@ public:
                 return;
             }
         }
-        
+
         /**
          *@brief blind_move is used for discount a move.
          *It must be used when a play has been made, and AI does not need to build
