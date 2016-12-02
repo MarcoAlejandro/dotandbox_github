@@ -10,15 +10,6 @@ game_window::game_window(QWidget *parent) :
 
     this->ui->l_img->setAttribute(Qt::WA_TranslucentBackground);
     this->ui->l_img_2->setAttribute(Qt::WA_TranslucentBackground);
-  //  this->ui->l_p1_id->setAttribute(Qt::WA_TranslucentBackground);
-  //  this->ui->l_p2_id->setAttribute(Qt::WA_TranslucentBackground);
-  //  this->ui->l_p1_score->setAttribute(Qt::WA_TranslucentBackground);
-   //this->ui->b_exit->setAttribute(Qt::WA_TranslucentBackground);
-    //this->ui->b_reset->setAttribute(Qt::WA_NoBackground);
-
-
-    //this->ui->g_map->setAttribute(Qt::WA_TranslucentBackground);
-
     this->setWindowTitle("Dot and Box");
     this->setWindowIcon(QIcon(":/images/images/WhatsApp Image 2016-11-30 at 11.45.59.jpeg"));
 
@@ -27,8 +18,6 @@ game_window::game_window(QWidget *parent) :
 
     connect(ui->g_map,SIGNAL(set_turn(int)),this,SLOT(show_turn(int)));
 
-  //  this->ui->l_p1_id->setStyleSheet("background-color: #EB7F0C");
-  //  this->ui->l_p2_id->setStyleSheet("background-color: #0C6DEB");
 
 }
 
@@ -37,8 +26,9 @@ game_window::~game_window()
     delete ui;
 }
 
-void game_window::start_game(ushort p_or_ai){
+void game_window::start_game(ushort p_or_ai, int _level){
     //This flag is necessary to reset the game:
+    level = _level;
     _p_or_ai = p_or_ai;
     //Player 1:
     this->ui->l_p1_id->setText(QString::fromStdString(this->p1.get_id()));
@@ -49,7 +39,7 @@ void game_window::start_game(ushort p_or_ai){
     this->ui->l_img_2->setVisible(false);
 
     //Starting the game:
-    this->ui->g_map->start_graph(p_or_ai);
+    this->ui->g_map->start_graph(p_or_ai, level);
 }
 
 void game_window::act_score(uint a,uint b)
@@ -80,5 +70,5 @@ void game_window::on_b_exit_clicked()
 
 void game_window::on_b_reset_clicked()
 {
-    this->start_game(this->_p_or_ai);
+    this->start_game(this->_p_or_ai, level);
 }

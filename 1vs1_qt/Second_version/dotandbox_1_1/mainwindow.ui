@@ -23,7 +23,7 @@
    <widget class="QPushButton" name="b_exit">
     <property name="geometry">
      <rect>
-      <x>360</x>
+      <x>495</x>
       <y>370</y>
       <width>121</width>
       <height>31</height>
@@ -39,7 +39,7 @@
    <widget class="QPushButton" name="b_sett">
     <property name="geometry">
      <rect>
-      <x>500</x>
+      <x>354</x>
       <y>370</y>
       <width>121</width>
       <height>31</height>
@@ -55,7 +55,7 @@
    <widget class="QLineEdit" name="l_id2">
     <property name="geometry">
      <rect>
-      <x>507</x>
+      <x>515</x>
       <y>220</y>
       <width>131</width>
       <height>41</height>
@@ -74,7 +74,7 @@
      <string notr="true">border-image: url(:/images/images/paper_background.jpg);</string>
     </property>
     <property name="text">
-     <string>Player 2 ID</string>
+     <string>Player 2</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -114,7 +114,7 @@
    <widget class="QLineEdit" name="l_id1">
     <property name="geometry">
      <rect>
-      <x>350</x>
+      <x>343</x>
       <y>220</y>
       <width>121</width>
       <height>41</height>
@@ -135,7 +135,7 @@
      <string notr="true">border-image: url(:/images/images/paper_background.jpg);</string>
     </property>
     <property name="text">
-     <string>Player 1 ID</string>
+     <string>Player 1</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -144,8 +144,8 @@
    <widget class="QPushButton" name="b_ai_play">
     <property name="geometry">
      <rect>
-      <x>496</x>
-      <y>290</y>
+      <x>498</x>
+      <y>320</y>
       <width>121</width>
       <height>31</height>
      </rect>
@@ -160,8 +160,8 @@
    <widget class="QPushButton" name="b_play">
     <property name="geometry">
      <rect>
-      <x>360</x>
-      <y>290</y>
+      <x>354</x>
+      <y>320</y>
       <width>121</width>
       <height>31</height>
      </rect>

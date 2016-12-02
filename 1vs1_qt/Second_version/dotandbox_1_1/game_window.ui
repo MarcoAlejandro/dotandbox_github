@@ -135,9 +135,9 @@
   <widget class="QLabel" name="l_p2_id">
    <property name="geometry">
     <rect>
-     <x>630</x>
+     <x>620</x>
      <y>227</y>
-     <width>90</width>
+     <width>111</width>
      <height>31</height>
     </rect>
    </property>
@@ -174,7 +174,7 @@
   <widget class="QLabel" name="l_p2_score">
    <property name="geometry">
     <rect>
-     <x>630</x>
+     <x>633</x>
      <y>260</y>
      <width>90</width>
      <height>31</height>
@@ -203,9 +203,9 @@
   <widget class="QLabel" name="l_p1_id">
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>1</x>
      <y>227</y>
-     <width>90</width>
+     <width>111</width>
      <height>31</height>
     </rect>
    </property>

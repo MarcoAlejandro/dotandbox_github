@@ -9,6 +9,9 @@
 #include <QColor>
 #include <QThread>
 #include <QDebug>
+#include <QApplication>
+#include <QFuture>
+#include <QtConcurrent/QtConcurrent>
 
 #include <../../../dot_H/dot.H>
 #include <../../../map/map.H>
@@ -27,16 +30,15 @@ class map_graphics : public QGraphicsView
 public:
     explicit map_graphics(QWidget *parent = 0);
 
-    void start_graph(ushort _p_or_ai);
+    void start_graph(ushort _p_or_ai,int _level);
     void for_test();
 
     bool check_move(QPointF &point);
-    QRectF* draw_line(QPointF &point, QBrush &color);
-    QRectF* draw_line(QPointF&, QPointF&,QBrush&);
+    bool draw_line(QPointF &point, QBrush &color);
+    bool draw_line(QPointF&, QPointF&,QBrush&);
     void draw_box(QBrush&);
     void refresh_dots();
     void act_score();
-    void ia_play();
     bool upper_box(dot<4,4> *,dot<4,4> *);
     bool lower_box(dot<4,4> *,dot<4,4> *);
     bool right_box(dot<4,4> *,dot<4,4> *);
@@ -55,8 +57,10 @@ public slots:
    void mouseReleaseEvent(QMouseEvent *event);
    //void mouseMoveEvent()
    //void show_turn(int);
+   void ia_play();
 
-   //static void msleep(unsigned long);
+
+   void msleep(unsigned long msecs);
 
 signals:
     void refresh_score(uint,uint);
@@ -124,7 +128,8 @@ private:
     map<4,4> *m_game;
     MOVE cur_mv;
     int turn;
-    skyline<4> *sky;
+    int level;
+    skyline *sky;
 
 };
 
