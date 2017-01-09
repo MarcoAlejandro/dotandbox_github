@@ -1,5 +1,5 @@
 This work was made using Gitlab instead of Github. 
-The complete develop line can be foun there!.
+The complete develop line can be found there!.
 Write to any of these emails to get access development history.
 "Dots & Boxes" Project Workflow
 ///////////////////////////////////////////////////////////
