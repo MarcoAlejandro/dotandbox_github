@@ -1,6 +1,7 @@
 This work was made using Gitlab instead of Github. 
 The complete develop line can be found there!.
-Write to any of these emails to get access development history.
+This is an up-to-date repositorie.
+Write to any of these emails to get access development history on Gitlab.
 "Dots & Boxes" Project Workflow
 ///////////////////////////////////////////////////////////
 Developers team: "Codemakers"
